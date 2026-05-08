@@ -470,6 +470,40 @@ body {
   font-size: 1.1rem;
 }
 
+/* Visuals */
+.card-visual, .game-visual {
+  margin-bottom: 15px;
+  display: flex;
+  justify-content: center;
+}
+
+.word-emoji {
+  font-size: 4rem;
+  line-height: 1;
+}
+
+.word-img, .game-img {
+  max-width: 100%;
+  height: 120px;
+  object-fit: contain;
+  border-radius: 15px;
+}
+
+.game-emoji-large {
+  font-size: 5rem;
+}
+
+.chat-img {
+  max-width: 150px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+.chat-emoji {
+  font-size: 2rem;
+  margin-bottom: 5px;
+}
+
 .footer-status {
   text-align: center;
   margin-top: 40px;
