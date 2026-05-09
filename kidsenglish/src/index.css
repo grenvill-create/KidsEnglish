@@ -1,512 +1,313 @@
-/* KidsEnglish 全局样式 */
 :root {
-  --primary: #FF6B6B;
-  --secondary: #4ECDC4;
-  --accent: #FFE66D;
+  --primary: #FF6B6B;     /* 柔和红 */
+  --secondary: #4ECDC4;   /* 薄荷绿 */
+  --accent: #FFE66D;      /* 暖阳黄 */
+  --bg: #F7FFF7;          /* 极简绿白背景 */
   --text: #2F2F2F;
-  --bg: #F7FFF7;
   --white: #FFFFFF;
-  --gray: #f0f0f0;
+  --gray: #E0E0E0;
+  --bubble-shadow: 0 8px 0 rgba(0,0,0,0.1);
 }
 
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  font-family: 'Outfit', 'Segoe UI', Roboto, sans-serif;
+  -webkit-tap-highlight-color: transparent;
 }
 
 body {
-  font-family: 'Comic Sans MS', 'Segoe UI', Roboto, sans-serif;
   background-color: var(--bg);
   color: var(--text);
+  overflow-x: hidden;
 }
 
-.app-container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
+/* 泡泡卡片通用样式 */
+.bubble-card {
+  background: var(--white);
+  border-radius: 35px;
+  border: 4px solid var(--text);
+  box-shadow: var(--bubble-shadow);
+  padding: 25px;
+  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-/* Header & Toggle */
-.welcome-header {
-  text-align: center;
-  margin-bottom: 30px;
+.bubble-card:hover {
+  transform: translateY(-5px) scale(1.02);
 }
 
-.welcome-header h1 {
+/* 弹性标题 */
+.bouncy-title {
   font-size: 3rem;
   color: var(--primary);
   text-shadow: 3px 3px 0 var(--accent);
   margin-bottom: 20px;
+  animation: bounce 2s infinite;
 }
 
-.mode-toggle {
-  display: inline-flex;
-  background: var(--white);
-  padding: 5px;
-  border-radius: 50px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
 }
 
-.toggle-btn {
-  padding: 10px 25px;
-  border-radius: 50px;
-  border: none;
-  cursor: pointer;
-  font-weight: bold;
-  transition: all 0.3s;
-  background: transparent;
-}
-
-.toggle-btn.active {
-  background: var(--secondary);
-  color: white;
-}
-
-/* Cards */
-.card {
-  background: var(--white);
-  border-radius: 24px;
-  padding: 30px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-  margin-bottom: 20px;
-}
-
-.styled-input {
+/* 庆祝特效层 */
+.celebration-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
-  padding: 15px;
-  border-radius: 15px;
-  border: 2px solid var(--secondary);
-  font-size: 1.1rem;
-  margin-bottom: 15px;
-  outline: none;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 5rem;
+  font-weight: 900;
+  color: var(--primary);
+  z-index: 10000;
+  pointer-events: none;
+  animation: star-pop 0.5s forwards ease-out;
 }
 
-.btn {
+@keyframes star-pop {
+  0% { transform: scale(0) rotate(-20deg); opacity: 0; }
+  70% { transform: scale(1.2) rotate(10deg); opacity: 1; }
+  100% { transform: scale(1) rotate(0); opacity: 1; }
+}
+
+/* 泡泡按钮 */
+.bubble {
+  border-radius: 50px !important;
+  border: 3px solid var(--text) !important;
+  box-shadow: 0 5px 0 var(--text) !important;
+  transition: all 0.1s !important;
+  cursor: pointer;
+}
+
+.bubble:active {
+  transform: translateY(4px);
+  box-shadow: 0 1px 0 var(--text) !important;
+}
+
+/* 选项卡重构 */
+.bubble-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+
+.bubble-tabs button {
   padding: 12px 25px;
-  border-radius: 50px;
-  border: none;
+  font-size: 1.1rem;
   font-weight: bold;
-  cursor: pointer;
-  transition: all 0.2s;
+  background: var(--white);
+  border: 3px solid var(--text);
+  border-radius: 30px;
+  box-shadow: 0 4px 0 var(--text);
 }
 
-.primary-btn {
-  background: var(--primary);
-  color: white;
-  width: 100%;
+.bubble-tabs button.active {
+  background: var(--secondary);
+  color: var(--white);
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 var(--text);
 }
 
-.btn:active {
-  transform: scale(0.95);
-}
-
-/* Study Grid */
+/* 卡片容器 */
 .sentences-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 20px;
+  gap: 25px;
+  padding: 20px;
 }
 
 .sentence-card {
-  background: var(--white);
-  border-radius: 20px;
-  padding: 25px;
-  border: 3px solid var(--accent);
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  min-height: 180px;
-  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  align-items: center;
+  text-align: center;
 }
 
 .sentence-card.mastered {
-  border-color: var(--secondary);
-  background: #f0fff0;
+  border-color: var(--accent);
+  background: #FFFDE7;
 }
 
 .sentence-content {
-  font-size: 1.3rem;
+  font-size: 1.8rem;
   font-weight: bold;
+  margin: 15px 0;
+  color: var(--text);
+}
+
+/* 进场动画 */
+.bubble-ani {
+  animation: slideIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes slideIn {
+  from { transform: scale(0.8); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* 游戏视觉 */
+.game-visual {
+  background: #f0f0f0;
+  border-radius: 25px;
+  padding: 20px;
   margin-bottom: 20px;
+}
+
+.game-emoji-large {
+  font-size: 6rem;
+  filter: drop-shadow(0 5px 10px rgba(0,0,0,0.1));
+}
+
+.game-option-btn.bubble {
+  background: var(--white);
+  padding: 20px;
+  font-size: 1.3rem;
+}
+
+/* 响应式适配 */
+@media (max-width: 600px) {
+  .bouncy-title { font-size: 2rem; }
+  .sentences-grid { grid-template-columns: 1fr; }
+}
+
+.app-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.welcome-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.mode-toggle {
+  display: flex;
+  justify-content: center;
+  gap: 30px; /* 拉开间距 */
+  margin-bottom: 40px;
+}
+
+.toggle-btn {
+  padding: 12px 25px; /* 与其它按钮对齐 */
+  font-size: 1.1rem;   /* 与其它按钮对齐 */
+  font-weight: bold;
+  background: var(--white);
+  color: var(--text);
+  border-radius: 30px;
+  transition: all 0.2s;
+}
+
+.toggle-btn.active {
+  background: var(--primary);
+  color: var(--white);
+  box-shadow: 0 4px 0 #D32F2F !important;
+}
+
+.dashboard-banner {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.stat-pill {
+  background: var(--white);
+  padding: 10px 25px;
+  border-radius: 50px;
+  border: 3px solid var(--text);
+  font-weight: 900;
+  font-size: 1.2rem;
 }
 
 .card-actions {
   display: flex;
   gap: 10px;
+  margin-top: auto;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .action-btn {
-  flex: 1;
-  padding: 10px;
-  border-radius: 12px;
-  border: none;
-  cursor: pointer;
+  padding: 10px 15px;
+  border-radius: 20px;
   font-weight: bold;
-  transition: 0.2s;
-}
-
-.listen-btn { background: var(--accent); color: var(--text); }
-.check-btn { background: var(--gray); color: #888; }
-.check-btn.is-mastered { background: var(--secondary); color: white; }
-
-.action-btn:hover { opacity: 0.9; }
-
-/* Manage Mode Items */
-.manage-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px;
-  border-bottom: 1px solid #eee;
-  font-size: 0.9rem;
-}
-
-.delete-btn {
-  background: #ffeded;
-  color: #ff6b6b;
-  border: none;
-  padding: 5px 10px;
-  border-radius: 8px;
   cursor: pointer;
-  font-size: 0.8rem;
 }
 
-/* Translation Box */
-.translation-box {
-  margin-top: -10px;
-  margin-bottom: 20px;
-  text-align: left;
+.record-btn { background: #FFCDD2; color: #C62828; }
+.listen-btn { background: #BBDEFB; color: #1565C0; }
+.play-mine-btn { background: #FFF9C4; color: #F9A825; }
+.check-btn { background: #C8E6C9; color: #2E7D32; }
+.check-btn.is-mastered { background: var(--accent); color: var(--text); }
+
+/* Memory Game Styles */
+.memory-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+  margin-top: 20px;
 }
 
-.eye-btn {
-  background: transparent;
-  border: none;
-  color: var(--secondary);
-  font-size: 0.8rem;
+.memory-card {
+  height: 100px;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
-  padding: 0;
-  margin-bottom: 5px;
 }
 
-.translation-text {
-  background: #fff9db;
-  padding: 8px 12px;
-  border-radius: 10px;
-  font-size: 0.95rem;
-  color: #666;
-  border-left: 4px solid var(--accent);
+.memory-card.flipped {
+  transform: rotateY(180deg);
 }
 
-/* Animations */
-@keyframes pop {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.1); }
-  100% { transform: scale(1); }
+.memory-card.matched {
+  opacity: 0.6;
+  pointer-events: none;
+  border-color: var(--secondary) !important;
 }
 
-.pop-anim:hover {
-  animation: pop 0.4s ease infinite;
-}
-
-.sentence-card.mastered {
-  border-color: var(--secondary);
-  background: #f0fff0;
-  animation: pop 0.5s ease;
-}
-
-/* Sub-mode Toggle */
-.sub-mode-toggle {
+.card-front, .card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
   display: flex;
   justify-content: center;
-  gap: 10px;
-  margin-bottom: 25px;
-}
-
-.sub-mode-toggle button {
-  background: var(--white);
-  border: 2px solid var(--secondary);
-  padding: 8px 20px;
-  border-radius: 15px;
-  cursor: pointer;
-  font-weight: bold;
-  color: var(--secondary);
-  transition: all 0.3s;
-}
-
-.sub-mode-toggle button.active {
-  background: var(--secondary);
-  color: white;
-}
-
-/* Stories & Chat Bubbles */
-.story-book {
-  background: var(--white);
-  border-radius: 30px;
-  padding: 30px;
-  margin-bottom: 30px;
-  border: 4px solid var(--accent);
-  box-shadow: 0 15px 35px rgba(0,0,0,0.05);
-}
-
-.story-title {
-  color: var(--primary);
-  margin-bottom: 25px;
-  text-align: center;
-  border-bottom: 2px dashed var(--accent);
-  padding-bottom: 10px;
-}
-
-.story-chat {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-.chat-bubble {
-  background: var(--bg);
-  padding: 15px 20px;
+  align-items: center;
   border-radius: 20px;
-  border-bottom-left-radius: 5px;
-  max-width: 90%;
-  align-self: flex-start;
-  cursor: pointer;
-  transition: transform 0.2s;
-  border: 2px solid var(--gray);
-}
-
-.chat-bubble:hover {
-  transform: translateX(5px);
-  border-color: var(--secondary);
-}
-
-.chat-text {
   font-size: 1.2rem;
   font-weight: bold;
-  color: var(--text);
-  margin-bottom: 5px;
-}
-
-.chat-trans {
-  font-size: 0.9rem;
-  color: #888;
-}
-
-/* Dashboard */
-.dashboard-banner {
-  display: flex;
-  justify-content: center;
-  gap: 15px;
-  margin-bottom: 20px;
-}
-
-.stat-pill {
-  background: var(--white);
-  padding: 8px 18px;
-  border-radius: 50px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  border: 2px solid var(--accent);
-}
-
-.stat-icon { font-size: 1.2rem; }
-.stat-text { font-weight: bold; font-size: 0.9rem; color: var(--text); }
-
-/* Game Selector */
-.game-selector {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-bottom: 15px;
-}
-
-.game-selector button {
-  background: #eee;
-  border: none;
-  padding: 6px 15px;
-  border-radius: 10px;
-  cursor: pointer;
-  font-size: 0.9rem;
-  transition: 0.3s;
-}
-
-.game-selector button.active {
-  background: var(--accent);
-  font-weight: bold;
-}
-
-/* Spelling Game */
-.spelling-area {
-  margin-top: 20px;
-}
-
-.spelling-display {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-bottom: 30px;
-  flex-wrap: wrap;
-}
-
-.letter-slot {
-  width: 45px;
-  height: 55px;
-  background: var(--white);
-  border: 3px solid var(--secondary);
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: var(--secondary);
-}
-
-.letter-slot.empty {
-  border-color: var(--gray);
-  color: var(--gray);
-}
-
-.letter-pool {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.letter-btn {
-  width: 45px;
-  height: 45px;
-  background: var(--accent);
-  border: none;
-  border-radius: 10px;
-  font-size: 1.3rem;
-  font-weight: bold;
-  cursor: pointer;
-  box-shadow: 0 4px 0 #e6cf5c;
-  transition: all 0.1s;
-}
-
-.letter-btn:active {
-  transform: translateY(3px);
-  box-shadow: 0 1px 0 #e6cf5c;
-}
-
-.repeat-btn {
-  background: var(--accent);
-  color: var(--text);
-  margin: 15px 0;
-}
-
-.game-feedback {
-  margin-top: 20px;
-  font-size: 1.5rem;
-  font-weight: bold;
-  padding: 10px;
-  border-radius: 10px;
-}
-
-.game-feedback.success { color: #4CAF50; background: #e8f5e9; }
-.game-feedback.fail { color: #F44336; background: #ffebee; }
-
-/* Focus Mode */
-.sentence-card.error-focus {
-  border-color: #F44336;
-  background: #fff8f8;
-  position: relative;
-}
-
-.error-badge {
-  position: absolute;
-  top: -10px;
-  right: -10px;
-  background: #F44336;
-  color: white;
-  padding: 4px 10px;
-  border-radius: 20px;
-  font-size: 0.75rem;
-  font-weight: bold;
-  box-shadow: 0 2px 5px rgba(244, 67, 54, 0.3);
-}
-
-/* Mimic Feature */
-.mimic-box {
-  margin-top: 10px;
-}
-
-.recognition-hint {
-  font-size: 0.85rem;
-  color: var(--secondary);
-  font-weight: bold;
-  margin-bottom: 10px;
-  background: #f0fff0;
-  padding: 5px 10px;
-  border-radius: 10px;
-}
-
-.record-btn { background: #E1F5FE; color: #0288D1; border: 2px solid #0288D1; }
-.stop-btn { background: #FFEBEE; color: #D32F2F; border: 2px solid #D32F2F; animation: pulse 1s infinite; }
-.play-mine-btn { background: #FFF9C4; color: #FBC02D; border: 2px solid #FBC02D; }
-
-@keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-  100% { transform: scale(1); }
-}
-
-.letter-slot.word-slot {
-  width: auto;
-  min-width: 60px;
-  padding: 0 10px;
-  font-size: 1.1rem;
-}
-
-.letter-btn.word-btn {
-  width: auto;
-  min-width: 60px;
-  padding: 0 15px;
-  font-size: 1.1rem;
-}
-
-/* Visuals */
-.card-visual, .game-visual {
-  margin-bottom: 15px;
-  display: flex;
-  justify-content: center;
-}
-
-.word-emoji {
-  font-size: 4rem;
-  line-height: 1;
-}
-
-.word-img, .game-img {
-  max-width: 100%;
-  height: 120px;
-  object-fit: contain;
-  border-radius: 15px;
-}
-
-.game-emoji-large {
-  font-size: 5rem;
-}
-
-.chat-img {
-  max-width: 150px;
-  border-radius: 10px;
-  margin-bottom: 10px;
-}
-
-.chat-emoji {
-  font-size: 2rem;
-  margin-bottom: 5px;
-}
-
-.footer-status {
+  padding: 5px;
   text-align: center;
-  margin-top: 40px;
-  font-size: 0.8rem;
-  color: #ccc;
+}
+
+.card-front {
+  background: var(--white);
+  transform: rotateY(180deg);
+}
+
+.card-back {
+  background: var(--accent);
+  color: var(--text);
+  font-size: 2rem;
+}
+
+.mini-img {
+  max-width: 100%;
+  max-height: 80px;
+  object-fit: contain;
+}
+
+@media (max-width: 500px) {
+  .memory-grid { grid-template-columns: repeat(2, 1fr); }
+  .memory-card { height: 80px; }
 }
