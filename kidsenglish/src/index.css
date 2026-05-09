@@ -153,12 +153,51 @@ body {
   to { transform: scale(1); opacity: 1; }
 }
 
+/* 游戏选择器 */
+.game-selector {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 30px; /* 增加边距，防止遮挡 */
+}
+
+.game-selector button {
+  padding: 10px 20px;
+  background: var(--white);
+  border: 3px solid var(--text);
+  border-radius: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 0 var(--text);
+}
+
+.game-selector button.active {
+  background: var(--accent);
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 var(--text);
+}
+
+.game-selector button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 0 var(--text);
+}
+
+.game-selector button:active {
+  transform: translateY(4px);
+  box-shadow: 0 0 0 var(--text);
+}
+
 /* 游戏视觉 */
 .game-visual {
-  background: #f0f0f0;
+  background: #f8f8f8;
   border-radius: 25px;
   padding: 20px;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px dashed var(--gray);
 }
 
 .game-emoji-large {
@@ -168,9 +207,43 @@ body {
 
 .game-option-btn.bubble {
   background: var(--white);
-  padding: 20px;
-  font-size: 1.3rem;
+  padding: 12px 20px;
+  font-size: 1.1rem;
+  width: 100%;
+  margin-bottom: 10px;
 }
+
+.game-card h3 {
+  font-size: 1.8rem;
+  margin-bottom: 15px;
+  color: var(--text);
+}
+
+.repeat-btn {
+  background: var(--accent) !important;
+  color: var(--text) !important;
+  font-size: 1rem !important;
+  padding: 8px 18px !important;
+  margin: 5px 0 20px 0 !important;
+}
+
+.game-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.game-feedback {
+  margin-top: 25px;
+  padding: 15px;
+  border-radius: 20px;
+  font-size: 1.4rem;
+  font-weight: bold;
+}
+
+.game-feedback.success { background: #E8F5E9; color: #2E7D32; border: 3px solid #2E7D32; }
+.game-feedback.fail { background: #FFEBEE; color: #C62828; border: 3px solid #C62828; }
 
 /* 响应式适配 */
 @media (max-width: 600px) {

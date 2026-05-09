@@ -2,6 +2,16 @@ import { useState, useEffect, useRef } from 'react'
 import { supabase } from './lib/supabase'
 import './App.css'
 
+const DEFAULT_DATA = [
+  { id: 'm1', content: 'Apple', translation: '苹果', type: 'word', image_url: 'https://images.unsplash.com/photo-1560806887-1e4cd0b6bcd6?w=200' },
+  { id: 'm2', content: 'Banana', translation: '香蕉', type: 'word', image_url: 'https://images.unsplash.com/photo-1571771894821-ad99026a07b1?w=200' },
+  { id: 'm3', content: 'Cat', translation: '小猫', type: 'word', image_url: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=200' },
+  { id: 'm4', content: 'Dog', translation: '小狗', type: 'word', image_url: 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=200' },
+  { id: 'm5', content: 'Elephant', translation: '大象', type: 'word', image_url: 'https://images.unsplash.com/photo-1557050543-4d5f4e07ef46?w=200' },
+  { id: 'm6', content: 'I love you', translation: '我爱你', type: 'story', story_name: 'Daily' },
+  { id: 'm7', content: 'Good morning', translation: '早上好', type: 'story', story_name: 'Daily' }
+]
+
 function App() {
   const [dbStatus, setDbStatus] = useState('Checking connection...')
   const [mode, setMode] = useState('study') 
@@ -49,11 +59,22 @@ function App() {
         supabase.from('vocabulary').select('*').order('created_at', { ascending: true }),
         supabase.from('progress').select('*')
       ])
-      setSentences(vocRes.data || [])
+      
+      let fetchedSentences = vocRes.data || []
+      if (fetchedSentences.length === 0) {
+        console.log("Using mock data fallback...")
+        fetchedSentences = DEFAULT_DATA
+      }
+      setSentences(fetchedSentences)
+
       const progMap = {}
       progRes.data?.forEach(p => { progMap[p.item_id] = { status: p.status, error_count: p.error_count || 0 } })
-      setProgress(progMap); setDbStatus('Connected! ✅')
-    } catch (err) { setDbStatus('Error: ' + err.message) } finally { setLoading(false) }
+      setProgress(progMap)
+      setDbStatus(vocRes.error ? 'Offline (Mock Data) 📴' : 'Connected! ✅')
+    } catch (err) { 
+      setSentences(DEFAULT_DATA)
+      setDbStatus('Offline (Mock Data) 📴') 
+    } finally { setLoading(false) }
   }
 
   // --- 统计与分类 ---
