@@ -1,0 +1,8 @@
+selenium>=4.15.0
+webdriver-manager>=4.0.0
+easyocr>=1.7.0
+Pillow>=9.0.0
+numpy>=1.20.0
+opencv-python>=4.5.0
+torch
+torchvision
