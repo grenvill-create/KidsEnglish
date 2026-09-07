@@ -31,6 +31,12 @@ def global_exception_handler(exctype, value, tb):
 
 sys.excepthook = global_exception_handler
 
+# 确保本模块所在目录在 sys.path 中，便于找到 smart_extractor
+_CURRENT_DIR = Path(__file__).parent.resolve()
+if str(_CURRENT_DIR) not in sys.path:
+    sys.path.insert(0, str(_CURRENT_DIR))
+
+
 # ============================================================
 # 依赖检查
 # ============================================================
@@ -50,8 +56,26 @@ ensure_package("easyocr")
 ensure_package("selenium")
 
 # ============================================================
-# easyocr 全局单例（复用，避免每次识别重新加载模型）
+# OCR 引擎全局单例（优先 RapidOCR，回退 EasyOCR）
 # ============================================================
+
+_rapid_ocr = None
+_rapid_ocr_lock = threading.Lock()
+
+def get_rapid_ocr(log_cb=None):
+    """懒加载 RapidOCR 单例，线程安全。"""
+    global _rapid_ocr
+    if _rapid_ocr is None:
+        with _rapid_ocr_lock:
+            if _rapid_ocr is None:
+                if log_cb:
+                    log_cb("首次加载 RapidOCR 高精度中文识别引擎...", "INFO")
+                from rapidocr_onnxruntime import RapidOCR
+                _rapid_ocr = RapidOCR()
+                if log_cb:
+                    log_cb("RapidOCR 引擎初始化成功", "OK")
+    return _rapid_ocr
+
 
 _easyocr_reader = None
 _easyocr_lock = threading.Lock()
@@ -63,11 +87,11 @@ def get_easyocr_reader(log_cb=None):
         with _easyocr_lock:
             if _easyocr_reader is None:
                 if log_cb:
-                    log_cb("首次加载 OCR 模型（约5~10秒，后续无需等待）...", "INFO")
+                    log_cb("首次加载 EasyOCR 模型（约5~10秒，后续无需等待）...", "INFO")
                 import easyocr as _easyocr_mod
                 _easyocr_reader = _easyocr_mod.Reader(['ch_sim', 'en'], verbose=False)
                 if log_cb:
-                    log_cb("OCR 模型加载完成，已缓存复用", "OK")
+                    log_cb("EasyOCR 模型加载完成，已缓存复用", "OK")
     return _easyocr_reader
 
 # ============================================================
@@ -114,6 +138,27 @@ def extract_text_from_image(image_path: str, log_cb=None) -> str:
     _log(f"正在识别图片: {Path(image_path).name}", "STEP")
     text = ""
 
+    # ── 优先方案：RapidOCR 引擎（超轻量、毫秒级响应、中文印刷体准确率高） ──
+    try:
+        _log("使用 RapidOCR 高精度引擎识别中...", "INFO")
+        engine = get_rapid_ocr(log_cb=log_cb)
+        rapid_result, elapse = engine(image_path)
+        if rapid_result:
+            detail_boxes = []
+            results = []
+            for bbox, t, prob in rapid_result:
+                pts = [[float(p[0]), float(p[1])] for p in bbox]
+                detail_boxes.append((pts, str(t), float(prob)))
+                results.append(str(t))
+            text = "\n".join(results)
+            _log(f"RapidOCR 识别完成，共 {len(text)} 字符，{len(detail_boxes)} 个文本块", "OK")
+            return text, detail_boxes
+        else:
+            _log("RapidOCR 未检测到文本，尝试备用引擎...", "WARN")
+    except Exception as re_err:
+        _log(f"RapidOCR 引擎调用异常: {re_err}，切换至 EasyOCR 引擎...", "WARN")
+
+    # ── 备用方案：EasyOCR 引擎 ──
     try:
         from PIL import Image, ImageFilter, ImageEnhance
         import tempfile, os
