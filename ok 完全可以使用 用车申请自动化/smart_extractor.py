@@ -184,8 +184,10 @@ def norm_date_str(text: str) -> str:
     if m:
         return f"{m.group(1)}-{m.group(2)}-{m.group(3)}"
     
-    # 3. MM-DD 或 M月D日 (带严格月份范围 1~12 和 日期 1~31)
-    m = re.search(r'(?:0?([1-9]|1[0-2]))[-月](0?[1-9]|[12]\d|3[01])[日号]?', text)
+    # 3. MM-DD 或 M月D日 (严格优先匹配两位日 10~31，再匹配单日 1~9，防与时间连写时数字截断)
+    m = re.search(r'(?<!\d)(?:0?([1-9]|1[0-2]))[-月]([12]\d|3[01]|0?[1-9])[日号]?(?=[ \t]*\d{1,2}:\d{2}|$|[^\d])', text)
+    if not m:
+        m = re.search(r'(?<!\d)(?:0?([1-9]|1[0-2]))[-月]([12]\d|3[01]|0?[1-9])[日号]?', text)
     if m:
         return f"{now_year:04d}-{int(m.group(1)):02d}-{int(m.group(2)):02d}"
     
