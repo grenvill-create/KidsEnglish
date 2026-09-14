@@ -103,6 +103,7 @@ FIXED_VALUES = {
     'CCRY2':         '郭老师',
     'VehicleType':   '358',
     'StartAdress':   '零陵路453号',   # 默认出发地点
+    'PersonCount':   '2',          # 乘车人数固定为2
 }
 
 FIELD_DEFS = [
@@ -912,10 +913,86 @@ def auto_extract_from_ocr_text(ocr_text: str, log_cb=None) -> dict:
 
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
+from selenium.webdriver.firefox.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
+
+# ── 自动定位本地 Firefox 与 geckodriver ──
+def _find_firefox_exe():
+    """自动探测本地安装的 Firefox.exe 路径"""
+    candidates = [
+        Path(r"E:\tools\Mozilla Firefox\firefox.exe"),
+        Path(os.environ.get("ProgramFiles", r"C:\Program Files")) / "Mozilla Firefox" / "firefox.exe",
+        Path(os.environ.get("ProgramFiles(x86)", r"C:\Program Files (x86)")) / "Mozilla Firefox" / "firefox.exe",
+        Path(os.environ.get("LOCALAPPDATA", "")) / "Mozilla Firefox" / "firefox.exe",
+    ]
+    if sys.platform == "win32":
+        try:
+            import winreg
+            for root in (winreg.HKEY_LOCAL_MACHINE, winreg.HKEY_CURRENT_USER):
+                try:
+                    with winreg.OpenKey(root, r"SOFTWARE\Mozilla\Mozilla Firefox") as key:
+                        current_ver, _ = winreg.QueryValueEx(key, "CurrentVersion")
+                        with winreg.OpenKey(key, rf"{current_ver}\Main") as subkey:
+                            path_to_exe, _ = winreg.QueryValueEx(subkey, "PathToExe")
+                            if path_to_exe and Path(path_to_exe).exists():
+                                return Path(path_to_exe)
+                except Exception:
+                    pass
+        except Exception:
+            pass
+
+    for p in candidates:
+        if p.exists():
+            return p
+    return None
+
+
+def _find_geckodriver_exe(firefox_exe=None):
+    """自动查找匹配的 geckodriver 驱动路径"""
+    try:
+        script_dir = Path(__file__).parent.resolve()
+    except NameError:
+        script_dir = Path.cwd()
+
+    candidates = [
+        script_dir / "geckodriver.exe",
+        Path(r"E:\Projects\wechat auto\backend\geckodriver.exe"),
+        Path(r"E:\tools\Mozilla Firefox\geckodriver.exe"),
+    ]
+    if firefox_exe:
+        candidates.insert(0, firefox_exe.parent / "geckodriver.exe")
+
+    for p in candidates:
+        if p.exists():
+            return p
+    return None
+
+
+def _create_firefox_driver(headless=False, log_cb=None):
+    """直接启动本地 Firefox 浏览器，自动配置路径与驱动"""
+    firefox_exe = _find_firefox_exe()
+    geckodriver_exe = _find_geckodriver_exe(firefox_exe)
+
+    options = Options()
+    if headless:
+        options.add_argument("-headless")
+
+    if firefox_exe:
+        options.binary_location = str(firefox_exe)
+        if log_cb:
+            log_cb(f"已定位 Firefox 路径: {firefox_exe}", "INFO")
+
+    service = None
+    if geckodriver_exe:
+        service = Service(executable_path=str(geckodriver_exe))
+        if log_cb:
+            log_cb(f"已加载 geckodriver: {geckodriver_exe}", "INFO")
+
+    return webdriver.Firefox(service=service, options=options)
+
 
 # ── 从 config.json 读取登录信息（密码变更时只需改此文件）──
 def _load_config():
@@ -972,12 +1049,9 @@ def run_selenium_fill(data: dict, log_cb, on_need_manual_add, on_done,
 
         if driver is None:
             # ── 新建浏览器 + 登录 ───────────────────────
-            options = Options()
-            options.headless = False
-
             log("正在启动 Firefox 浏览器...", "STEP")
             try:
-                driver = webdriver.Firefox(options=options)
+                driver = _create_firefox_driver(headless=False, log_cb=log)
                 log("Firefox 启动成功", "OK")
             except Exception as e:
                 log(f"Firefox 启动失败: {e}", "ERR")

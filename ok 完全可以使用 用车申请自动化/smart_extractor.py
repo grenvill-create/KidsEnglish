@@ -25,6 +25,7 @@ FIXED_RULES = {
     'DefaultReason': '开会或者单位学习',
     'FixedStartTime': '07:30',
     'FixedEndTime':   '20:30',
+    'PersonCount':   '2',            # 乘车人数固定为2
 }
 
 # ============================================================
@@ -623,6 +624,8 @@ def smart_extract_car_info(ocr_detail_boxes, raw_text: str, log_cb=None) -> dict
     # ============================================================
     # 严格执行用户要求的【业务固定硬编码】
     # ============================================================
+    final_data['PersonCount']   = FIXED_RULES['PersonCount']  # 强制固定乘车人数为2
+    _log(f"乘车人数应用业务固定规则: {FIXED_RULES['PersonCount']}", "OK")
     final_data['ApplyOrganize'] = FIXED_RULES['ApplyOrganize']
     final_data['VehicleType']   = FIXED_RULES['VehicleType']
     final_data['CCRY2']         = FIXED_RULES['CCRY2']
