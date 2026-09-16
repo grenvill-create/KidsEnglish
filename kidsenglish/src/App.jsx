@@ -49,16 +49,28 @@ function App() {
   const [homeworkList, setHomeworkList] = useState(() => {
     try {
       const saved = localStorage.getItem('kids_homework_list_v2')
-      return saved ? sanitizeHomeworkList(JSON.parse(saved)) : DEFAULT_HOMEWORK_LIST
+      if (saved) {
+        const parsed = JSON.parse(saved)
+        if (Array.isArray(parsed)) {
+          // 确保今日最新作业置顶（若用户本地存的还是前几天的作业）
+          if (!parsed.some(h => h.id === DEFAULT_HOMEWORK.id)) {
+            const updated = [DEFAULT_HOMEWORK, ...parsed]
+            try {
+              localStorage.setItem('kids_homework_list_v2', JSON.stringify(updated))
+            } catch {}
+            return sanitizeHomeworkList(updated)
+          }
+          return sanitizeHomeworkList(parsed)
+        }
+      }
+      return DEFAULT_HOMEWORK_LIST
     } catch {
       return DEFAULT_HOMEWORK_LIST
     }
   })
 
-  // 当前正在浏览或练习的某一天作业 ID（默认今天）
-  const [activeHomeworkId, setActiveHomeworkId] = useState(() => {
-    return (homeworkList[0] && homeworkList[0].id) || DEFAULT_HOMEWORK.id
-  })
+  // 当前正在浏览或练习的某一天作业 ID（默认今天最新）
+  const [activeHomeworkId, setActiveHomeworkId] = useState(DEFAULT_HOMEWORK.id)
 
   // 每一天的打卡记录 Map: { [homeworkId]: { english: boolean, pinyin: boolean, reading: boolean } }
   const [completedMap, setCompletedMap] = useState(() => {

@@ -40,17 +40,25 @@ export function TodayOverview({ homework, completedTasks, onNavigateTab, onClaim
           </div>
 
           <div className="card-body">
-            <h4 className="card-task-title">重点单词复习与趣味拓展</h4>
+            <h4 className="card-task-title">{homework.english.title || '重点单词复习与趣味拓展'}</h4>
             <p className="card-teacher-note">
               <strong>👩‍🏫 老师说：</strong> {homework.english.teacherNote}
             </p>
 
             <div className="preview-pills">
-              {homework.english.words.map((w) => (
-                <span key={w.id} className="preview-pill">
-                  {w.emoji} {w.word}
-                </span>
-              ))}
+              {homework.english.sentences ? (
+                homework.english.sentences.map((s) => (
+                  <span key={s.id} className="preview-pill">
+                    {s.emoji} #{s.num} {s.corrected}
+                  </span>
+                ))
+              ) : (
+                homework.english.words && homework.english.words.map((w) => (
+                  <span key={w.id} className="preview-pill">
+                    {w.emoji} {w.word}
+                  </span>
+                ))
+              )}
             </div>
           </div>
 

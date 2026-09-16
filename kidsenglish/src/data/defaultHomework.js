@@ -1,7 +1,278 @@
-// 康文幼儿园 BrownBear 班今日真实作业：Action Words (动作词) 与 "What is he/she doing?" 句型背诵
-
+// 康文幼儿园 BrownBear 班今日真实作业：Hop to It Some More! 🐸 (句子首字母大写与标点规范)
 export const DEFAULT_HOMEWORK = {
-  id: 'today-action-words',
+  id: 'today-hop-to-it',
+  date: '2026年9月16日 星期三',
+  childName: '',
+  theme: 'frog-toad',
+  
+  // 1. 英语作业：Hop to It Some More! (句子大写与标点规范 + 青蛙蟾蜍小作文)
+  english: {
+    title: 'Hop to It Some More! 🐸 (句子大写与标点规范)',
+    topic: 'Capitalizing / Punctuating Statements',
+    teacherNote: 'HOMEWORK 📝: Capitalizing/punctuating statements. Please have your children use a pencil to write their names and rewrite each sentence correctly. On another piece of paper, write three sentences about a time when they saw a frog or toad. Make sure to use capital letters and periods correctly. Many thanks! @All',
+    instruction: '用铅笔工整书写名字，将每句话首字母大写并加上句号。在另一张纸上写3句关于青蛙或蟾蜍的小作文！',
+    ruleTips: [
+      { id: 'r1', title: '🔠 首字母必须大写', desc: '句子开头第一个字母必须大写（例如：tadpoles 变 Tadpoles，frogs 变 Frogs，toads 变 Toads）' },
+      { id: 'r2', title: '🔴 句末必须加句号', desc: '陈述句写完后，句子末尾必须点上一个小圆点句号（.）' },
+      { id: 'r3', title: '✏️ 空出词间距', desc: '在纸上用铅笔书写时，单词和单词之间要空出一个字母的距离（finger space）哦' },
+      { id: 'r4', title: '🐸 青蛙 vs 蟾蜍科普', desc: '青蛙生活在水边，皮肤湿润光滑；蟾蜍生活在陆地灌木下，皮肤粗糙凹凸有疙瘩！' }
+    ],
+    // 作业纸上的 5 个真实改写练习题
+    sentences: [
+      {
+        id: 's1',
+        num: 1,
+        raw: 'tadpoles become frogs or toads',
+        corrected: 'Tadpoles become frogs or toads.',
+        translation: '蝌蚪会长成青蛙或蟾蜍。',
+        capitalChar: 'T',
+        rawFirstChar: 't',
+        hasPeriod: true,
+        emoji: '🐸',
+        image: 'https://images.unsplash.com/photo-1583337130417-3346a1be7dee?w=600&auto=format&fit=crop',
+        subject: 'tadpoles',
+        keyWords: [
+          { en: 'tadpoles', cn: '蝌蚪' },
+          { en: 'become', cn: '变成/长成' },
+          { en: 'frogs', cn: '青蛙' },
+          { en: 'toads', cn: '蟾蜍' }
+        ],
+        scienceTip: '生命周期：青蛙和蟾蜍幼年时期都是生活在水里的可爱小蝌蚪，长出后腿和前腿后脱掉尾巴变成小青蛙或蟾蜍！',
+        pencilGuide: '作业纸第1题：首字母 "t" 要写成大写 "T"，句末补上小圆点句号 "."。'
+      },
+      {
+        id: 's2',
+        num: 2,
+        raw: 'frogs live near water',
+        corrected: 'Frogs live near water.',
+        translation: '青蛙生活在水边。',
+        capitalChar: 'F',
+        rawFirstChar: 'f',
+        hasPeriod: true,
+        emoji: '🪷',
+        image: 'https://images.unsplash.com/photo-1579202673506-ca3ce28943ef?w=600&auto=format&fit=crop',
+        subject: 'frogs',
+        keyWords: [
+          { en: 'frogs', cn: '青蛙' },
+          { en: 'live', cn: '生活/居住' },
+          { en: 'near', cn: '在...附近' },
+          { en: 'water', cn: '水' }
+        ],
+        scienceTip: '生活习性：青蛙喜欢住在池塘、溪流和湿地水边，常常坐在荷叶上晒太阳、捉飞虫！',
+        pencilGuide: '作业纸第2题：首字母 "f" 改为大写 "F"，在 "water" 后面画上圆圆的句号 "."。'
+      },
+      {
+        id: 's3',
+        num: 3,
+        raw: 'toads live under bushes',
+        corrected: 'Toads live under bushes.',
+        translation: '蟾蜍生活在灌木丛下。',
+        capitalChar: 'T',
+        rawFirstChar: 't',
+        hasPeriod: true,
+        emoji: '🌿',
+        image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&auto=format&fit=crop',
+        subject: 'toads',
+        keyWords: [
+          { en: 'toads', cn: '蟾蜍(癞蛤蟆)' },
+          { en: 'live', cn: '生活' },
+          { en: 'under', cn: '在...下面' },
+          { en: 'bushes', cn: '灌木丛' }
+        ],
+        scienceTip: '生活习性：与青蛙不同，蟾蜍更喜欢生活在陆地上的花园、树林和灌木丛荫凉处。',
+        pencilGuide: '作业纸第3题：把首字母小写 "t" 擦干净改成大写 "T"，结尾记得打句号 "."。'
+      },
+      {
+        id: 's4',
+        num: 4,
+        raw: 'frogs have wet skin',
+        corrected: 'Frogs have wet skin.',
+        translation: '青蛙拥有湿润光滑的皮肤。',
+        capitalChar: 'F',
+        rawFirstChar: 'f',
+        hasPeriod: true,
+        emoji: '💧',
+        image: 'https://images.unsplash.com/photo-1563281577-a7be47e20db9?w=600&auto=format&fit=crop',
+        subject: 'frogs',
+        keyWords: [
+          { en: 'frogs', cn: '青蛙' },
+          { en: 'have', cn: '拥有' },
+          { en: 'wet', cn: '湿润的' },
+          { en: 'skin', cn: '皮肤' }
+        ],
+        scienceTip: '身体秘密：青蛙皮肤湿漉漉、滑溜溜的，它们可以用湿润的皮肤帮助呼吸哦！',
+        pencilGuide: '作业纸第4题：首字母 "F" 占四线三格的上两格，句末写好句号 "."。'
+      },
+      {
+        id: 's5',
+        num: 5,
+        raw: 'toads have bumpy skin',
+        corrected: 'Toads have bumpy skin.',
+        translation: '蟾蜍拥有凹凸不平的皮肤。',
+        capitalChar: 'T',
+        rawFirstChar: 't',
+        hasPeriod: true,
+        emoji: '🪨',
+        image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&auto=format&fit=crop',
+        subject: 'toads',
+        keyWords: [
+          { en: 'toads', cn: '蟾蜍' },
+          { en: 'have', cn: '拥有' },
+          { en: 'bumpy', cn: '凹凸不平的(有疙瘩的)' },
+          { en: 'skin', cn: '皮肤' }
+        ],
+        scienceTip: '身体秘密：蟾蜍的皮肤干燥且布满很多小疙瘩（bumpy），粗糙的皮肤能帮它们锁住水分适应陆地生活！',
+        pencilGuide: '作业纸第5题：把 "t" 改为大写 "T"，在 "skin" 后面点上醒目的句号 "."。'
+      }
+    ],
+    // 拓展写话（另一张纸上的3句话小作文指导）
+    writingWorkshop: {
+      title: '📝 拓展纸上小作文：我遇见青蛙/蟾蜍的故事',
+      prompt: 'On another piece of paper, write three sentences about a time that you saw a frog or toad. Make sure you use capital letters and periods correctly.',
+      promptCn: '老师要求：在另一张纸上写三句话，记录一次你看见青蛙或蟾蜍的经历。务必确保首字母大写与句号标点正确！',
+      tips: [
+        '第 1 句：你在哪里看见的？（如池塘边、公园草地上、灌木丛下）',
+        '第 2 句：它长什么样？（皮肤是光滑湿润 wet 还是粗糙凹凸 bumpy？）',
+        '第 3 句：它做了什么或者你的感受？（它跳进水里？跳得很远？它真可爱！）'
+      ],
+      samples: [
+        {
+          id: 'sample-1',
+          name: '范例 1：池塘边偶遇小绿蛙 🐸',
+          lines: [
+            { en: 'I saw a little green frog near the pond.', cn: '我在池塘边看见了一只绿色的小青蛙。' },
+            { en: 'The frog had smooth and wet skin.', cn: '这只青蛙有着光滑湿润的皮肤。' },
+            { en: 'It jumped high onto a big lily pad.', cn: '它高高地跳到了一片大荷叶上。' }
+          ]
+        },
+        {
+          id: 'sample-2',
+          name: '范例 2：灌木丛下发现小蟾蜍 🪨',
+          lines: [
+            { en: 'Yesterday I saw a brown toad under the bushes.', cn: '昨天我在灌木丛下看见了一只棕色的蟾蜍。' },
+            { en: 'The toad had bumpy skin and big eyes.', cn: '这只蟾蜍有着粗糙凹凸的皮肤和大大的眼睛。' },
+            { en: 'It hopped slowly away into the grass.', cn: '它慢吞吞地跳进了草丛深处。' }
+          ]
+        }
+      ],
+      interactiveStarters: [
+        { label: '第一句（时间/地点）', starters: ['I saw a frog near the water.', 'I saw a toad under the bushes.', 'One day I saw a little frog in the park.'] },
+        { label: '第二句（外形特征）', starters: ['The frog had wet and shiny skin.', 'The toad had dry and bumpy skin.', 'It was small and green.'] },
+        { label: '第三句（动作/感受）', starters: ['It jumped into the cool pond.', 'It hopped fast into the green grass.', 'I was very excited to see it.'] }
+      ]
+    },
+    // 核心词汇闪卡
+    words: [
+      {
+        id: 'fw1',
+        word: 'tadpole',
+        phonetic: '/ˈtædpoʊl/',
+        translation: '小蝌蚪',
+        emoji: '🟢',
+        image: 'https://images.unsplash.com/photo-1583337130417-3346a1be7dee?w=600&auto=format&fit=crop',
+        sentence: 'Tadpoles become frogs or toads.',
+        sentenceCn: '蝌蚪会长成青蛙或蟾蜍。'
+      },
+      {
+        id: 'fw2',
+        word: 'frog',
+        phonetic: '/frɔːɡ/',
+        translation: '青蛙',
+        emoji: '🐸',
+        image: 'https://images.unsplash.com/photo-1579202673506-ca3ce28943ef?w=600&auto=format&fit=crop',
+        sentence: 'Frogs live near water and love swimming.',
+        sentenceCn: '青蛙生活在水边，热爱游泳。'
+      },
+      {
+        id: 'fw3',
+        word: 'toad',
+        phonetic: '/toʊd/',
+        translation: '蟾蜍 (癞蛤蟆)',
+        emoji: '🪨',
+        image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&auto=format&fit=crop',
+        sentence: 'Toads live under bushes on land.',
+        sentenceCn: '蟾蜍生活在陆地的灌木丛下。'
+      },
+      {
+        id: 'fw4',
+        word: 'wet',
+        phonetic: '/wet/',
+        translation: '湿润光滑的',
+        emoji: '💧',
+        image: 'https://images.unsplash.com/photo-1563281577-a7be47e20db9?w=600&auto=format&fit=crop',
+        sentence: 'Frogs have wet and smooth skin.',
+        sentenceCn: '青蛙有着湿润光滑的皮肤。'
+      },
+      {
+        id: 'fw5',
+        word: 'bumpy',
+        phonetic: '/ˈbʌmpi/',
+        translation: '凹凸不平的 (疙瘩的)',
+        emoji: '🪵',
+        image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&auto=format&fit=crop',
+        sentence: 'Toads have bumpy skin.',
+        sentenceCn: '蟾蜍有着凹凸不平的粗糙皮肤。'
+      },
+      {
+        id: 'fw6',
+        word: 'bushes',
+        phonetic: '/ˈbʊʃɪz/',
+        translation: '灌木丛',
+        emoji: '🌿',
+        image: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=600&auto=format&fit=crop',
+        sentence: 'The toad is hiding under the green bushes.',
+        sentenceCn: '蟾蜍正在绿色的灌木丛下躲藏。'
+      }
+    ]
+  },
+
+  // 2. 语文拼音复习（声母 b、p、m、f 与带调韵母拼读）
+  pinyin: {
+    teacherNote: '拼音复习：巩固声母 b、p、m、f 与带调单韵母的拼读，100% 真人发音朗读。',
+    letters: [
+      { id: 'p1', char: 'b', type: '声母', mnemonic: '右下半圆 b b b，听广播 📻', soundTip: '双唇闭紧，突然放开' },
+      { id: 'p2', char: 'p', type: '声母', mnemonic: '右上半圆 p p p，端盆泼水 💦', soundTip: '双唇紧闭，用力喷气' },
+      { id: 'p3', char: 'm', type: '声母', mnemonic: '两个门洞 m m m，小猫咪 🐱', soundTip: '双唇闭合，鼻腔出气' },
+      { id: 'p4', char: 'f', type: '声母', mnemonic: '一根拐棍 f f f，老爷爷 👴', soundTip: '上齿轻触下唇，摩擦出气' }
+    ],
+    blends: [
+      { id: 'bl1', initial: 'b', final: 'ā', result: 'bā', word: '八只鸭子 🦆', example: '数字 8 (八)' },
+      { id: 'bl2', initial: 'p', final: 'á', result: 'pá', word: '小猴爬树 🐒', example: '爬山' },
+      { id: 'bl3', initial: 'm', final: 'ā', result: 'mā', word: '可爱的妈妈 👩', example: '妈妈我爱你' },
+      { id: 'bl4', initial: 'f', final: 'à', result: 'fà', word: '理发/头发 💇', example: '理发店' }
+    ]
+  },
+
+  // 3. 语文儿歌指读（配合今日青蛙主题的《小青蛙》儿歌）
+  reading: {
+    title: '儿歌《小青蛙》',
+    author: '经典幼儿童谣',
+    teacherNote: '配合今日英语青蛙主题，大声朗读经典儿歌《小青蛙》，字字指读！',
+    image: 'https://images.unsplash.com/photo-1579202673506-ca3ce28943ef?w=600&auto=format&fit=crop',
+    lines: [
+      [
+        { char: '小', pinyin: 'xiǎo' }, { char: '青', pinyin: 'qīng' }, { char: '蛙', pinyin: 'wā' }, { char: '，', pinyin: '' },
+        { char: '呱', pinyin: 'guā' }, { char: '呱', pinyin: 'guā' }, { char: '呱', pinyin: 'guā' }, { char: '。', pinyin: '' }
+      ],
+      [
+        { char: '绿', pinyin: 'lǜ' }, { char: '衣', pinyin: 'yī' }, { char: '裳', pinyin: 'shang' }, { char: '，', pinyin: '' },
+        { char: '白', pinyin: 'bái' }, { char: '肚', pinyin: 'dù' }, { char: '皮', pinyin: 'pí' }, { char: '。', pinyin: '' }
+      ],
+      [
+        { char: '水', pinyin: 'shuǐ' }, { char: '里', pinyin: 'lǐ' }, { char: '游', pinyin: 'yóu' }, { char: '，', pinyin: '' },
+        { char: '荷', pinyin: 'hé' }, { char: '叶', pinyin: 'yè' }, { char: '跳', pinyin: 'tiào' }, { char: '。', pinyin: '' }
+      ],
+      [
+        { char: '捉', pinyin: 'zhuō' }, { char: '害', pinyin: 'hài' }, { char: '虫', pinyin: 'chóng' }, { char: '，', pinyin: '' },
+        { char: '保', pinyin: 'bǎo' }, { char: '庄', pinyin: 'zhuāng' }, { char: '稼', pinyin: 'jia' }, { char: '。', pinyin: '' }
+      ]
+    ]
+  }
+}
+
+// 往期作业：2026年9月15日 Action Words 动作词
+export const HOMEWORK_2026_09_15 = {
+  id: 'archive-2026-09-15',
   date: '2026年9月15日 星期二',
   childName: '',
   
@@ -263,6 +534,7 @@ export const DEFAULT_HOMEWORK = {
 // 历史作业归档列表库（支持按日期翻阅与周末复习）
 export const DEFAULT_HOMEWORK_LIST = [
   DEFAULT_HOMEWORK,
+  HOMEWORK_2026_09_15,
   {
     id: 'archive-2026-09-14',
     date: '2026年9月14日 星期一',

@@ -40,6 +40,591 @@ export function ActionImage({ src, alt, emoji, className = '' }) {
 }
 
 export function EnglishHomework({ data, isCompleted, onCompleteTask }) {
+  // 判断当前作业类型：若是今日的青蛙蟾蜍句子改写作业 (Hop to It Some More)
+  const isStatementsType = Boolean(data && data.sentences && data.sentences.length > 0)
+
+  if (isStatementsType) {
+    return <StatementsHomeworkView data={data} isCompleted={isCompleted} onCompleteTask={onCompleteTask} />
+  }
+
+  return <ActionWordsHomeworkView data={data} isCompleted={isCompleted} onCompleteTask={onCompleteTask} />
+}
+
+/**
+ * 今日新作业：Hop to It Some More! (句子首字母大写与标点改写 + 3句话小作文工作坊)
+ */
+function StatementsHomeworkView({ data, isCompleted, onCompleteTask }) {
+  const [activeSubTab, setActiveSubTab] = useState('rewrite') // 'rewrite' | 'quiz' | 'writing' | 'cards' | 'listening'
+  const [currentSentIdx, setCurrentSentIdx] = useState(0)
+  
+  // 改写魔法状态
+  const [isCapitalized, setIsCapitalized] = useState(false)
+  const [hasPeriodAdded, setHasPeriodAdded] = useState(false)
+
+  // 找茬改错挑战状态
+  const [quizIdx, setQuizIdx] = useState(0)
+  const [quizFeedback, setQuizFeedback] = useState(null)
+  const [quizScore, setQuizScore] = useState(0)
+
+  // 拓展写话状态
+  const [activeSampleIdx, setActiveSampleIdx] = useState(0)
+
+  // 听音辨句测验状态
+  const [listeningTarget, setListeningTarget] = useState(null)
+  const [listeningFeedback, setListeningFeedback] = useState(null)
+  const [listeningScore, setListeningScore] = useState(0)
+
+  const sentences = data.sentences || []
+  const currentSent = sentences[currentSentIdx] || sentences[0]
+  const words = data.words || []
+  const writingTask = data.writingWorkshop || {}
+
+  useEffect(() => {
+    setIsCapitalized(false)
+    setHasPeriodAdded(false)
+  }, [currentSentIdx])
+
+  const handleApplyCapital = () => {
+    playMagic()
+    setIsCapitalized(true)
+  }
+
+  const handleApplyPeriod = () => {
+    playCorrect()
+    setHasPeriodAdded(true)
+  }
+
+  const handleApplyAll = () => {
+    playMagic()
+    setIsCapitalized(true)
+    setHasPeriodAdded(true)
+    speakEnglish(currentSent.corrected)
+  }
+
+  // 初始化听音小测试
+  const initListeningQuiz = () => {
+    if (sentences.length === 0) return
+    const target = sentences[Math.floor(Math.random() * sentences.length)]
+    setListeningTarget(target)
+    setListeningFeedback(null)
+    speakEnglish(target.corrected)
+  }
+
+  useEffect(() => {
+    if (activeSubTab === 'listening') {
+      initListeningQuiz()
+    }
+  }, [activeSubTab])
+
+  const handleListeningAnswer = (item) => {
+    if (item.id === listeningTarget.id) {
+      playCorrect()
+      setListeningFeedback('correct')
+      setListeningScore(prev => prev + 1)
+      setTimeout(() => {
+        initListeningQuiz()
+      }, 1400)
+    } else {
+      playTryAgain()
+      setListeningFeedback('wrong')
+    }
+  }
+
+  return (
+    <div className="english-view statements-view">
+      {/* 顶部二级导航 */}
+      <div className="sub-nav-bar">
+        <button 
+          className={`sub-tab-btn ${activeSubTab === 'rewrite' ? 'active' : ''}`}
+          onClick={() => { playPop(); setActiveSubTab('rewrite'); }}
+        >
+          ✏️ 句子改写互动秀 ({currentSentIdx + 1}/{sentences.length})
+        </button>
+
+        <button 
+          className={`sub-tab-btn ${activeSubTab === 'quiz' ? 'active' : ''}`}
+          onClick={() => { playPop(); setActiveSubTab('quiz'); }}
+        >
+          🐸 找茬改错闯关
+        </button>
+
+        <button 
+          className={`sub-tab-btn ${activeSubTab === 'writing' ? 'active' : ''}`}
+          onClick={() => { playPop(); setActiveSubTab('writing'); }}
+        >
+          📝 3句话小作文指导
+        </button>
+
+        <button 
+          className={`sub-tab-btn ${activeSubTab === 'cards' ? 'active' : ''}`}
+          onClick={() => { playPop(); setActiveSubTab('cards'); }}
+        >
+          🗂️ 核心词汇闪卡 ({words.length})
+        </button>
+
+        <button 
+          className={`sub-tab-btn ${activeSubTab === 'listening' ? 'active' : ''}`}
+          onClick={() => { playPop(); setActiveSubTab('listening'); }}
+        >
+          👂 听音辨句测验
+        </button>
+      </div>
+
+      {/* --- 模式 1：句子规范改写与互动施法 --- */}
+      {activeSubTab === 'rewrite' && currentSent && (
+        <div className="statements-stage-container">
+          {/* 规则提醒小横幅 */}
+          <div className="rule-banner-box">
+            <div className="rule-banner-header">
+              <span className="banner-title-icon">🐸</span>
+              <strong>Hop to It Some More! 句子大写与标点规范</strong>
+            </div>
+            <p className="rule-teacher-quote">
+              <strong>👩‍🏫 老师作业要求：</strong> {data.teacherNote}
+            </p>
+            <div className="rule-badges-grid">
+              <div className="rule-chip">
+                <span className="chip-icon">🔠</span>
+                <span className="chip-text"><strong>首字母大写</strong>：句首字母必须写成大写！</span>
+              </div>
+              <div className="rule-chip">
+                <span className="chip-icon">🔴</span>
+                <span className="chip-text"><strong>句末加句号</strong>：陈述句结尾必须加圆点 (.)！</span>
+              </div>
+              <div className="rule-chip">
+                <span className="chip-icon">✏️</span>
+                <span className="chip-text"><strong>铅笔工整书写</strong>：单词间空出一指宽距离！</span>
+              </div>
+            </div>
+          </div>
+
+          {/* 主改写操作卡片 */}
+          <div className="statement-rewrite-card animate-pop">
+            {/* 卡片头部：题号与插图 */}
+            <div className="statement-card-top">
+              <div className="question-number-badge">
+                <span className="badge-num">第 {currentSent.num} 题</span>
+                <span className="badge-tag">Rewrite correctly</span>
+              </div>
+              <div className="subject-pill">
+                {currentSent.emoji} {currentSent.subject}
+              </div>
+            </div>
+
+            {/* 插图展示区 */}
+            <div className="statement-visual-box">
+              <ActionImage 
+                src={currentSent.image} 
+                alt={currentSent.corrected} 
+                emoji={currentSent.emoji} 
+                className="statement-img" 
+              />
+              <div className="visual-caption">
+                {currentSent.scienceTip}
+              </div>
+            </div>
+
+            {/* 原句与错误诊断提示 */}
+            <div className="raw-sentence-box">
+              <div className="box-label">
+                <span className="label-icon">⚠️</span>
+                <span>作业纸上的未改写原句（找找哪里不合规则？）：</span>
+              </div>
+              <div className="raw-sentence-text">
+                <span className="error-first-char">"{currentSent.rawFirstChar}"</span>
+                <span>{currentSent.raw.slice(1)}</span>
+                <span className="missing-period-tag">[缺少句号]</span>
+              </div>
+            </div>
+
+            {/* 魔法修改互动按键 */}
+            <div className="magic-action-bar">
+              <button 
+                className={`magic-btn capital-magic-btn ${isCapitalized ? 'applied' : ''}`}
+                onClick={handleApplyCapital}
+              >
+                {isCapitalized ? `✅ 已大写 (${currentSent.capitalChar})` : `🔠 施放大写魔法 (首字母变 "${currentSent.capitalChar}")`}
+              </button>
+
+              <button 
+                className={`magic-btn period-magic-btn ${hasPeriodAdded ? 'applied' : ''}`}
+                onClick={handleApplyPeriod}
+              >
+                {hasPeriodAdded ? '✅ 句号已加上 (.)' : '🔴 施放句号魔法 (句末加 ".")'}
+              </button>
+
+              <button 
+                className="magic-btn quick-all-btn"
+                onClick={handleApplyAll}
+              >
+                ✨ 一键规范并朗读
+              </button>
+            </div>
+
+            {/* 四线三格规范字帖展示区 */}
+            <div className="four-lines-board">
+              <div className="board-header">
+                <span className="board-title">📝 规范铅笔字帖（在你的作业纸横线上照着写）：</span>
+                <button 
+                  className="read-sentence-btn"
+                  onClick={() => { playPop(); speakEnglish(currentSent.corrected, false); }}
+                >
+                  🔊 听整句标准朗读
+                </button>
+                <button 
+                  className="read-sentence-btn slow"
+                  onClick={() => { playPop(); speakEnglish(currentSent.corrected, true); }}
+                >
+                  🐢 慢速跟读
+                </button>
+              </div>
+
+              {/* 四线格大字展示 */}
+              <div className="handwriting-display">
+                <div className="grid-bg-lines">
+                  <div className="hl hl-1"></div>
+                  <div className="hl hl-2"></div>
+                  <div className="hl hl-3"></div>
+                  <div className="hl hl-4"></div>
+                </div>
+
+                <div className="handwriting-text">
+                  <span className={`hw-first ${isCapitalized ? 'magic-active' : ''}`}>
+                    {isCapitalized ? currentSent.capitalChar : currentSent.rawFirstChar}
+                  </span>
+                  <span className="hw-body">
+                    {currentSent.corrected.slice(1, -1)}
+                  </span>
+                  <span className={`hw-period ${hasPeriodAdded ? 'magic-active' : ''}`}>
+                    {hasPeriodAdded ? '.' : ''}
+                  </span>
+                </div>
+              </div>
+
+              <div className="sentence-cn-translation">
+                <strong>中文含义：</strong> {currentSent.translation}
+              </div>
+
+              {/* 铅笔书写小技巧 */}
+              <div className="pencil-guide-note">
+                <span className="guide-icon">✏️</span>
+                <span>{currentSent.pencilGuide}</span>
+              </div>
+            </div>
+
+            {/* 重点词汇点读条 */}
+            <div className="sentence-keywords-bar">
+              <span className="bar-label">点单词听发音：</span>
+              {currentSent.keyWords.map((kw, i) => (
+                <button 
+                  key={i} 
+                  className="keyword-chip"
+                  onClick={() => { playPop(); speakEnglish(kw.en); }}
+                >
+                  🔊 <strong>{kw.en}</strong> ({kw.cn})
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* 翻页切换控制器 */}
+          <div className="pagination-bar">
+            <button 
+              className="page-btn prev-btn"
+              disabled={currentSentIdx === 0}
+              onClick={() => { playPop(); setCurrentSentIdx(prev => prev - 1); }}
+            >
+              👈 上一题
+            </button>
+
+            <div className="dots-indicator">
+              {sentences.map((s, idx) => (
+                <button 
+                  key={s.id}
+                  className={`dot-pill ${idx === currentSentIdx ? 'active' : ''}`}
+                  onClick={() => { playPop(); setCurrentSentIdx(idx); }}
+                >
+                  第 {s.num} 题 {s.emoji}
+                </button>
+              ))}
+            </div>
+
+            <button 
+              className="page-btn next-btn"
+              disabled={currentSentIdx === sentences.length - 1}
+              onClick={() => { playPop(); setCurrentSentIdx(prev => prev + 1); }}
+            >
+              下一题 👉
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* --- 模式 2：找茬改错闯关小游戏 --- */}
+      {activeSubTab === 'quiz' && (
+        <div className="statements-quiz-section animate-pop">
+          <div className="quiz-header">
+            <h3>🐸 找茬捉虫大挑战：找出句子哪里忘记了规则！</h3>
+            <span className="score-pill">⭐ 答对: {quizScore} 题</span>
+          </div>
+
+          {sentences[quizIdx] && (
+            <div className="statement-quiz-card">
+              <div className="quiz-prompt-box">
+                <span className="prompt-label">请看下面这句话（第 {sentences[quizIdx].num} 题）：</span>
+                <div className="quiz-target-sentence">
+                  "{sentences[quizIdx].raw}"
+                </div>
+                <button 
+                  className="quiz-listen-btn"
+                  onClick={() => { playPop(); speakEnglish(sentences[quizIdx].corrected); }}
+                >
+                  🔊 听正确标准读音
+                </button>
+              </div>
+
+              <div className="quiz-options-list">
+                <button 
+                  className="quiz-choice-btn"
+                  onClick={() => {
+                    playCorrect()
+                    setQuizFeedback('correct')
+                    setQuizScore(prev => prev + 1)
+                    setTimeout(() => {
+                      setQuizIdx(prev => (prev + 1) % sentences.length)
+                      setQuizFeedback(null)
+                    }, 1400)
+                  }}
+                >
+                  🌟 开头 "{sentences[quizIdx].rawFirstChar}" 应该大写成 "{sentences[quizIdx].capitalChar}"，而且句末必须加上句号 "."
+                </button>
+
+                <button 
+                  className="quiz-choice-btn wrong-opt"
+                  onClick={() => { playTryAgain(); setQuizFeedback('wrong'); }}
+                >
+                  ❌ 这句话写得很完美，不需要任何修改
+                </button>
+
+                <button 
+                  className="quiz-choice-btn wrong-opt"
+                  onClick={() => { playTryAgain(); setQuizFeedback('wrong'); }}
+                >
+                  ❌ 只要句号就行，开头不需要大写
+                </button>
+              </div>
+
+              {quizFeedback === 'correct' && (
+                <div className="feedback-banner correct-banner animate-bounce">
+                  🎉 太聪明了！首字母必须大写，句末必须加句号！加一颗星星 ⭐
+                </div>
+              )}
+              {quizFeedback === 'wrong' && (
+                <div className="feedback-banner wrong-banner">
+                  💡 仔细想一想：句首字母要怎样？句子结束要加什么标点？
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* --- 模式 3：3句话小作文指导工作坊 (On another piece of paper) --- */}
+      {activeSubTab === 'writing' && (
+        <div className="writing-workshop-section animate-pop">
+          <div className="workshop-header-banner">
+            <div className="banner-icon-box">📝</div>
+            <div className="banner-text-box">
+              <h3>{writingTask.title}</h3>
+              <p><strong>老师要求：</strong>{writingTask.promptCn}</p>
+            </div>
+          </div>
+
+          {/* 写作三步法秘诀 */}
+          <div className="writing-steps-grid">
+            {writingTask.tips && writingTask.tips.map((tip, idx) => (
+              <div key={idx} className="step-tip-card">
+                <div className="step-num">Step {idx + 1}</div>
+                <div className="step-text">{tip}</div>
+              </div>
+            ))}
+          </div>
+
+          {/* 范例小卡片切换 */}
+          <div className="samples-container">
+            <div className="samples-nav">
+              <span className="samples-label">精选优秀示范作文（在纸上可直接借鉴）：</span>
+              {writingTask.samples && writingTask.samples.map((s, idx) => (
+                <button 
+                  key={s.id}
+                  className={`sample-tab-btn ${idx === activeSampleIdx ? 'active' : ''}`}
+                  onClick={() => { playPop(); setActiveSampleIdx(idx); }}
+                >
+                  {s.name}
+                </button>
+              ))}
+            </div>
+
+            {writingTask.samples && writingTask.samples[activeSampleIdx] && (
+              <div className="sample-card-body animate-pop">
+                <div className="sample-lines-list">
+                  {writingTask.samples[activeSampleIdx].lines.map((line, lIdx) => (
+                    <div key={lIdx} className="sample-line-item">
+                      <div className="line-num-pill">句 {lIdx + 1}</div>
+                      <div className="line-content">
+                        <div className="line-en">
+                          <strong className="first-capital">{line.en.charAt(0)}</strong>
+                          {line.en.slice(1, -1)}
+                          <strong className="last-period">.</strong>
+                        </div>
+                        <div className="line-cn">{line.cn}</div>
+                      </div>
+                      <button 
+                        className="line-audio-btn"
+                        onClick={() => { playPop(); speakEnglish(line.en); }}
+                      >
+                        🔊 听朗读
+                      </button>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="sample-all-audio-bar">
+                  <button 
+                    className="play-all-sample-btn"
+                    onClick={() => {
+                      const lines = writingTask.samples[activeSampleIdx].lines
+                      speakEnglish(lines[0].en, false, () => {
+                        setTimeout(() => {
+                          speakEnglish(lines[1].en, false, () => {
+                            setTimeout(() => {
+                              speakEnglish(lines[2].en, false)
+                            }, 400)
+                          })
+                        }, 400)
+                      })
+                    }}
+                  >
+                    ▶️ 连续播放三句话完整朗读
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* 互动自选拼句板 */}
+          <div className="sentence-builder-box">
+            <h4>💡 互动造句拼词板（点击选用，助你在纸上流畅动笔）：</h4>
+            {writingTask.interactiveStarters && writingTask.interactiveStarters.map((group, gIdx) => (
+              <div key={gIdx} className="starter-group">
+                <span className="group-label">{group.label}：</span>
+                <div className="starter-chips">
+                  {group.starters.map((str, sIdx) => (
+                    <button 
+                      key={sIdx} 
+                      className="starter-chip"
+                      onClick={() => { playPop(); speakEnglish(str); }}
+                    >
+                      {str} 🔊
+                    </button>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* --- 模式 4：核心词汇闪卡 --- */}
+      {activeSubTab === 'cards' && (
+        <div className="statements-cards-section animate-pop">
+          <div className="cards-grid-header">
+            <h3>🐸 6 个核心知识词汇闪卡</h3>
+            <p>掌握青蛙与蟾蜍的专有英文词汇，看图辨特征！</p>
+          </div>
+
+          <div className="all-action-cards-grid">
+            {words.map((w) => (
+              <div 
+                key={w.id} 
+                className="action-mini-card"
+                onClick={() => { playPop(); speakEnglish(w.word); }}
+              >
+                <ActionImage src={w.image} alt={w.word} emoji={w.emoji} className="mini-card-img" />
+                <div className="mini-card-info">
+                  <span className="mini-emoji">{w.emoji}</span>
+                  <strong className="mini-word">{w.word}</strong>
+                  <span className="mini-phonetic">{w.phonetic}</span>
+                  <span className="mini-cn">{w.translation}</span>
+                  <button className="mini-sound-btn" title="播放发音">🔊</button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* --- 模式 5：听音辨句挑战 --- */}
+      {activeSubTab === 'listening' && listeningTarget && (
+        <div className="listening-quiz-section animate-pop">
+          <div className="quiz-header">
+            <h3>👂 仔细听录音，找出读的是哪一句英文：</h3>
+            <button 
+              className="repeat-audio-btn"
+              onClick={() => { playPop(); speakEnglish(listeningTarget.corrected); }}
+            >
+              🔊 再听一遍完整句子
+            </button>
+            <span className="score-pill">⭐ 答对: {listeningScore} 题</span>
+          </div>
+
+          <div className="sentence-options-grid">
+            {sentences.map((s) => (
+              <div 
+                key={s.id}
+                className="sentence-opt-card"
+                onClick={() => handleListeningAnswer(s)}
+              >
+                <span className="opt-num">第 {s.num} 题 {s.emoji}</span>
+                <strong className="opt-en">{s.corrected}</strong>
+                <span className="opt-cn">{s.translation}</span>
+              </div>
+            ))}
+          </div>
+
+          {listeningFeedback === 'correct' && (
+            <div className="feedback-banner correct-banner animate-bounce">
+              🎉 太棒了！听得真准！加一颗小星星 ⭐
+            </div>
+          )}
+          {listeningFeedback === 'wrong' && (
+            <div className="feedback-banner wrong-banner">
+              💡 听错啦，点击上方按钮再听一遍哦！
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* 底部打卡按钮 */}
+      <div className="homework-bottom-bar">
+        <button 
+          className={`finish-homework-btn ${isCompleted ? 'already-done' : ''}`}
+          onClick={() => {
+            playCheer()
+            onCompleteTask('english')
+          }}
+        >
+          {isCompleted ? '✅ 句子改写与小作文已通关（再次庆祝）' : '🎉 我完成句子改写与小作文啦！打卡领贴纸'}
+        </button>
+      </div>
+    </div>
+  )
+}
+
+/**
+ * 历史作业：Action Words 动作词剪贴与背诵视图
+ */
+function ActionWordsHomeworkView({ data, isCompleted, onCompleteTask }) {
   const [currentIdx, setCurrentIdx] = useState(0)
   const [isAnswerHidden, setIsAnswerHidden] = useState(false)
   const [activeSubTab, setActiveSubTab] = useState('recite') // 'recite' | 'worksheet' | 'cards' | 'quiz'
