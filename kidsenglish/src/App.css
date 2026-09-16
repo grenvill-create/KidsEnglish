@@ -2363,4 +2363,230 @@
   border: 2px solid #7dd3fc;
 }
 
+/* ================= 11. 设置按钮与设置弹窗样式 ================= */
+.settings-btn {
+  background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+  color: #334155;
+  border: 2px solid #cbd5e1;
+}
+
+.settings-btn:hover {
+  background: #e2e8f0;
+  border-color: #94a3b8;
+  transform: translateY(-2px);
+}
+
+.sound-indicator-tag {
+  font-size: 13px;
+  background: rgba(255, 255, 255, 0.7);
+  padding: 1px 6px;
+  border-radius: var(--radius-pill);
+}
+
+.settings-modal-card {
+  background: #ffffff;
+  border-radius: var(--radius-lg);
+  border: 4px solid #cbd5e1;
+  width: 100%;
+  max-width: 540px;
+  max-height: 88vh;
+  overflow-y: auto;
+  padding: 24px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+}
+
+.settings-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #f1f5f9;
+}
+
+.settings-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.settings-section {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: var(--radius-md);
+  padding: 16px 18px;
+}
+
+.sound-toggle-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.setting-main-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  color: var(--text-main);
+  margin-bottom: 4px;
+}
+
+.setting-icon { font-size: 20px; }
+.setting-desc { font-size: 12px; color: #64748b; margin: 0; line-height: 1.4; }
+
+/* iOS 风格平滑切换滑块 */
+.toggle-switch-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.switch-slider {
+  position: relative;
+  display: inline-block;
+  width: 54px;
+  height: 30px;
+}
+
+.switch-slider input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider-round {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #cbd5e1;
+  transition: 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  border-radius: 34px;
+}
+
+.slider-round:before {
+  position: absolute;
+  content: "";
+  height: 22px;
+  width: 22px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  border-radius: 50%;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+input:checked + .slider-round {
+  background: linear-gradient(135deg, #10b981, #059669);
+}
+
+input:checked + .slider-round:before {
+  transform: translateX(24px);
+}
+
+.switch-status-text {
+  font-size: 13px;
+  font-weight: 800;
+  min-width: 20px;
+}
+
+.switch-status-text.on { color: #059669; }
+.switch-status-text.off { color: #94a3b8; }
+
+/* 音效试听小按钮 */
+.sound-preview-row {
+  background: #fff;
+  border: 1px dashed #cbd5e1;
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.preview-label { font-size: 12px; font-weight: 700; color: #64748b; }
+
+.preview-btn-group {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.sound-test-btn {
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  font-size: 12px;
+  color: #334155;
+  font-weight: 600;
+}
+
+.sound-test-btn:hover {
+  background: #ffe5ec;
+  border-color: #ffb3c1;
+  color: #c9184a;
+}
+
+/* 语音测试 */
+.speech-test-group {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.speech-test-btn {
+  padding: 8px 16px;
+  border-radius: var(--radius-pill);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.speech-test-btn.en-btn {
+  background: #e0f2fe;
+  color: #0369a1;
+  border: 1px solid #bae6fd;
+}
+
+.speech-test-btn.cn-btn {
+  background: #fef3c7;
+  color: #b45309;
+  border: 1px solid #fde68a;
+}
+
+.reset-stickers-btn {
+  margin-top: 10px;
+  background: #fee2e2;
+  color: #dc2626;
+  padding: 6px 14px;
+  border-radius: var(--radius-pill);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.settings-modal-footer {
+  margin-top: 20px;
+  padding-top: 14px;
+  border-top: 2px solid #f1f5f9;
+  text-align: right;
+}
+
+.settings-save-btn {
+  background: linear-gradient(135deg, #0284c7, #0369a1);
+  color: #fff;
+  padding: 10px 24px;
+  border-radius: var(--radius-pill);
+  font-size: 14px;
+  font-weight: 700;
+  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25);
+}
+
+
 

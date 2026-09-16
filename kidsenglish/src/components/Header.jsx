@@ -10,6 +10,8 @@ export function Header({
   setActiveTab, 
   onOpenParentModal,
   onOpenStickerBook,
+  onOpenSettings,
+  soundEnabled = true,
   unlockedStickersCount,
   isReviewingPast = false,
   onBackToToday = null
@@ -56,6 +58,16 @@ export function Header({
           >
             <span className="btn-icon">👩‍🏫</span>
             <span className="btn-text">布置作业</span>
+          </button>
+
+          <button 
+            className="action-btn settings-btn" 
+            onClick={() => { playPop(); onOpenSettings && onOpenSettings(); }}
+            title="系统设置与音效开关"
+          >
+            <span className="btn-icon">⚙️</span>
+            <span className="btn-text">设置</span>
+            <span className="sound-indicator-tag">{soundEnabled ? '🔊' : '🔇'}</span>
           </button>
         </div>
       </div>

@@ -1,6 +1,26 @@
 // Web Audio API 纯合成可爱音效生成器（免外部网络加载，100%可靠，无杂音）
 let audioCtx = null
 
+// 音效全局开关状态（默认开启，支持持久化）
+let soundEnabled = true
+try {
+  const saved = localStorage.getItem('kids_sound_enabled')
+  if (saved !== null) {
+    soundEnabled = saved === 'true'
+  }
+} catch (e) {}
+
+export function setSoundEnabled(val) {
+  soundEnabled = !!val
+  try {
+    localStorage.setItem('kids_sound_enabled', String(soundEnabled))
+  } catch (e) {}
+}
+
+export function getSoundEnabled() {
+  return soundEnabled
+}
+
 function getAudioContext() {
   if (!audioCtx) {
     const AudioContextClass = window.AudioContext || window.webkitAudioContext
@@ -16,6 +36,7 @@ function getAudioContext() {
 
 // 泡泡爆破声（点击、切换）
 export function playPop() {
+  if (!soundEnabled) return
   const ctx = getAudioContext()
   if (!ctx) return
   const osc = ctx.createOscillator()
@@ -35,6 +56,7 @@ export function playPop() {
 
 // 答对提示音（清脆甜美的和弦）
 export function playCorrect() {
+  if (!soundEnabled) return
   const ctx = getAudioContext()
   if (!ctx) return
   const notes = [523.25, 659.25, 783.99, 1046.5] // C5, E5, G5, C6
@@ -58,6 +80,7 @@ export function playCorrect() {
 
 // 通关欢呼大和弦（庆祝、发奖章）
 export function playCheer() {
+  if (!soundEnabled) return
   const ctx = getAudioContext()
   if (!ctx) return
   const chords = [
@@ -88,6 +111,7 @@ export function playCheer() {
 
 // 魔法星星音（获得贴纸、躲猫猫变身）
 export function playMagic() {
+  if (!soundEnabled) return
   const ctx = getAudioContext()
   if (!ctx) return
   for (let i = 0; i < 8; i++) {
@@ -108,6 +132,7 @@ export function playMagic() {
 
 // 答错轻柔提示音（萌趣嘟嘟，不挫败小朋友积极性）
 export function playTryAgain() {
+  if (!soundEnabled) return
   const ctx = getAudioContext()
   if (!ctx) return
   const osc = ctx.createOscillator()

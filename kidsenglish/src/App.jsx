@@ -9,6 +9,8 @@ import { HomeworkHistory } from './components/HomeworkHistory'
 import { StickerBook } from './components/StickerBook'
 import { ParentModal } from './components/ParentModal'
 import { RewardModal } from './components/RewardModal'
+import { SettingsModal } from './components/SettingsModal'
+import { getSoundEnabled, setSoundEnabled } from './utils/sound'
 import './App.css'
 
 function App() {
@@ -54,6 +56,13 @@ function App() {
   const [rewardSticker, setRewardSticker] = useState(null)
   const [showStickerBook, setShowStickerBook] = useState(false)
   const [showParentModal, setShowParentModal] = useState(false)
+  const [showSettingsModal, setShowSettingsModal] = useState(false)
+  const [soundEnabled, setSoundEnabledState] = useState(getSoundEnabled)
+
+  const handleToggleSound = (val) => {
+    setSoundEnabled(val)
+    setSoundEnabledState(val)
+  }
 
   // 获取当前正在查看的那一天作业
   const currentHomework = homeworkList.find(h => h.id === activeHomeworkId) || homeworkList[0] || DEFAULT_HOMEWORK
@@ -152,6 +161,8 @@ function App() {
         setActiveTab={setActiveTab}
         onOpenParentModal={() => setShowParentModal(true)}
         onOpenStickerBook={() => setShowStickerBook(true)}
+        onOpenSettings={() => setShowSettingsModal(true)}
+        soundEnabled={soundEnabled}
         unlockedStickersCount={unlockedStickers.length}
         isReviewingPast={isReviewingPast}
         onBackToToday={handleBackToToday}
@@ -235,6 +246,17 @@ function App() {
             setRewardSticker(null)
             setShowStickerBook(true)
           }}
+        />
+      )}
+
+      {/* 系统设置与音效开关弹窗 */}
+      {showSettingsModal && (
+        <SettingsModal 
+          soundEnabled={soundEnabled}
+          onToggleSound={handleToggleSound}
+          unlockedStickersCount={unlockedStickers.length}
+          onResetStickers={() => setUnlockedStickers(['s1', 's4'])}
+          onClose={() => setShowSettingsModal(false)}
         />
       )}
     </div>
