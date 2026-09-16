@@ -1,4 +1,8 @@
-// 康文幼儿园 BrownBear 班今日真实作业：Hop to It Some More! 🐸 (句子首字母大写与标点规范)
+import cuteFrogImg from '../assets/cute_little_frog.jpg'
+
+export const CUTE_FROG_IMAGE = cuteFrogImg
+
+// 今日作业：Hop to It Some More! 🐸 (句子首字母大写与标点规范)
 export const DEFAULT_HOMEWORK = {
   id: 'today-hop-to-it',
   date: '2026年9月16日 星期三',
@@ -248,7 +252,7 @@ export const DEFAULT_HOMEWORK = {
     title: '儿歌《小青蛙》',
     author: '经典幼儿童谣',
     teacherNote: '配合今日英语青蛙主题，大声朗读经典儿歌《小青蛙》，字字指读！',
-    image: 'https://images.unsplash.com/photo-1579202673506-ca3ce28943ef?w=600&auto=format&fit=crop',
+    image: cuteFrogImg,
     lines: [
       [
         { char: '小', pinyin: 'xiǎo' }, { char: '青', pinyin: 'qīng' }, { char: '蛙', pinyin: 'wā' }, { char: '，', pinyin: '' },

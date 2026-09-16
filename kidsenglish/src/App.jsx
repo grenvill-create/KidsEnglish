@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { DEFAULT_HOMEWORK, DEFAULT_HOMEWORK_LIST, STICKERS } from './data/defaultHomework'
+import { DEFAULT_HOMEWORK, DEFAULT_HOMEWORK_LIST, STICKERS, CUTE_FROG_IMAGE } from './data/defaultHomework'
 import { Header } from './components/Header'
 import { TodayOverview } from './components/TodayOverview'
 import { EnglishHomework } from './components/EnglishHomework'
@@ -23,17 +23,29 @@ function sanitizeHomeworkList(list) {
 
   let hasChanges = false
   const updatedList = list.map(hw => {
-    if (!hw || !hw.english || !Array.isArray(hw.english.words)) return hw
-    const newWords = hw.english.words.map(w => {
-      if (w && FIXED_IMAGES[w.word]) {
-        if (!w.image || w.image.includes('1548839140') || w.image.includes('1560806887') || w.image.includes('1571771894')) {
-          hasChanges = true
-          return { ...w, image: FIXED_IMAGES[w.word] }
+    let modifiedHw = { ...hw }
+    if (modifiedHw.english && Array.isArray(modifiedHw.english.words)) {
+      const newWords = modifiedHw.english.words.map(w => {
+        if (w && FIXED_IMAGES[w.word]) {
+          if (!w.image || w.image.includes('1548839140') || w.image.includes('1560806887') || w.image.includes('1571771894')) {
+            hasChanges = true
+            return { ...w, image: FIXED_IMAGES[w.word] }
+          }
         }
+        return w
+      })
+      modifiedHw.english = { ...modifiedHw.english, words: newWords }
+    }
+
+    // 确保今日儿歌《小青蛙》的封面配图为可爱小青蛙插画
+    if (modifiedHw.reading && modifiedHw.reading.title === '儿歌《小青蛙》') {
+      if (!modifiedHw.reading.image || modifiedHw.reading.image.includes('1579202673506')) {
+        hasChanges = true
+        modifiedHw.reading = { ...modifiedHw.reading, image: CUTE_FROG_IMAGE }
       }
-      return w
-    })
-    return { ...hw, english: { ...hw.english, words: newWords } }
+    }
+
+    return modifiedHw
   })
 
   if (hasChanges) {
