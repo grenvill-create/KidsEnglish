@@ -118,55 +118,188 @@ export function getPinyinPhoneticText(text) {
   })
 }
 
+// 预生成的百度真人发音标准 MP3 离线映射表（全部 70 个标准发音文件）
+const LOCAL_AUDIO_FILES = {
+  // 23 个声母标准真人发音（玻、坡、摸、佛、得、特、讷、勒...）
+  'b': 'b.mp3', 'p': 'p.mp3', 'm': 'm.mp3', 'f': 'f.mp3',
+  'd': 'd.mp3', 't': 't.mp3', 'n': 'n.mp3', 'l': 'l.mp3',
+  'g': 'g.mp3', 'k': 'k.mp3', 'h': 'h.mp3',
+  'j': 'j.mp3', 'q': 'q.mp3', 'x': 'x.mp3',
+  'zh': 'zh.mp3', 'ch': 'ch.mp3', 'sh': 'sh.mp3', 'r': 'r.mp3',
+  'z': 'z.mp3', 'c': 'c.mp3', 's': 's.mp3',
+  'y': 'y.mp3', 'w': 'w.mp3',
+
+  // 单韵母标准真人发音
+  'a': 'a.mp3', 'o': 'o.mp3', 'e': 'e.mp3', 'i': 'i.mp3', 'u': 'u.mp3', 'v': 'v.mp3', 'ü': 'v.mp3',
+
+  // 慢速跟读版（清晰延长拖音）
+  'b_slow': 'b_slow.mp3', 'p_slow': 'p_slow.mp3', 'm_slow': 'm_slow.mp3', 'f_slow': 'f_slow.mp3',
+  'a_slow': 'a_slow.mp3', 'o_slow': 'o_slow.mp3', 'e_slow': 'e_slow.mp3',
+
+  // 四声调韵母
+  'ā': 'a_1.mp3', 'á': 'a_2.mp3', 'ǎ': 'a_3.mp3', 'à': 'a_4.mp3',
+  'a_1': 'a_1.mp3', 'a_2': 'a_2.mp3', 'a_3': 'a_3.mp3', 'a_4': 'a_4.mp3',
+  'ō': 'o_1.mp3', 'ó': 'o_2.mp3', 'ǒ': 'o_3.mp3', 'ò': 'o_4.mp3',
+  'o_1': 'o_1.mp3', 'o_2': 'o_2.mp3', 'o_3': 'o_3.mp3', 'o_4': 'o_4.mp3',
+  'ē': 'e_1.mp3', 'é': 'e_2.mp3',
+  'e_1': 'e_1.mp3', 'e_2': 'e_2.mp3',
+  'ī': 'i_1.mp3', 'i_1': 'i_1.mp3',
+  'ū': 'u_1.mp3', 'u_1': 'u_1.mp3',
+
+  // 常用拼读音节
+  'bā': 'ba_1.mp3', 'ba': 'ba_1.mp3', 'ba_1': 'ba_1.mp3',
+  'pá': 'pa_2.mp3', 'pa': 'pa_2.mp3', 'pa_2': 'pa_2.mp3',
+  'mā': 'ma_1.mp3', 'ma': 'ma_1.mp3', 'ma_1': 'ma_1.mp3',
+  'fà': 'fa_4.mp3', 'fa': 'fa_4.mp3', 'fa_4': 'fa_4.mp3',
+  'pō': 'po_1.mp3', 'po': 'po_1.mp3', 'po_1': 'po_1.mp3',
+  'bō': 'bo_1.mp3', 'bo': 'bo_1.mp3', 'bo_1': 'bo_1.mp3',
+
+  // 连贯声韵拼读碰碰乐完整语音（如：玻……啊……八！八只鸭子！）
+  'blend_bl1': 'blend_bl1.mp3',
+  'blend_bl2': 'blend_bl2.mp3',
+  'blend_bl3': 'blend_bl3.mp3',
+  'blend_bl4': 'blend_bl4.mp3',
+  'blend_bl_prev_1': 'blend_bl_prev_1.mp3',
+  'blend_bl_prev_2': 'blend_bl_prev_2.mp3',
+  'blend_bl_prev_3': 'blend_bl_prev_3.mp3',
+  'blend_bl_prev_4': 'blend_bl_prev_4.mp3',
+
+  // 生活例词真人朗读（如：八，八只鸭子）
+  'word_bl1': 'word_bl1.mp3',
+  'word_bl2': 'word_bl2.mp3',
+  'word_bl3': 'word_bl3.mp3',
+  'word_bl4': 'word_bl4.mp3',
+  'word_bl_prev_1': 'word_bl_prev_1.mp3',
+  'word_bl_prev_2': 'word_bl_prev_2.mp3',
+  'word_bl_prev_3': 'word_bl_prev_3.mp3',
+  'word_bl_prev_4': 'word_bl_prev_4.mp3'
+}
+
 /**
- * 百度真人发音：用于汉语拼音字母认读与声韵拼读
- * @param {string} text 拼音字母（如 'b', 'p', 'bā'）或拼读流程语句
+ * 智能匹配拼音音频文件名
+ */
+export function resolvePinyinAudioFile(text, isSlow = false) {
+  if (!text) return null
+  const clean = text.trim()
+  const key = clean.toLowerCase().replace(/-/g, '_')
+
+  // 1. 如果指定慢速且存在 slow 版本
+  if (isSlow) {
+    if (LOCAL_AUDIO_FILES[`${key}_slow`]) return LOCAL_AUDIO_FILES[`${key}_slow`]
+    const baseChar = key.replace(/_slow$/, '')
+    if (LOCAL_AUDIO_FILES[`${baseChar}_slow`]) return LOCAL_AUDIO_FILES[`${baseChar}_slow`]
+  }
+
+  // 2. 精确命中本地映射表
+  if (LOCAL_AUDIO_FILES[key]) {
+    return LOCAL_AUDIO_FILES[key]
+  }
+
+  // 3. 去除常见标点与 emoji 后匹配
+  const noPunct = key.replace(/[……!！,，。 ?？\s\u{1F300}-\u{1F9FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]/gu, '')
+  if (LOCAL_AUDIO_FILES[noPunct]) {
+    return LOCAL_AUDIO_FILES[noPunct]
+  }
+
+  // 4. 拼读碰碰乐包含的关键词智能匹配
+  if (key.includes('blend_bl1') || (key.includes('b') && key.includes('鸭子'))) return 'blend_bl1.mp3'
+  if (key.includes('blend_bl2') || (key.includes('p') && key.includes('爬树'))) return 'blend_bl2.mp3'
+  if (key.includes('blend_bl3') || (key.includes('m') && key.includes('妈妈'))) return 'blend_bl3.mp3'
+  if (key.includes('blend_bl4') || (key.includes('f') && (key.includes('理发') || key.includes('头发')))) return 'blend_bl4.mp3'
+
+  if (key.includes('word_bl1') || (key.includes('八') && key.includes('鸭子'))) return 'word_bl1.mp3'
+  if (key.includes('word_bl2') || (key.includes('爬') && key.includes('爬树'))) return 'word_bl2.mp3'
+  if (key.includes('word_bl3') || (key.includes('妈') && key.includes('妈妈'))) return 'word_bl3.mp3'
+  if (key.includes('word_bl4') || (key.includes('发') && (key.includes('理发') || key.includes('头发')))) return 'word_bl4.mp3'
+
+  // 5. 往期作业例词匹配
+  if (key.includes('blend_bl_prev_1') || (key.includes('b') && key.includes('数字八'))) return 'blend_bl_prev_1.mp3'
+  if (key.includes('blend_bl_prev_2') || (key.includes('p') && key.includes('山坡'))) return 'blend_bl_prev_2.mp3'
+  if (key.includes('blend_bl_prev_3') || (key.includes('m') && key.includes('好妈妈'))) return 'blend_bl_prev_3.mp3'
+  if (key.includes('blend_bl_prev_4') || (key.includes('f') && key.includes('梳理头发'))) return 'blend_bl_prev_4.mp3'
+
+  if (key.includes('word_bl_prev_1') || (key.includes('八') && key.includes('数字八'))) return 'word_bl_prev_1.mp3'
+  if (key.includes('word_bl_prev_2') || (key.includes('坡') && key.includes('山坡'))) return 'word_bl_prev_2.mp3'
+  if (key.includes('word_bl_prev_3') || (key.includes('妈') && key.includes('好妈妈'))) return 'word_bl_prev_3.mp3'
+  if (key.includes('word_bl_prev_4') || (key.includes('发') && key.includes('梳理头发'))) return 'word_bl_prev_4.mp3'
+
+  // 6. 首个拼音字母提取
+  const letterMatch = clean.match(/^[a-zA-Zāáǎàōóǒòēéěèīíǐìūúǔùǖǘǚǜ]+/i)
+  if (letterMatch && LOCAL_AUDIO_FILES[letterMatch[0].toLowerCase()]) {
+    return LOCAL_AUDIO_FILES[letterMatch[0].toLowerCase()]
+  }
+
+  return null
+}
+
+/**
+ * 获取音频文件的绝对完整 URL，完美兼容本地开发、手机访问与 GitHub Pages
+ */
+export function getPinyinAudioUrl(filename) {
+  if (!filename) return null
+  if (typeof window !== 'undefined') {
+    let pathname = window.location.pathname
+    if (!pathname.endsWith('/')) {
+      pathname = pathname + '/'
+    }
+    return `${window.location.origin}${pathname}pinyin_audio/${filename}`
+  }
+  return `./pinyin_audio/${filename}`
+}
+
+/**
+ * 百度真人发音：用于汉语拼音字母认读与声韵拼读（100% 离线高清真人标准音，绝不发英文字母音）
+ * @param {string} text 拼音字母（如 'b', 'p', 'bā'）或拼读流程标识
  * @param {boolean} isSlow 是否为慢速模式（儿童跟读模式）
  * @param {Function|null} onEnd 播放结束回调
  */
 export function speakPinyinBaidu(text, isSlow = false, onEnd = null) {
   stopSpeech()
 
-  const phoneticText = getPinyinPhoneticText(text)
-  // 慢速 3，正常幼教语速 4
-  const spd = isSlow ? 3 : 4
-  const url = `https://fanyi.baidu.com/gettts?lan=zh&text=${encodeURIComponent(phoneticText)}&spd=${spd}&source=web`
+  const localFileName = resolvePinyinAudioFile(text, isSlow)
+  const audioUrl = localFileName ? getPinyinAudioUrl(localFileName) : null
 
-  try {
-    const audio = new Audio()
-    // 设置不发送 Referer，绕过第三方防盗链
-    audio.referrerPolicy = 'no-referrer'
-    audio.src = url
-    currentPinyinAudio = audio
+  if (audioUrl) {
+    try {
+      const audio = new Audio(audioUrl)
+      currentPinyinAudio = audio
 
-    let hasEnded = false
-    const finish = () => {
-      if (hasEnded) return
-      hasEnded = true
-      if (currentPinyinAudio === audio) {
-        currentPinyinAudio = null
+      let hasEnded = false
+      const finish = () => {
+        if (hasEnded) return
+        hasEnded = true
+        if (currentPinyinAudio === audio) {
+          currentPinyinAudio = null
+        }
+        if (onEnd) onEnd()
       }
-      if (onEnd) onEnd()
-    }
 
-    audio.onended = finish
-    audio.onerror = (err) => {
-      console.warn('百度真人语音加载失败，降级使用系统中文语音：', err)
-      finish()
-      // 降级使用系统语音，但传入已转换的正确发音汉字（如 "玻" 而不是 "b"）
-      speakChinese(phoneticText, isSlow, onEnd)
-    }
+      audio.onended = finish
+      audio.onerror = (err) => {
+        console.warn('本地真人拼音音频加载失败：', audioUrl, err)
+        finish()
+      }
 
-    const playPromise = audio.play()
-    if (playPromise !== undefined) {
-      playPromise.catch((err) => {
-        console.warn('音频播放被浏览器拦截或受限，降级使用系统语音：', err)
-        speakChinese(phoneticText, isSlow, onEnd)
-      })
+      const playPromise = audio.play()
+      if (playPromise !== undefined) {
+        playPromise.catch((err) => {
+          console.warn('音频播放受限或用户尚未交互：', err)
+          finish()
+        })
+      }
+      return
+    } catch (err) {
+      console.warn('Audio 初始化失败：', err)
     }
-  } catch (err) {
-    console.warn('Audio 初始化失败，降级使用系统语音：', err)
+  }
+
+  // 兜底保护：若未命中本地预存音频，严格防止使用英文语音引擎读出英文字母
+  const phoneticText = getPinyinPhoneticText(text)
+  if (phoneticText && !/[a-zA-Z]/.test(phoneticText)) {
     speakChinese(phoneticText, isSlow, onEnd)
+  } else {
+    console.warn('未找到匹配的拼音真人音频，已拦截以防误发英文字母音：', text)
+    if (onEnd) onEnd()
   }
 }
 
@@ -201,17 +334,36 @@ export function speakEnglish(text, isSlow = false, onEnd = null) {
 }
 
 export function speakChinese(text, isSlow = false, onEnd = null) {
-  if (typeof window === 'undefined' || !('speechSynthesis' in window)) return
+  if (typeof window === 'undefined' || !('speechSynthesis' in window)) {
+    if (onEnd) onEnd()
+    return
+  }
   stopSpeech()
+
+  if (voices.length === 0) {
+    voices = window.speechSynthesis.getVoices()
+  }
+
+  // 严格检查：必须有中文发音人！绝对不能用英文引擎读汉语拼音，避免发出 "bee, pee" 等英文字母音
+  const hasChineseVoice = voices.some(v => v.lang.startsWith('zh'))
+  if (!hasChineseVoice && voices.length > 0) {
+    console.warn('设备未检测到中文语音包，为防误发英文读音，已拦截系统朗读')
+    if (onEnd) onEnd()
+    return
+  }
+
+  // 确保朗读文本中绝对没有剩余英文字母
+  if (/[a-zA-Z]/.test(text)) {
+    console.warn('发音文本含有未转换的英文字母，已阻止朗读：', text)
+    if (onEnd) onEnd()
+    return
+  }
 
   const utterance = new SpeechSynthesisUtterance(text)
   utterance.lang = 'zh-CN'
   utterance.rate = isSlow ? 0.7 : 0.95
   utterance.pitch = 1.1
 
-  if (voices.length === 0) {
-    voices = window.speechSynthesis.getVoices()
-  }
   const preferredVoice = voices.find(v => 
     v.lang.startsWith('zh') && (v.name.includes('Natural') || v.name.includes('Xiaoxiao') || v.name.includes('Tingting') || v.name.includes('Google 普通话'))
   ) || voices.find(v => v.lang.startsWith('zh'))

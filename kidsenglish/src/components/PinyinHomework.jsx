@@ -39,7 +39,7 @@ export function PinyinHomework({ data, isCompleted, onCompleteTask }) {
       setHasCollided(true)
       playCorrect()
       // 百度真人朗读拼读过程：如 玻……啊……八！八只鸭子
-      speakPinyinBaidu(`${currentBlend.initial}……${currentBlend.final}……${currentBlend.result}！${currentBlend.word}`)
+      speakPinyinBaidu(`blend_${currentBlend.id}`)
     }, 600)
   }
 
@@ -244,7 +244,7 @@ export function PinyinHomework({ data, isCompleted, onCompleteTask }) {
                 onClick={() => {
                   if (hasCollided) {
                     playPop()
-                    speakPinyinBaidu(`${currentBlend.result}，${currentBlend.word}`)
+                    speakPinyinBaidu(`word_${currentBlend.id}`)
                   }
                 }}
               >
@@ -272,7 +272,7 @@ export function PinyinHomework({ data, isCompleted, onCompleteTask }) {
                 </div>
                 <button 
                   className="repeat-blend-speech-btn"
-                  onClick={() => { playPop(); speakPinyinBaidu(`${currentBlend.result}，${currentBlend.word}`); }}
+                  onClick={() => { playPop(); speakPinyinBaidu(`word_${currentBlend.id}`); }}
                 >
                   🔊 百度真人朗读例词
                 </button>

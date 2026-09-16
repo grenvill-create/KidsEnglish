@@ -174,6 +174,14 @@
   gap: 10px;
 }
 
+.main-nav.five-tabs {
+  grid-template-columns: repeat(5, 1fr);
+}
+
+.nav-label-short {
+  display: none;
+}
+
 .nav-tab {
   display: flex;
   flex-direction: column;
@@ -2674,136 +2682,138 @@ input:checked + .slider-round:before {
 
 /* ================= 12. 三星 Galaxy S24+ 及移动端高精度适配 ================= */
 @media screen and (max-width: 600px) {
-  /* 基础容器与刘海/手势条安全区适配 */
+  /* 基础容器与刘海/手势条安全区适配 (三星 S24+ 412x915 / 384x832) */
   .kids-app-container {
-    padding-top: max(10px, env(safe-area-inset-top));
-    padding-left: max(10px, env(safe-area-inset-left));
-    padding-right: max(10px, env(safe-area-inset-right));
-    padding-bottom: max(60px, calc(36px + env(safe-area-inset-bottom)));
-    width: 100%;
-    overflow-x: hidden;
+    padding-top: max(10px, env(safe-area-inset-top)) !important;
+    padding-left: max(10px, env(safe-area-inset-left)) !important;
+    padding-right: max(10px, env(safe-area-inset-right)) !important;
+    padding-bottom: max(68px, calc(44px + env(safe-area-inset-bottom))) !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+    overflow-x: hidden !important;
   }
 
   /* 顶部 Header 结构收敛 */
   .app-header {
-    padding: 12px 14px;
-    border-radius: 20px;
-    border-width: 2px;
-    margin-bottom: 14px;
+    padding: 12px 10px !important;
+    border-radius: 20px !important;
+    border-width: 2px !important;
+    margin-bottom: 12px !important;
   }
 
   .header-top {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 10px;
-    margin-bottom: 10px;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 8px !important;
+    margin-bottom: 8px !important;
   }
 
   .child-badge {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
   }
 
   .avatar-bubble {
-    width: 44px;
-    height: 44px;
-    font-size: 24px;
-    flex-shrink: 0;
+    width: 42px !important;
+    height: 42px !important;
+    font-size: 22px !important;
+    flex-shrink: 0 !important;
   }
 
   .app-title {
-    font-size: 17px;
+    font-size: 16px !important;
   }
 
   .date-tag {
-    font-size: 12px;
-    gap: 6px;
-    flex-wrap: wrap;
+    font-size: 11.5px !important;
+    gap: 4px !important;
+    flex-wrap: wrap !important;
   }
 
   .weather-tag {
-    font-size: 11px;
-    padding: 1px 8px;
+    font-size: 10.5px !important;
+    padding: 1px 7px !important;
   }
 
-  /* 顶部操作按钮三等分布局 */
+  /* 顶部操作按钮三等分布局 (贴纸本 / 布置作业 / 设置) */
   .header-actions {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 6px;
-    width: 100%;
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 6px !important;
+    width: 100% !important;
   }
 
   .action-btn {
-    padding: 7px 4px;
-    font-size: 12px;
-    gap: 4px;
-    justify-content: center;
-    border-radius: 9999px;
-    min-height: 36px;
+    padding: 7px 2px !important;
+    font-size: 11.5px !important;
+    gap: 4px !important;
+    justify-content: center !important;
+    border-radius: 9999px !important;
+    min-height: 36px !important;
   }
 
   .action-btn .btn-text {
-    font-size: 12px;
-    font-weight: 700;
+    font-size: 11.5px !important;
+    font-weight: 700 !important;
   }
 
   .action-btn .btn-icon {
-    font-size: 13px;
+    font-size: 13px !important;
   }
 
   .badge-count {
-    padding: 0 5px;
-    font-size: 10px;
+    padding: 0 4px !important;
+    font-size: 10px !important;
   }
 
   .sound-indicator-tag {
-    padding: 0 4px;
-    font-size: 11px;
+    padding: 0 4px !important;
+    font-size: 11px !important;
   }
 
   /* 闯关进度条微缩 */
   .progress-banner {
-    padding: 8px 12px;
-    margin-bottom: 10px;
-    border-radius: 12px;
+    padding: 8px 10px !important;
+    margin-bottom: 10px !important;
+    border-radius: 12px !important;
   }
 
   .progress-label {
-    font-size: 12px;
-    margin-bottom: 6px;
+    font-size: 11.5px !important;
+    margin-bottom: 5px !important;
   }
 
   .progress-track {
-    height: 10px;
+    height: 9px !important;
   }
 
   /* 5 Tab 导航：单行5等分紧凑排列，图标+微标签，不折行 */
   .main-nav.five-tabs {
     display: grid !important;
     grid-template-columns: repeat(5, 1fr) !important;
-    gap: 4px;
-    margin-top: 2px;
+    gap: 4px !important;
+    margin-top: 2px !important;
   }
 
   .nav-tab {
-    padding: 6px 1px;
-    min-height: 48px;
-    gap: 2px;
-    border-radius: 12px;
-    border-width: 1.5px;
+    padding: 6px 1px !important;
+    min-height: 48px !important;
+    gap: 2px !important;
+    border-radius: 12px !important;
+    border-width: 1.5px !important;
   }
 
   .nav-tab .nav-icon {
-    font-size: 18px;
+    font-size: 18px !important;
   }
 
   .nav-tab .nav-label {
-    font-size: 11px;
-    line-height: 1.1;
-    letter-spacing: -0.3px;
-    font-weight: 800;
+    font-size: 10.5px !important;
+    line-height: 1.1 !important;
+    letter-spacing: -0.3px !important;
+    font-weight: 800 !important;
+    white-space: nowrap !important;
   }
 
   .nav-label-full {
@@ -2815,8 +2825,8 @@ input:checked + .slider-round:before {
   }
 
   .nav-tab.active {
-    transform: scale(1.02);
-    box-shadow: 0 4px 12px rgba(255, 77, 109, 0.25);
+    transform: scale(1.02) !important;
+    box-shadow: 0 4px 12px rgba(255, 77, 109, 0.25) !important;
   }
 
   /* 二级子导航（滑动切换条，触感极佳） */
@@ -2824,143 +2834,240 @@ input:checked + .slider-round:before {
     display: flex !important;
     overflow-x: auto !important;
     flex-wrap: nowrap !important;
-    gap: 8px !important;
-    padding: 4px 2px 10px !important;
+    gap: 6px !important;
+    padding: 2px 2px 8px !important;
     margin-bottom: 12px !important;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: none !important;
   }
 
   .sub-nav-bar::-webkit-scrollbar {
-    display: none;
+    display: none !important;
   }
 
   .sub-tab-btn {
     flex: 0 0 auto !important;
     white-space: nowrap !important;
     font-size: 12px !important;
-    padding: 7px 13px !important;
+    padding: 7px 12px !important;
     border-radius: 9999px !important;
     min-height: 36px !important;
   }
 
   /* 今日大厅任务卡片 */
   .cheer-banner {
-    padding: 14px 16px;
-    gap: 12px;
-    border-radius: 18px;
-    border-width: 2px;
+    padding: 12px 14px !important;
+    gap: 10px !important;
+    border-radius: 16px !important;
+    border-width: 2px !important;
   }
 
   .cheer-avatar {
-    width: 48px;
-    height: 48px;
-    font-size: 28px;
+    width: 44px !important;
+    height: 44px !important;
+    font-size: 24px !important;
   }
 
   .cheer-content h3 {
-    font-size: 16px;
+    font-size: 15px !important;
   }
 
   .cheer-content p {
-    font-size: 13px;
+    font-size: 12px !important;
   }
 
   .celebrate-btn {
-    width: 100%;
-    justify-content: center;
-    padding: 11px 16px;
-    font-size: 14px;
+    width: 100% !important;
+    justify-content: center !important;
+    padding: 10px 14px !important;
+    font-size: 13.5px !important;
   }
 
   .task-grid {
     grid-template-columns: 1fr !important;
-    gap: 14px !important;
+    gap: 12px !important;
   }
 
   .task-card {
-    padding: 16px 14px;
-    border-radius: 18px;
-    border-width: 2px;
+    padding: 14px 12px !important;
+    border-radius: 16px !important;
+    border-width: 2px !important;
   }
 
   .card-task-title {
-    font-size: 16px;
+    font-size: 15px !important;
   }
 
   .card-teacher-note {
-    font-size: 12px;
-    padding: 8px 10px;
+    font-size: 11.5px !important;
+    padding: 6px 8px !important;
   }
 
   .start-task-btn {
-    width: 100%;
-    padding: 12px;
-    font-size: 14px;
-    border-radius: 9999px;
+    width: 100% !important;
+    padding: 11px !important;
+    font-size: 13.5px !important;
+    border-radius: 9999px !important;
   }
 
-  /* 英语魔法屋：剧场问答背诵 */
+  /* ================= 英语魔法屋移动端适配 ================= */
+  /* 1. 闪卡背诵 */
+  .flashcard-card {
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+    padding: 14px 12px !important;
+    border-radius: 18px !important;
+    border-width: 2px !important;
+  }
+
+  .flashcard-image-wrap {
+    height: 200px !important;
+    border-radius: 14px !important;
+  }
+
+  .card-emoji-float {
+    width: 44px !important;
+    height: 44px !important;
+    font-size: 26px !important;
+    top: 8px !important;
+    left: 8px !important;
+  }
+
+  .hide-peek-btn {
+    padding: 6px 12px !important;
+    font-size: 11.5px !important;
+    bottom: 8px !important;
+    right: 8px !important;
+  }
+
+  .main-word-text {
+    font-size: 32px !important;
+    margin-bottom: 2px !important;
+    text-align: center !important;
+  }
+
+  .phonetic-tag {
+    font-size: 13.5px !important;
+    margin-bottom: 4px !important;
+    text-align: center !important;
+  }
+
+  .translation-tag {
+    font-size: 20px !important;
+    margin-bottom: 12px !important;
+    text-align: center !important;
+  }
+
+  .word-hidden-mask {
+    padding: 18px 12px !important;
+    margin-bottom: 12px !important;
+    border-radius: 12px !important;
+  }
+
+  .mask-sparkle {
+    font-size: 18px !important;
+  }
+
+  .mask-tip {
+    font-size: 12px !important;
+  }
+
+  .speech-controls {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+    margin-bottom: 12px !important;
+  }
+
+  .speech-controls .speech-btn {
+    padding: 10px 8px !important;
+    font-size: 12.5px !important;
+    min-height: 42px !important;
+    width: 100% !important;
+    justify-content: center !important;
+  }
+
+  .example-sentence-box {
+    padding: 10px 12px !important;
+    border-radius: 10px !important;
+  }
+
+  .sentence-en {
+    font-size: 13.5px !important;
+    line-height: 1.4 !important;
+  }
+
+  .sentence-cn {
+    font-size: 12px !important;
+    margin-bottom: 6px !important;
+  }
+
+  .sentence-speak-btn {
+    padding: 5px 12px !important;
+    font-size: 11px !important;
+    min-height: 32px !important;
+  }
+
+  /* 2. 剧场问答背诵 */
   .recite-banner-tip {
-    padding: 10px 12px;
-    font-size: 12px;
-    gap: 8px;
-    border-radius: 14px;
+    padding: 10px 12px !important;
+    font-size: 12px !important;
+    gap: 8px !important;
+    border-radius: 14px !important;
   }
 
   .tip-badge {
-    font-size: 11px;
-    padding: 2px 8px;
+    font-size: 11px !important;
+    padding: 2px 8px !important;
   }
 
   .recite-main-card {
     grid-template-columns: 1fr !important;
     padding: 14px !important;
-    gap: 14px !important;
-    border-radius: 20px !important;
+    gap: 12px !important;
+    border-radius: 18px !important;
     border-width: 2px !important;
   }
 
   .recite-image-box {
-    height: 200px !important;
-    border-radius: 14px !important;
+    height: 190px !important;
+    border-radius: 12px !important;
   }
 
   .recite-emoji-tag {
-    font-size: 28px;
-    top: 8px;
-    left: 8px;
+    font-size: 26px !important;
+    top: 8px !important;
+    left: 8px !important;
   }
 
   .recite-action-tag {
-    font-size: 12px;
-    bottom: 8px;
-    right: 8px;
-    padding: 3px 10px;
+    font-size: 11.5px !important;
+    bottom: 8px !important;
+    right: 8px !important;
+    padding: 3px 8px !important;
   }
 
   .teacher-pattern-box {
-    padding: 10px 12px;
-    border-radius: 12px;
+    padding: 8px 10px !important;
+    border-radius: 10px !important;
   }
 
   .pattern-title {
-    font-size: 12px;
-    margin-bottom: 4px;
+    font-size: 11.5px !important;
+    margin-bottom: 3px !important;
   }
 
   .pattern-item {
-    font-size: 12px;
-    margin-bottom: 2px;
+    font-size: 11.5px !important;
   }
 
   .bubble-sentence {
-    font-size: 16px !important;
-    margin-bottom: 4px;
+    font-size: 15px !important;
+    margin-bottom: 3px !important;
   }
 
   .bubble-cn {
-    font-size: 12px !important;
+    font-size: 11.5px !important;
   }
 
   .speech-prompt-row {
@@ -2972,28 +3079,28 @@ input:checked + .slider-round:before {
   .theatre-speech-btn {
     width: 100% !important;
     justify-content: center !important;
-    padding: 12px !important;
-    font-size: 14px !important;
+    padding: 11px !important;
+    font-size: 13.5px !important;
     border-radius: 9999px !important;
-    min-height: 44px;
+    min-height: 44px !important;
   }
 
   .recite-pagination {
-    gap: 6px;
-    justify-content: space-between;
+    gap: 6px !important;
+    justify-content: space-between !important;
   }
 
   .recite-page-btn {
-    padding: 8px 12px;
-    font-size: 12px;
-    border-radius: 9999px;
+    padding: 8px 12px !important;
+    font-size: 12px !important;
+    border-radius: 9999px !important;
   }
 
-  /* 英语魔法屋：剪贴练习册 */
+  /* 3. 剪贴练习册 */
   .worksheet-instructions {
-    padding: 10px 12px;
-    font-size: 12px;
-    border-radius: 14px;
+    padding: 10px 12px !important;
+    font-size: 12px !important;
+    border-radius: 14px !important;
   }
 
   .worksheet-grid {
@@ -3013,8 +3120,8 @@ input:checked + .slider-round:before {
   }
 
   .card-action-name {
-    font-size: 11px;
-    padding: 2px 6px;
+    font-size: 11px !important;
+    padding: 2px 6px !important;
   }
 
   .sentence-cloze {
@@ -3041,7 +3148,7 @@ input:checked + .slider-round:before {
   }
 
   .word-bank-header h4 {
-    font-size: 14px;
+    font-size: 14px !important;
   }
 
   .word-bank-chips {
@@ -3055,7 +3162,7 @@ input:checked + .slider-round:before {
     border-radius: 9999px !important;
   }
 
-  /* 英语魔法屋：16动作词全景 */
+  /* 4. 16动作词全景 */
   .all-cards-grid-section {
     padding: 14px 10px !important;
     border-radius: 18px !important;
@@ -3063,7 +3170,7 @@ input:checked + .slider-round:before {
   }
 
   .cards-grid-header h3 {
-    font-size: 17px;
+    font-size: 16px !important;
   }
 
   .all-action-cards-grid {
@@ -3089,10 +3196,88 @@ input:checked + .slider-round:before {
     font-size: 11px !important;
   }
 
-  /* 拼音大冒险：四线三格大卡片 */
+  /* 5. 英语听音选图 Quiz */
+  .quiz-section {
+    padding: 14px 10px !important;
+    border-radius: 18px !important;
+    border-width: 2px !important;
+  }
+
+  .quiz-options-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px !important;
+    margin-bottom: 14px !important;
+  }
+
+  .quiz-option-card {
+    border-radius: 12px !important;
+    border-width: 2px !important;
+  }
+
+  .quiz-opt-img {
+    height: 105px !important;
+  }
+
+  .quiz-opt-label {
+    font-size: 12.5px !important;
+    padding: 6px !important;
+  }
+
+  /* 6. 每日好句舞台 */
+  .sentence-stage-card {
+    padding: 18px 12px !important;
+    border-radius: 18px !important;
+    border-width: 2px !important;
+  }
+
+  .stage-icon {
+    font-size: 38px !important;
+    margin-bottom: 6px !important;
+  }
+
+  .stage-title {
+    font-size: 18px !important;
+  }
+
+  .stage-desc {
+    font-size: 12px !important;
+    margin-bottom: 14px !important;
+  }
+
+  .daily-sentence-display {
+    padding: 14px 10px !important;
+    border-radius: 12px !important;
+    margin-bottom: 14px !important;
+  }
+
+  .daily-sentence-en {
+    font-size: 17px !important;
+    line-height: 1.4 !important;
+    margin-bottom: 6px !important;
+  }
+
+  .daily-sentence-cn {
+    font-size: 13px !important;
+  }
+
+  .stage-actions {
+    flex-direction: column !important;
+    gap: 8px !important;
+    width: 100% !important;
+  }
+
+  .speech-big-btn {
+    width: 100% !important;
+    padding: 11px !important;
+    font-size: 13.5px !important;
+    min-height: 42px !important;
+  }
+
+  /* ================= 语文拼音移动端适配 ================= */
+  /* 1. 四线三格大展示 */
   .pinyin-stage-card {
-    padding: 16px 12px !important;
-    border-radius: 20px !important;
+    padding: 16px 10px !important;
+    border-radius: 18px !important;
     border-width: 2px !important;
   }
 
@@ -3100,8 +3285,8 @@ input:checked + .slider-round:before {
     width: 100% !important;
     max-width: 320px !important;
     height: 160px !important;
-    margin: 0 auto 14px !important;
-    border-radius: 14px !important;
+    margin: 0 auto 12px !important;
+    border-radius: 12px !important;
   }
 
   .pinyin-char-display {
@@ -3109,18 +3294,36 @@ input:checked + .slider-round:before {
     line-height: 160px !important;
   }
 
+  .pinyin-badge-row {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    flex-wrap: wrap !important;
+  }
+
+  .pinyin-type-tag {
+    font-size: 12px !important;
+    padding: 3px 10px !important;
+  }
+
+  .baidu-voice-tag {
+    font-size: 11.5px !important;
+    padding: 3px 10px !important;
+  }
+
   .mnemonic-box {
     padding: 8px 10px !important;
     font-size: 12px !important;
-    border-radius: 12px !important;
-    margin-bottom: 8px !important;
+    border-radius: 10px !important;
+    margin: 8px 0 !important;
   }
 
   .sound-tip-box {
     padding: 6px 10px !important;
-    font-size: 11px !important;
-    border-radius: 10px !important;
-    margin-bottom: 12px !important;
+    font-size: 11.5px !important;
+    border-radius: 8px !important;
+    margin: 8px 0 12px !important;
   }
 
   .pinyin-voice-controls {
@@ -3131,22 +3334,24 @@ input:checked + .slider-round:before {
   }
 
   .pinyin-voice-controls .speech-btn {
-    padding: 11px 8px !important;
+    padding: 11px 6px !important;
     font-size: 12px !important;
     width: 100% !important;
     justify-content: center !important;
     border-radius: 9999px !important;
-    min-height: 44px;
+    min-height: 44px !important;
   }
 
   .pagination-bar {
+    padding: 8px 10px !important;
     gap: 4px !important;
     justify-content: space-between !important;
+    border-radius: 9999px !important;
   }
 
   .page-btn {
-    padding: 8px 10px !important;
-    font-size: 11px !important;
+    padding: 7px 10px !important;
+    font-size: 11.5px !important;
     border-radius: 9999px !important;
   }
 
@@ -3155,15 +3360,15 @@ input:checked + .slider-round:before {
   }
 
   .dot-pill {
-    width: 30px !important;
-    height: 30px !important;
-    font-size: 13px !important;
+    width: 28px !important;
+    height: 28px !important;
+    font-size: 12px !important;
   }
 
-  /* 拼音大冒险：声韵拼读碰碰乐 */
+  /* 2. 声韵拼读碰碰乐 */
   .blend-arena {
-    padding: 16px 12px !important;
-    border-radius: 20px !important;
+    padding: 16px 10px !important;
+    border-radius: 18px !important;
     border-width: 2px !important;
   }
 
@@ -3172,29 +3377,29 @@ input:checked + .slider-round:before {
   }
 
   .blend-subtitle {
-    font-size: 12px !important;
+    font-size: 11.5px !important;
     margin-bottom: 10px !important;
   }
 
   .blend-stage {
     gap: 4px !important;
-    margin: 12px 0 !important;
+    margin: 10px 0 !important;
     justify-content: center !important;
   }
 
   .blend-block {
-    width: 64px !important;
-    height: 64px !important;
-    border-radius: 14px !important;
+    width: 62px !important;
+    height: 62px !important;
+    border-radius: 12px !important;
     border-width: 2px !important;
   }
 
   .blend-block .block-char {
-    font-size: 26px !important;
+    font-size: 24px !important;
   }
 
   .blend-block .block-label {
-    font-size: 10px !important;
+    font-size: 9.5px !important;
   }
 
   .blend-operator {
@@ -3204,31 +3409,32 @@ input:checked + .slider-round:before {
   .trigger-blend-btn {
     width: 100% !important;
     padding: 12px !important;
-    font-size: 15px !important;
+    font-size: 14.5px !important;
     border-radius: 9999px !important;
     min-height: 46px !important;
   }
 
   .blend-success-box {
     padding: 12px !important;
-    border-radius: 14px !important;
-    margin-top: 12px !important;
+    border-radius: 12px !important;
+    margin-top: 10px !important;
   }
 
   .blend-word-display .word-pinyin {
-    font-size: 20px !important;
+    font-size: 19px !important;
   }
 
   .blend-word-display .word-text {
-    font-size: 18px !important;
+    font-size: 17px !important;
   }
 
   .repeat-blend-speech-btn {
     width: 100% !important;
-    padding: 10px !important;
+    padding: 9px !important;
     font-size: 12px !important;
     justify-content: center !important;
     border-radius: 9999px !important;
+    min-height: 38px !important;
   }
 
   .blend-selector-row {
@@ -3236,11 +3442,11 @@ input:checked + .slider-round:before {
   }
 
   .blend-pill-btn {
-    padding: 5px 10px !important;
+    padding: 5px 9px !important;
     font-size: 11px !important;
   }
 
-  /* 拼音大冒险：听音选拼音测试 */
+  /* 3. 听音选拼音小测验 */
   .pinyin-quiz-section {
     padding: 14px 10px !important;
     border-radius: 18px !important;
@@ -3259,127 +3465,165 @@ input:checked + .slider-round:before {
     padding: 10px !important;
     font-size: 13px !important;
     border-radius: 9999px !important;
+    min-height: 40px !important;
   }
 
   .pinyin-options-grid {
     grid-template-columns: repeat(2, 1fr) !important;
-    gap: 10px !important;
+    gap: 8px !important;
   }
 
   .pinyin-opt-card {
-    padding: 14px 8px !important;
-    border-radius: 16px !important;
-    min-height: 80px !important;
+    padding: 12px 6px !important;
+    border-radius: 14px !important;
+    min-height: 74px !important;
   }
 
   .pinyin-opt-card .opt-char {
-    font-size: 34px !important;
+    font-size: 32px !important;
   }
 
-  /* 儿歌绘本指读 */
-  .reading-container {
+  /* ================= 儿歌绘本指读移动端适配 ================= */
+  .reading-container,
+  .reading-stage-card {
     padding: 14px 10px !important;
-    border-radius: 20px !important;
+    border-radius: 18px !important;
     border-width: 2px !important;
   }
 
   .reading-main-content {
     grid-template-columns: 1fr !important;
-    gap: 14px !important;
+    gap: 12px !important;
   }
 
   .reading-cover-wrap {
     height: 160px !important;
-    border-radius: 14px !important;
+    border-radius: 12px !important;
   }
 
   .reading-cover-img {
     height: 160px !important;
   }
 
-  .reading-title-banner h3 {
+  .reading-header-banner {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 8px !important;
+  }
+
+  .reading-main-title {
     font-size: 18px !important;
   }
 
-  .lines-container {
-    padding: 12px 6px !important;
+  .reading-actions-bar {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
     gap: 8px !important;
-  }
-
-  .reading-line {
-    gap: 4px !important;
-    justify-content: center !important;
-    flex-wrap: wrap !important;
-  }
-
-  .char-block {
-    width: 36px !important;
-    height: 48px !important;
-    border-radius: 8px !important;
-  }
-
-  .char-pinyin {
-    font-size: 10px !important;
-  }
-
-  .char-text {
-    font-size: 19px !important;
-  }
-
-  .karaoke-bar {
-    flex-direction: column !important;
-    gap: 8px !important;
-    align-items: stretch !important;
-  }
-
-  .karaoke-btn {
     width: 100% !important;
-    justify-content: center !important;
-    padding: 12px !important;
-    font-size: 14px !important;
-    border-radius: 9999px !important;
-    min-height: 44px;
   }
 
-  /* 往期作业归档列表 */
+  .read-all-btn,
+  .hide-char-btn {
+    padding: 9px 8px !important;
+    font-size: 12px !important;
+    min-height: 38px !important;
+    text-align: center !important;
+    border-radius: 9999px !important;
+  }
+
+  .reading-text-board {
+    gap: 10px !important;
+  }
+
+  .reading-line-row {
+    padding: 8px 6px !important;
+    gap: 6px !important;
+    border-radius: 12px !important;
+  }
+
+  .line-play-badge {
+    width: 26px !important;
+    height: 26px !important;
+    font-size: 11px !important;
+  }
+
+  .ruby-chars-wrap {
+    gap: 4px !important;
+  }
+
+  .ruby-char-item {
+    min-width: 22px !important;
+  }
+
+  .pinyin-ruby {
+    font-size: 11px !important;
+  }
+
+  .hanzi-base {
+    font-size: 22px !important;
+  }
+
+  .recite-challenge-card {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 8px !important;
+    text-align: center !important;
+    padding: 12px !important;
+    border-radius: 14px !important;
+  }
+
+  .recite-confirm-btn {
+    width: 100% !important;
+    min-height: 42px !important;
+    font-size: 13px !important;
+    border-radius: 9999px !important;
+  }
+
+  /* ================= 往期作业归档列表适配 ================= */
   .history-header-banner {
-    padding: 14px 12px !important;
-    border-radius: 18px !important;
+    padding: 12px 10px !important;
+    border-radius: 16px !important;
     border-width: 2px !important;
     flex-direction: column !important;
     align-items: stretch !important;
-    gap: 10px !important;
+    gap: 8px !important;
   }
 
   .banner-left {
-    gap: 10px !important;
+    gap: 8px !important;
   }
 
   .banner-icon {
-    font-size: 32px !important;
+    font-size: 28px !important;
   }
 
   .banner-title {
-    font-size: 18px !important;
+    font-size: 16px !important;
   }
 
   .history-add-btn {
     width: 100% !important;
     justify-content: center !important;
     padding: 10px !important;
+    font-size: 13px !important;
     border-radius: 9999px !important;
   }
 
   .history-card {
-    padding: 14px 12px !important;
-    border-radius: 18px !important;
+    padding: 12px 10px !important;
+    border-radius: 14px !important;
     border-width: 2px !important;
-    gap: 10px !important;
+    gap: 8px !important;
+  }
+
+  .history-card-top {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 6px !important;
   }
 
   .history-topic {
-    font-size: 16px !important;
-    margin-bottom: 4px !important;
+    font-size: 15px !important;
   }
 
   .chip-row {
@@ -3388,33 +3632,30 @@ input:checked + .slider-round:before {
     gap: 4px !important;
   }
 
-  .chip-category {
-    min-width: unset !important;
-  }
-
-  .history-card-footer {
-    justify-content: stretch !important;
-    width: 100% !important;
-  }
-
   .history-switch-btn {
     width: 100% !important;
     justify-content: center !important;
     padding: 10px !important;
     border-radius: 9999px !important;
+    min-height: 40px !important;
   }
 
-  /* 弹窗适配（家长设置、音效设置、贴纸本、通关勋章） */
+  /* ================= 通用弹窗移动端适配 (家长/设置/贴纸本/通关勋章) ================= */
+  .modal-overlay {
+    padding: 10px !important;
+  }
+
   .parent-modal-card,
   .settings-modal-card,
-  .sticker-modal-card,
-  .reward-card {
-    width: 94% !important;
-    max-width: 400px !important;
-    padding: 16px 14px !important;
-    border-radius: 22px !important;
+  .sticker-book-modal,
+  .reward-modal-card {
+    width: 95% !important;
+    max-width: min(395px, 94vw) !important;
+    padding: 16px 12px !important;
+    border-radius: 20px !important;
     border-width: 3px !important;
     max-height: 88dvh !important;
+    overflow-y: auto !important;
   }
 
   .stickers-grid {
@@ -3422,30 +3663,65 @@ input:checked + .slider-round:before {
     gap: 6px !important;
   }
 
-  .sticker-cell {
-    padding: 8px 4px !important;
+  .sticker-slot {
+    padding: 10px 4px !important;
+    border-radius: 12px !important;
   }
 
-  .sticker-icon {
-    font-size: 30px !important;
+  .sticker-icon-display {
+    font-size: 32px !important;
+    margin-bottom: 3px !important;
   }
 
-  .sticker-name {
-    font-size: 11px !important;
+  .sticker-label {
+    font-size: 11.5px !important;
   }
 
-  /* 底部打卡按钮适配 */
+  .sticker-desc-small {
+    font-size: 10px !important;
+  }
+
+  .reward-sticker-icon {
+    font-size: 52px !important;
+  }
+
+  .reward-sticker-name {
+    font-size: 18px !important;
+  }
+
+  .reward-sticker-desc {
+    font-size: 12.5px !important;
+  }
+
+  .reward-action-row {
+    flex-direction: column !important;
+    gap: 8px !important;
+    width: 100% !important;
+  }
+
+  .reward-btn {
+    width: 100% !important;
+    min-height: 42px !important;
+  }
+
+  /* ================= 底部大打卡按钮适配 ================= */
   .homework-bottom-bar {
-    padding: 12px 10px max(12px, env(safe-area-inset-bottom)) !important;
     position: sticky !important;
     bottom: 0 !important;
-    z-index: 50 !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 90 !important;
+    margin: 16px -10px -10px -10px !important;
+    padding: 10px 12px calc(10px + env(safe-area-inset-bottom)) !important;
+    background: linear-gradient(to top, rgba(255, 240, 245, 0.98) 75%, rgba(255, 240, 245, 0)) !important;
+    backdrop-filter: blur(8px) !important;
   }
 
   .finish-homework-btn {
     width: 100% !important;
     padding: 13px 16px !important;
-    font-size: 15px !important;
+    font-size: 15.5px !important;
+    font-weight: 800 !important;
     border-radius: 9999px !important;
     min-height: 48px !important;
     box-shadow: 0 8px 24px rgba(255, 77, 109, 0.35) !important;
@@ -3455,30 +3731,30 @@ input:checked + .slider-round:before {
 /* 超窄屏额外微调 (<= 385px, 例如 Galaxy S24+ 小缩放/大字号模式) */
 @media screen and (max-width: 385px) {
   .nav-tab .nav-icon {
-    font-size: 16px;
+    font-size: 16px !important;
   }
 
   .nav-tab .nav-label {
-    font-size: 10px;
-    letter-spacing: -0.5px;
+    font-size: 10px !important;
+    letter-spacing: -0.5px !important;
   }
 
   .action-btn {
-    padding: 6px 2px;
-    font-size: 11px;
+    padding: 6px 2px !important;
+    font-size: 11px !important;
   }
 
   .action-btn .btn-text {
-    font-size: 11px;
+    font-size: 11px !important;
   }
 
   .blend-block {
-    width: 58px !important;
-    height: 58px !important;
+    width: 56px !important;
+    height: 56px !important;
   }
 
   .blend-block .block-char {
-    font-size: 24px !important;
+    font-size: 22px !important;
   }
 }
 
