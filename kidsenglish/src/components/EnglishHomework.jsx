@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { speakEnglish, stopSpeech } from '../utils/speech'
 import { playPop, playCorrect, playTryAgain, playMagic, playCheer } from '../utils/sound'
+import { WordDetailModal } from './WordDetailModal'
+import { InteractiveSentence } from './InteractiveSentence'
+import { lookupWord } from '../data/dictionary'
 
 export function ActionImage({ src, alt, emoji, className = '' }) {
   const [hasError, setHasError] = useState(false)
@@ -73,6 +76,17 @@ function StatementsHomeworkView({ data, isCompleted, onCompleteTask }) {
   const [listeningTarget, setListeningTarget] = useState(null)
   const [listeningFeedback, setListeningFeedback] = useState(null)
   const [listeningScore, setListeningScore] = useState(0)
+
+  // 词典卡片弹窗状态
+  const [selectedWordData, setSelectedWordData] = useState(null)
+
+  const handleWordClick = (rawWord) => {
+    playPop()
+    const wordInfo = lookupWord(rawWord)
+    if (wordInfo) {
+      setSelectedWordData(wordInfo)
+    }
+  }
 
   const sentences = data.sentences || []
   const currentSent = sentences[currentSentIdx] || sentences[0]
@@ -198,6 +212,14 @@ function StatementsHomeworkView({ data, isCompleted, onCompleteTask }) {
             </div>
           </div>
 
+          {/* 单词点击即查小助手提示 */}
+          <div className="word-lookup-helper-tip">
+            <span className="helper-tip-icon">💡</span>
+            <div className="helper-tip-content">
+              <strong>生词随时点：</strong>遇到不认识的单词？直接<strong>点击句子里的任意英文单词</strong>，即可查看纯正发音、国际音标与中英详细解释！
+            </div>
+          </div>
+
           {/* 主改写操作卡片 */}
           <div className="statement-rewrite-card animate-pop">
             {/* 卡片头部：题号与插图 */}
@@ -228,11 +250,10 @@ function StatementsHomeworkView({ data, isCompleted, onCompleteTask }) {
             <div className="raw-sentence-box">
               <div className="box-label">
                 <span className="label-icon">⚠️</span>
-                <span>作业纸上的未改写原句（找找哪里不合规则？）：</span>
+                <span>作业纸上的未改写原句（点击单词查释义）：</span>
               </div>
               <div className="raw-sentence-text">
-                <span className="error-first-char">"{currentSent.rawFirstChar}"</span>
-                <span>{currentSent.raw.slice(1)}</span>
+                <InteractiveSentence text={currentSent.raw} onWordClick={handleWordClick} />
                 <span className="missing-period-tag">[缺少句号]</span>
               </div>
             </div>
@@ -301,6 +322,12 @@ function StatementsHomeworkView({ data, isCompleted, onCompleteTask }) {
                 </div>
               </div>
 
+              {/* 可交互点读单词条 */}
+              <div className="interactive-sentence-strip">
+                <span className="strip-hint">👆 点击单词查音标释义：</span>
+                <InteractiveSentence text={currentSent.corrected} onWordClick={handleWordClick} />
+              </div>
+
               <div className="sentence-cn-translation">
                 <strong>中文含义：</strong> {currentSent.translation}
               </div>
@@ -314,14 +341,15 @@ function StatementsHomeworkView({ data, isCompleted, onCompleteTask }) {
 
             {/* 重点词汇点读条 */}
             <div className="sentence-keywords-bar">
-              <span className="bar-label">点单词听发音：</span>
+              <span className="bar-label">📖 重点词汇速查卡（点击查看音标与释义）：</span>
               {currentSent.keyWords.map((kw, i) => (
                 <button 
                   key={i} 
                   className="keyword-chip"
-                  onClick={() => { playPop(); speakEnglish(kw.en); }}
+                  onClick={() => handleWordClick(kw.en)}
+                  title={`点击查看 "${kw.en}" 音标与中英释义`}
                 >
-                  🔊 <strong>{kw.en}</strong> ({kw.cn})
+                  📖 <strong>{kw.en}</strong> ({kw.cn})
                 </button>
               ))}
             </div>
@@ -452,6 +480,9 @@ function StatementsHomeworkView({ data, isCompleted, onCompleteTask }) {
 
           {/* 范例小卡片切换 */}
           <div className="samples-container">
+            <div className="samples-helper-pill">
+              💡 提示：示范作文中的所有单词均可直接点击，查阅音标、慢速发音与中英文详细解释！
+            </div>
             <div className="samples-nav">
               <span className="samples-label">精选优秀示范作文（在纸上可直接借鉴）：</span>
               {writingTask.samples && writingTask.samples.map((s, idx) => (
@@ -473,9 +504,7 @@ function StatementsHomeworkView({ data, isCompleted, onCompleteTask }) {
                       <div className="line-num-pill">句 {lIdx + 1}</div>
                       <div className="line-content">
                         <div className="line-en">
-                          <strong className="first-capital">{line.en.charAt(0)}</strong>
-                          {line.en.slice(1, -1)}
-                          <strong className="last-period">.</strong>
+                          <InteractiveSentence text={line.en} onWordClick={handleWordClick} />
                         </div>
                         <div className="line-cn">{line.cn}</div>
                       </div>
@@ -483,7 +512,7 @@ function StatementsHomeworkView({ data, isCompleted, onCompleteTask }) {
                         className="line-audio-btn"
                         onClick={() => { playPop(); speakEnglish(line.en); }}
                       >
-                        🔊 听朗读
+                        🔊 听整句
                       </button>
                     </div>
                   ))}
@@ -540,15 +569,16 @@ function StatementsHomeworkView({ data, isCompleted, onCompleteTask }) {
         <div className="statements-cards-section animate-pop">
           <div className="cards-grid-header">
             <h3>🐸 6 个核心知识词汇闪卡</h3>
-            <p>掌握青蛙与蟾蜍的专有英文词汇，看图辨特征！</p>
+            <p>掌握青蛙与蟾蜍的专有英文词汇，点击任意卡片查看发音、音标与释义！</p>
           </div>
 
           <div className="all-action-cards-grid">
             {words.map((w) => (
               <div 
                 key={w.id} 
-                className="action-mini-card"
-                onClick={() => { playPop(); speakEnglish(w.word); }}
+                className="action-mini-card clickable-dict-card"
+                onClick={() => handleWordClick(w.word)}
+                title={`点击查看 "${w.word}" 发音、音标与中英文详细解释`}
               >
                 <ActionImage src={w.image} alt={w.word} emoji={w.emoji} className="mini-card-img" />
                 <div className="mini-card-info">
@@ -556,7 +586,7 @@ function StatementsHomeworkView({ data, isCompleted, onCompleteTask }) {
                   <strong className="mini-word">{w.word}</strong>
                   <span className="mini-phonetic">{w.phonetic}</span>
                   <span className="mini-cn">{w.translation}</span>
-                  <button className="mini-sound-btn" title="播放发音">🔊</button>
+                  <button className="mini-sound-btn" title="查看音标与释义">📖 详细释义</button>
                 </div>
               </div>
             ))}
@@ -617,6 +647,14 @@ function StatementsHomeworkView({ data, isCompleted, onCompleteTask }) {
           {isCompleted ? '✅ 句子改写与小作文已通关（再次庆祝）' : '🎉 我完成句子改写与小作文啦！打卡领贴纸'}
         </button>
       </div>
+
+      {/* 点击单词弹出发音、音标与释义卡片 */}
+      {selectedWordData && (
+        <WordDetailModal 
+          wordData={selectedWordData} 
+          onClose={() => setSelectedWordData(null)} 
+        />
+      )}
     </div>
   )
 }
@@ -628,6 +666,17 @@ function ActionWordsHomeworkView({ data, isCompleted, onCompleteTask }) {
   const [currentIdx, setCurrentIdx] = useState(0)
   const [isAnswerHidden, setIsAnswerHidden] = useState(false)
   const [activeSubTab, setActiveSubTab] = useState('recite') // 'recite' | 'worksheet' | 'cards' | 'quiz'
+  
+  // 词典卡片弹窗状态
+  const [selectedWordData, setSelectedWordData] = useState(null)
+
+  const handleWordClick = (rawWord) => {
+    playPop()
+    const wordInfo = lookupWord(rawWord)
+    if (wordInfo) {
+      setSelectedWordData(wordInfo)
+    }
+  }
   
   // 听音选图题目状态
   const [quizTarget, setQuizTarget] = useState(null)
@@ -796,7 +845,14 @@ function ActionWordsHomeworkView({ data, isCompleted, onCompleteTask }) {
                   ) : (
                     <>
                       <div className="bubble-en highlight-en">
-                        "{currentWord.gender === 'he' ? 'He' : 'She'} is <strong className="action-bold">{currentWord.word}</strong>."
+                        "{currentWord.gender === 'he' ? 'He' : 'She'} is{' '}
+                        <strong 
+                          className="action-bold clickable-word-token"
+                          onClick={() => handleWordClick(currentWord.word)}
+                          title="点击查看音标与中英释义"
+                        >
+                          {currentWord.word}
+                        </strong>."
                       </div>
                       <div className="bubble-cn">
                         {currentWord.gender === 'he' ? '他' : '她'}正在{currentWord.translation}。
@@ -816,6 +872,13 @@ function ActionWordsHomeworkView({ data, isCompleted, onCompleteTask }) {
                       onClick={() => { playPop(); speakEnglish(`${currentWord.gender === 'he' ? 'He' : 'She'} is ${currentWord.word}.`, true); }}
                     >
                       🐢 乌龟慢速跟读
+                    </button>
+                    <button 
+                      className="answer-audio-btn lookup-btn"
+                      onClick={() => handleWordClick(currentWord.word)}
+                      title="查看音标与释义"
+                    >
+                      📖 查词典与音标
                     </button>
                     <button 
                       className={`peek-answer-btn ${isAnswerHidden ? 'active' : ''}`}
@@ -955,25 +1018,23 @@ function ActionWordsHomeworkView({ data, isCompleted, onCompleteTask }) {
         <div className="all-cards-grid-section">
           <div className="cards-grid-header">
             <h3>📖 16 个 Action Words 全景图文表</h3>
-            <p>点击任意卡片听纯正发音，提前复习不卡壳！</p>
+            <p>掌握动作词汇，点击任意卡片查看纯正发音、音标与详细解释！</p>
           </div>
 
           <div className="all-action-cards-grid">
             {words.map((w) => (
               <div 
                 key={w.id} 
-                className="action-mini-card"
-                onClick={() => {
-                  playPop()
-                  speakEnglish(w.word)
-                }}
+                className="action-mini-card clickable-dict-card"
+                onClick={() => handleWordClick(w.word)}
+                title={`点击查看 "${w.word}" 发音、音标与中英文详细解释`}
               >
                 <ActionImage src={w.image} alt={w.word} emoji={w.emoji} className="mini-card-img" />
                 <div className="mini-card-info">
                   <span className="mini-emoji">{w.emoji}</span>
                   <strong className="mini-word">{w.word}</strong>
                   <span className="mini-cn">{w.translation}</span>
-                  <button className="mini-sound-btn" title="播放发音">🔊</button>
+                  <button className="mini-sound-btn" title="查看音标与释义">📖 详细释义</button>
                 </div>
               </div>
             ))}
@@ -1034,6 +1095,14 @@ function ActionWordsHomeworkView({ data, isCompleted, onCompleteTask }) {
           {isCompleted ? '✅ Action Words 作业已通关（再次庆祝）' : '🎉 我会背诵问答了！打卡领贴纸'}
         </button>
       </div>
+
+      {/* 点击单词弹出发音、音标与释义卡片 */}
+      {selectedWordData && (
+        <WordDetailModal 
+          wordData={selectedWordData} 
+          onClose={() => setSelectedWordData(null)} 
+        />
+      )}
     </div>
   )
 }
