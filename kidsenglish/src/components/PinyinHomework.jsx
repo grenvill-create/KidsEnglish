@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { speakChinese } from '../utils/speech'
+import { speakPinyinBaidu } from '../utils/speech'
 import { playPop, playCorrect, playMagic, playCheer, playTryAgain } from '../utils/sound'
 
 export function PinyinHomework({ data, isCompleted, onCompleteTask }) {
@@ -19,6 +19,16 @@ export function PinyinHomework({ data, isCompleted, onCompleteTask }) {
   const currentLetter = data.letters[currentLetterIdx] || data.letters[0]
   const currentBlend = data.blends[currentBlendIdx] || data.blends[0]
 
+  // 切换到指定字母卡并自动真人发音
+  const selectLetter = (idx) => {
+    playPop()
+    setCurrentLetterIdx(idx)
+    const target = data.letters[idx]
+    if (target) {
+      speakPinyinBaidu(target.char)
+    }
+  }
+
   // 声韵碰一碰动画触发
   const handleTriggerBlend = () => {
     playMagic()
@@ -28,8 +38,8 @@ export function PinyinHomework({ data, isCompleted, onCompleteTask }) {
       setIsColliding(false)
       setHasCollided(true)
       playCorrect()
-      // 朗读拼读过程：如 b - a - ba
-      speakChinese(`${currentBlend.initial}……${currentBlend.final}……${currentBlend.result}……${currentBlend.word}`)
+      // 百度真人朗读拼读过程：如 玻……啊……八！八只鸭子
+      speakPinyinBaidu(`${currentBlend.initial}……${currentBlend.final}……${currentBlend.result}！${currentBlend.word}`)
     }, 600)
   }
 
@@ -38,7 +48,7 @@ export function PinyinHomework({ data, isCompleted, onCompleteTask }) {
     const target = data.letters[Math.floor(Math.random() * data.letters.length)]
     setQuizLetter(target)
     setQuizFeedback(null)
-    speakChinese(target.char)
+    speakPinyinBaidu(target.char)
   }
 
   const handleQuizAnswer = (letterObj) => {
@@ -52,6 +62,8 @@ export function PinyinHomework({ data, isCompleted, onCompleteTask }) {
     } else {
       playTryAgain()
       setQuizFeedback('wrong')
+      // 读出孩子误选的字母，辅助对比辩音
+      speakPinyinBaidu(letterObj.char)
     }
   }
 
@@ -61,7 +73,11 @@ export function PinyinHomework({ data, isCompleted, onCompleteTask }) {
       <div className="sub-nav-bar">
         <button 
           className={`sub-tab-btn ${activeSubTab === 'cards' ? 'active' : ''}`}
-          onClick={() => { playPop(); setActiveSubTab('cards'); }}
+          onClick={() => { 
+            playPop()
+            setActiveSubTab('cards')
+            speakPinyinBaidu(currentLetter.char)
+          }}
         >
           🗂️ 拼音字母认读 ({currentLetterIdx + 1}/{data.letters.length})
         </button>
@@ -76,9 +92,9 @@ export function PinyinHomework({ data, isCompleted, onCompleteTask }) {
         <button 
           className={`sub-tab-btn ${activeSubTab === 'quiz' ? 'active' : ''}`}
           onClick={() => { 
-            playPop(); 
-            setActiveSubTab('quiz'); 
-            initQuiz();
+            playPop()
+            setActiveSubTab('quiz')
+            initQuiz()
           }}
         >
           👂 听音选拼音小测验
@@ -96,13 +112,32 @@ export function PinyinHomework({ data, isCompleted, onCompleteTask }) {
               <div className="grid-line line-3"></div>
               <div className="grid-line line-4"></div>
               
-              <div className="pinyin-char-display animate-pop">
+              <div 
+                className="pinyin-char-display animate-pop"
+                style={{ cursor: 'pointer' }}
+                title="点击听百度真人发音"
+                onClick={() => { playPop(); speakPinyinBaidu(currentLetter.char); }}
+              >
                 {currentLetter.char}
               </div>
             </div>
 
             <div className="pinyin-badge-row">
               <span className="pinyin-type-tag">{currentLetter.type}</span>
+              <span className="baidu-voice-tag" style={{
+                background: 'linear-gradient(135deg, #e0f2fe, #bae6fd)',
+                color: '#0284c7',
+                padding: '4px 12px',
+                borderRadius: '999px',
+                fontSize: '13px',
+                fontWeight: 'bold',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '4px',
+                border: '1px solid #7dd3fc'
+              }}>
+                🎙️ 百度真人发音
+              </span>
             </div>
 
             {/* 记忆顺口溜 */}
@@ -121,13 +156,13 @@ export function PinyinHomework({ data, isCompleted, onCompleteTask }) {
             <div className="pinyin-voice-controls">
               <button 
                 className="speech-btn normal-speed-btn"
-                onClick={() => { playPop(); speakChinese(currentLetter.char); }}
+                onClick={() => { playPop(); speakPinyinBaidu(currentLetter.char); }}
               >
-                🔊 听标准发音
+                🔊 百度真人发音
               </button>
               <button 
                 className="speech-btn slow-speed-btn"
-                onClick={() => { playPop(); speakChinese(currentLetter.char, true); }}
+                onClick={() => { playPop(); speakPinyinBaidu(currentLetter.char, true); }}
               >
                 🐢 慢速跟着读
               </button>
@@ -139,7 +174,7 @@ export function PinyinHomework({ data, isCompleted, onCompleteTask }) {
             <button 
               className="page-btn prev-btn"
               disabled={currentLetterIdx === 0}
-              onClick={() => { playPop(); setCurrentLetterIdx(prev => prev - 1); }}
+              onClick={() => selectLetter(currentLetterIdx - 1)}
             >
               👈 上一个字母
             </button>
@@ -149,7 +184,7 @@ export function PinyinHomework({ data, isCompleted, onCompleteTask }) {
                 <button 
                   key={p.id}
                   className={`dot-pill ${idx === currentLetterIdx ? 'active' : ''}`}
-                  onClick={() => { playPop(); setCurrentLetterIdx(idx); }}
+                  onClick={() => selectLetter(idx)}
                 >
                   {p.char}
                 </button>
@@ -159,7 +194,7 @@ export function PinyinHomework({ data, isCompleted, onCompleteTask }) {
             <button 
               className="page-btn next-btn"
               disabled={currentLetterIdx === data.letters.length - 1}
-              onClick={() => { playPop(); setCurrentLetterIdx(prev => prev + 1); }}
+              onClick={() => selectLetter(currentLetterIdx + 1)}
             >
               下一个字母 👉
             </button>
@@ -176,7 +211,12 @@ export function PinyinHomework({ data, isCompleted, onCompleteTask }) {
 
             <div className="blend-stage">
               {/* 左侧声母 */}
-              <div className={`blend-block initial-block ${isColliding ? 'collide-right' : ''}`}>
+              <div 
+                className={`blend-block initial-block ${isColliding ? 'collide-right' : ''}`}
+                style={{ cursor: 'pointer' }}
+                title="点击听发音"
+                onClick={() => { playPop(); speakPinyinBaidu(currentBlend.initial); }}
+              >
                 <span className="block-label">声母</span>
                 <span className="block-char">{currentBlend.initial}</span>
               </div>
@@ -184,7 +224,12 @@ export function PinyinHomework({ data, isCompleted, onCompleteTask }) {
               <div className="blend-operator">+</div>
 
               {/* 右侧韵母 */}
-              <div className={`blend-block final-block ${isColliding ? 'collide-left' : ''}`}>
+              <div 
+                className={`blend-block final-block ${isColliding ? 'collide-left' : ''}`}
+                style={{ cursor: 'pointer' }}
+                title="点击听发音"
+                onClick={() => { playPop(); speakPinyinBaidu(currentBlend.final); }}
+              >
                 <span className="block-label">韵母</span>
                 <span className="block-char">{currentBlend.final}</span>
               </div>
@@ -192,7 +237,17 @@ export function PinyinHomework({ data, isCompleted, onCompleteTask }) {
               <div className="blend-operator">=</div>
 
               {/* 拼出结果 */}
-              <div className={`blend-block result-block ${hasCollided ? 'show-result animate-bounce' : ''}`}>
+              <div 
+                className={`blend-block result-block ${hasCollided ? 'show-result animate-bounce' : ''}`}
+                style={{ cursor: hasCollided ? 'pointer' : 'default' }}
+                title={hasCollided ? '点击听发音' : ''}
+                onClick={() => {
+                  if (hasCollided) {
+                    playPop()
+                    speakPinyinBaidu(`${currentBlend.result}，${currentBlend.word}`)
+                  }
+                }}
+              >
                 <span className="block-label">拼读音节</span>
                 <span className="block-char">{hasCollided ? currentBlend.result : '❓'}</span>
               </div>
@@ -217,9 +272,9 @@ export function PinyinHomework({ data, isCompleted, onCompleteTask }) {
                 </div>
                 <button 
                   className="repeat-blend-speech-btn"
-                  onClick={() => { playPop(); speakChinese(`${currentBlend.result}，${currentBlend.word}`); }}
+                  onClick={() => { playPop(); speakPinyinBaidu(`${currentBlend.result}，${currentBlend.word}`); }}
                 >
-                  🔊 再听一遍例词
+                  🔊 百度真人朗读例词
                 </button>
               </div>
             )}
@@ -252,9 +307,9 @@ export function PinyinHomework({ data, isCompleted, onCompleteTask }) {
             <h3>👂 仔细听读音，找出对应的拼音字母：</h3>
             <button 
               className="repeat-audio-btn"
-              onClick={() => { playPop(); speakChinese(quizLetter.char); }}
+              onClick={() => { playPop(); speakPinyinBaidu(quizLetter.char); }}
             >
-              🔊 再听一遍读音
+              🔊 百度真人再读一遍
             </button>
             <span className="score-pill">⭐ 答对: {quizScore} 题</span>
           </div>
@@ -279,7 +334,7 @@ export function PinyinHomework({ data, isCompleted, onCompleteTask }) {
           )}
           {quizFeedback === 'wrong' && (
             <div className="feedback-banner wrong-banner">
-              💡 听错啦，再仔细听一听口型和发音哦！
+              💡 听错啦，仔细听刚刚读的音哦！
             </div>
           )}
         </div>

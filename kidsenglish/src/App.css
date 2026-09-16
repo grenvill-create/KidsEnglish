@@ -2086,16 +2086,12 @@
   grid-template-columns: repeat(5, 1fr);
 }
 
-@media (max-width: 900px) {
-  .main-nav.five-tabs {
-    grid-template-columns: repeat(3, 1fr);
-  }
+.nav-label-short {
+  display: none;
 }
 
-@media (max-width: 600px) {
-  .main-nav.five-tabs {
-    grid-template-columns: repeat(2, 1fr);
-  }
+.nav-label-full {
+  display: inline;
 }
 
 /* 正在复习往期顶部浮动横幅 */
@@ -2586,6 +2582,816 @@ input:checked + .slider-round:before {
   font-size: 14px;
   font-weight: 700;
   box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25);
+}
+
+/* ================= 12. 三星 Galaxy S24+ 及移动端高精度适配 ================= */
+@media screen and (max-width: 600px) {
+  /* 基础容器与刘海/手势条安全区适配 */
+  .kids-app-container {
+    padding-top: max(10px, env(safe-area-inset-top));
+    padding-left: max(10px, env(safe-area-inset-left));
+    padding-right: max(10px, env(safe-area-inset-right));
+    padding-bottom: max(60px, calc(36px + env(safe-area-inset-bottom)));
+    width: 100%;
+    overflow-x: hidden;
+  }
+
+  /* 顶部 Header 结构收敛 */
+  .app-header {
+    padding: 12px 14px;
+    border-radius: 20px;
+    border-width: 2px;
+    margin-bottom: 14px;
+  }
+
+  .header-top {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  .child-badge {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .avatar-bubble {
+    width: 44px;
+    height: 44px;
+    font-size: 24px;
+    flex-shrink: 0;
+  }
+
+  .app-title {
+    font-size: 17px;
+  }
+
+  .date-tag {
+    font-size: 12px;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .weather-tag {
+    font-size: 11px;
+    padding: 1px 8px;
+  }
+
+  /* 顶部操作按钮三等分布局 */
+  .header-actions {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+    width: 100%;
+  }
+
+  .action-btn {
+    padding: 7px 4px;
+    font-size: 12px;
+    gap: 4px;
+    justify-content: center;
+    border-radius: 9999px;
+    min-height: 36px;
+  }
+
+  .action-btn .btn-text {
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  .action-btn .btn-icon {
+    font-size: 13px;
+  }
+
+  .badge-count {
+    padding: 0 5px;
+    font-size: 10px;
+  }
+
+  .sound-indicator-tag {
+    padding: 0 4px;
+    font-size: 11px;
+  }
+
+  /* 闯关进度条微缩 */
+  .progress-banner {
+    padding: 8px 12px;
+    margin-bottom: 10px;
+    border-radius: 12px;
+  }
+
+  .progress-label {
+    font-size: 12px;
+    margin-bottom: 6px;
+  }
+
+  .progress-track {
+    height: 10px;
+  }
+
+  /* 5 Tab 导航：单行5等分紧凑排列，图标+微标签，不折行 */
+  .main-nav.five-tabs {
+    display: grid !important;
+    grid-template-columns: repeat(5, 1fr) !important;
+    gap: 4px;
+    margin-top: 2px;
+  }
+
+  .nav-tab {
+    padding: 6px 1px;
+    min-height: 48px;
+    gap: 2px;
+    border-radius: 12px;
+    border-width: 1.5px;
+  }
+
+  .nav-tab .nav-icon {
+    font-size: 18px;
+  }
+
+  .nav-tab .nav-label {
+    font-size: 11px;
+    line-height: 1.1;
+    letter-spacing: -0.3px;
+    font-weight: 800;
+  }
+
+  .nav-label-full {
+    display: none !important;
+  }
+
+  .nav-label-short {
+    display: inline !important;
+  }
+
+  .nav-tab.active {
+    transform: scale(1.02);
+    box-shadow: 0 4px 12px rgba(255, 77, 109, 0.25);
+  }
+
+  /* 二级子导航（滑动切换条，触感极佳） */
+  .sub-nav-bar {
+    display: flex !important;
+    overflow-x: auto !important;
+    flex-wrap: nowrap !important;
+    gap: 8px !important;
+    padding: 4px 2px 10px !important;
+    margin-bottom: 12px !important;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .sub-nav-bar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .sub-tab-btn {
+    flex: 0 0 auto !important;
+    white-space: nowrap !important;
+    font-size: 12px !important;
+    padding: 7px 13px !important;
+    border-radius: 9999px !important;
+    min-height: 36px !important;
+  }
+
+  /* 今日大厅任务卡片 */
+  .cheer-banner {
+    padding: 14px 16px;
+    gap: 12px;
+    border-radius: 18px;
+    border-width: 2px;
+  }
+
+  .cheer-avatar {
+    width: 48px;
+    height: 48px;
+    font-size: 28px;
+  }
+
+  .cheer-content h3 {
+    font-size: 16px;
+  }
+
+  .cheer-content p {
+    font-size: 13px;
+  }
+
+  .celebrate-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 11px 16px;
+    font-size: 14px;
+  }
+
+  .task-grid {
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+  }
+
+  .task-card {
+    padding: 16px 14px;
+    border-radius: 18px;
+    border-width: 2px;
+  }
+
+  .card-task-title {
+    font-size: 16px;
+  }
+
+  .card-teacher-note {
+    font-size: 12px;
+    padding: 8px 10px;
+  }
+
+  .start-task-btn {
+    width: 100%;
+    padding: 12px;
+    font-size: 14px;
+    border-radius: 9999px;
+  }
+
+  /* 英语魔法屋：剧场问答背诵 */
+  .recite-banner-tip {
+    padding: 10px 12px;
+    font-size: 12px;
+    gap: 8px;
+    border-radius: 14px;
+  }
+
+  .tip-badge {
+    font-size: 11px;
+    padding: 2px 8px;
+  }
+
+  .recite-main-card {
+    grid-template-columns: 1fr !important;
+    padding: 14px !important;
+    gap: 14px !important;
+    border-radius: 20px !important;
+    border-width: 2px !important;
+  }
+
+  .recite-image-box {
+    height: 200px !important;
+    border-radius: 14px !important;
+  }
+
+  .recite-emoji-tag {
+    font-size: 28px;
+    top: 8px;
+    left: 8px;
+  }
+
+  .recite-action-tag {
+    font-size: 12px;
+    bottom: 8px;
+    right: 8px;
+    padding: 3px 10px;
+  }
+
+  .teacher-pattern-box {
+    padding: 10px 12px;
+    border-radius: 12px;
+  }
+
+  .pattern-title {
+    font-size: 12px;
+    margin-bottom: 4px;
+  }
+
+  .pattern-item {
+    font-size: 12px;
+    margin-bottom: 2px;
+  }
+
+  .bubble-sentence {
+    font-size: 16px !important;
+    margin-bottom: 4px;
+  }
+
+  .bubble-cn {
+    font-size: 12px !important;
+  }
+
+  .speech-prompt-row {
+    flex-direction: column !important;
+    gap: 8px !important;
+    width: 100% !important;
+  }
+
+  .theatre-speech-btn {
+    width: 100% !important;
+    justify-content: center !important;
+    padding: 12px !important;
+    font-size: 14px !important;
+    border-radius: 9999px !important;
+    min-height: 44px;
+  }
+
+  .recite-pagination {
+    gap: 6px;
+    justify-content: space-between;
+  }
+
+  .recite-page-btn {
+    padding: 8px 12px;
+    font-size: 12px;
+    border-radius: 9999px;
+  }
+
+  /* 英语魔法屋：剪贴练习册 */
+  .worksheet-instructions {
+    padding: 10px 12px;
+    font-size: 12px;
+    border-radius: 14px;
+  }
+
+  .worksheet-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px !important;
+  }
+
+  .worksheet-card {
+    padding: 8px 6px !important;
+    border-radius: 14px !important;
+    border-width: 2px !important;
+  }
+
+  .card-image-box {
+    height: 95px !important;
+    border-radius: 10px !important;
+  }
+
+  .card-action-name {
+    font-size: 11px;
+    padding: 2px 6px;
+  }
+
+  .sentence-cloze {
+    font-size: 12px !important;
+    margin: 6px 0 !important;
+  }
+
+  .drop-zone {
+    min-height: 32px !important;
+    font-size: 12px !important;
+    padding: 3px 6px !important;
+    border-radius: 10px !important;
+  }
+
+  .action-chip {
+    font-size: 11px !important;
+    padding: 2px 6px !important;
+  }
+
+  .word-bank-container {
+    padding: 12px 10px !important;
+    border-radius: 16px !important;
+    border-width: 2px !important;
+  }
+
+  .word-bank-header h4 {
+    font-size: 14px;
+  }
+
+  .word-bank-chips {
+    gap: 6px !important;
+    justify-content: center !important;
+  }
+
+  .bank-chip {
+    padding: 6px 12px !important;
+    font-size: 12px !important;
+    border-radius: 9999px !important;
+  }
+
+  /* 英语魔法屋：16动作词全景 */
+  .all-cards-grid-section {
+    padding: 14px 10px !important;
+    border-radius: 18px !important;
+    border-width: 2px !important;
+  }
+
+  .cards-grid-header h3 {
+    font-size: 17px;
+  }
+
+  .all-action-cards-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px !important;
+  }
+
+  .action-mini-card .mini-card-img {
+    height: 90px !important;
+  }
+
+  .mini-card-info {
+    padding: 6px !important;
+    gap: 2px !important;
+  }
+
+  .mini-word {
+    font-size: 13px !important;
+    font-weight: 700 !important;
+  }
+
+  .mini-cn {
+    font-size: 11px !important;
+  }
+
+  /* 拼音大冒险：四线三格大卡片 */
+  .pinyin-stage-card {
+    padding: 16px 12px !important;
+    border-radius: 20px !important;
+    border-width: 2px !important;
+  }
+
+  .four-lines-grid {
+    width: 100% !important;
+    max-width: 320px !important;
+    height: 160px !important;
+    margin: 0 auto 14px !important;
+    border-radius: 14px !important;
+  }
+
+  .pinyin-char-display {
+    font-size: 68px !important;
+    line-height: 160px !important;
+  }
+
+  .mnemonic-box {
+    padding: 8px 10px !important;
+    font-size: 12px !important;
+    border-radius: 12px !important;
+    margin-bottom: 8px !important;
+  }
+
+  .sound-tip-box {
+    padding: 6px 10px !important;
+    font-size: 11px !important;
+    border-radius: 10px !important;
+    margin-bottom: 12px !important;
+  }
+
+  .pinyin-voice-controls {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+    width: 100% !important;
+  }
+
+  .pinyin-voice-controls .speech-btn {
+    padding: 11px 8px !important;
+    font-size: 12px !important;
+    width: 100% !important;
+    justify-content: center !important;
+    border-radius: 9999px !important;
+    min-height: 44px;
+  }
+
+  .pagination-bar {
+    gap: 4px !important;
+    justify-content: space-between !important;
+  }
+
+  .page-btn {
+    padding: 8px 10px !important;
+    font-size: 11px !important;
+    border-radius: 9999px !important;
+  }
+
+  .dots-indicator {
+    gap: 4px !important;
+  }
+
+  .dot-pill {
+    width: 30px !important;
+    height: 30px !important;
+    font-size: 13px !important;
+  }
+
+  /* 拼音大冒险：声韵拼读碰碰乐 */
+  .blend-arena {
+    padding: 16px 12px !important;
+    border-radius: 20px !important;
+    border-width: 2px !important;
+  }
+
+  .blend-title {
+    font-size: 16px !important;
+  }
+
+  .blend-subtitle {
+    font-size: 12px !important;
+    margin-bottom: 10px !important;
+  }
+
+  .blend-stage {
+    gap: 4px !important;
+    margin: 12px 0 !important;
+    justify-content: center !important;
+  }
+
+  .blend-block {
+    width: 64px !important;
+    height: 64px !important;
+    border-radius: 14px !important;
+    border-width: 2px !important;
+  }
+
+  .blend-block .block-char {
+    font-size: 26px !important;
+  }
+
+  .blend-block .block-label {
+    font-size: 10px !important;
+  }
+
+  .blend-operator {
+    font-size: 16px !important;
+  }
+
+  .trigger-blend-btn {
+    width: 100% !important;
+    padding: 12px !important;
+    font-size: 15px !important;
+    border-radius: 9999px !important;
+    min-height: 46px !important;
+  }
+
+  .blend-success-box {
+    padding: 12px !important;
+    border-radius: 14px !important;
+    margin-top: 12px !important;
+  }
+
+  .blend-word-display .word-pinyin {
+    font-size: 20px !important;
+  }
+
+  .blend-word-display .word-text {
+    font-size: 18px !important;
+  }
+
+  .repeat-blend-speech-btn {
+    width: 100% !important;
+    padding: 10px !important;
+    font-size: 12px !important;
+    justify-content: center !important;
+    border-radius: 9999px !important;
+  }
+
+  .blend-selector-row {
+    gap: 4px !important;
+  }
+
+  .blend-pill-btn {
+    padding: 5px 10px !important;
+    font-size: 11px !important;
+  }
+
+  /* 拼音大冒险：听音选拼音测试 */
+  .pinyin-quiz-section {
+    padding: 14px 10px !important;
+    border-radius: 18px !important;
+  }
+
+  .quiz-header {
+    flex-direction: column !important;
+    gap: 8px !important;
+    align-items: stretch !important;
+    text-align: center !important;
+  }
+
+  .repeat-audio-btn {
+    width: 100% !important;
+    justify-content: center !important;
+    padding: 10px !important;
+    font-size: 13px !important;
+    border-radius: 9999px !important;
+  }
+
+  .pinyin-options-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+  }
+
+  .pinyin-opt-card {
+    padding: 14px 8px !important;
+    border-radius: 16px !important;
+    min-height: 80px !important;
+  }
+
+  .pinyin-opt-card .opt-char {
+    font-size: 34px !important;
+  }
+
+  /* 儿歌绘本指读 */
+  .reading-container {
+    padding: 14px 10px !important;
+    border-radius: 20px !important;
+    border-width: 2px !important;
+  }
+
+  .reading-main-content {
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+  }
+
+  .reading-cover-wrap {
+    height: 160px !important;
+    border-radius: 14px !important;
+  }
+
+  .reading-cover-img {
+    height: 160px !important;
+  }
+
+  .reading-title-banner h3 {
+    font-size: 18px !important;
+  }
+
+  .lines-container {
+    padding: 12px 6px !important;
+    gap: 8px !important;
+  }
+
+  .reading-line {
+    gap: 4px !important;
+    justify-content: center !important;
+    flex-wrap: wrap !important;
+  }
+
+  .char-block {
+    width: 36px !important;
+    height: 48px !important;
+    border-radius: 8px !important;
+  }
+
+  .char-pinyin {
+    font-size: 10px !important;
+  }
+
+  .char-text {
+    font-size: 19px !important;
+  }
+
+  .karaoke-bar {
+    flex-direction: column !important;
+    gap: 8px !important;
+    align-items: stretch !important;
+  }
+
+  .karaoke-btn {
+    width: 100% !important;
+    justify-content: center !important;
+    padding: 12px !important;
+    font-size: 14px !important;
+    border-radius: 9999px !important;
+    min-height: 44px;
+  }
+
+  /* 往期作业归档列表 */
+  .history-header-banner {
+    padding: 14px 12px !important;
+    border-radius: 18px !important;
+    border-width: 2px !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+  }
+
+  .banner-left {
+    gap: 10px !important;
+  }
+
+  .banner-icon {
+    font-size: 32px !important;
+  }
+
+  .banner-title {
+    font-size: 18px !important;
+  }
+
+  .history-add-btn {
+    width: 100% !important;
+    justify-content: center !important;
+    padding: 10px !important;
+    border-radius: 9999px !important;
+  }
+
+  .history-card {
+    padding: 14px 12px !important;
+    border-radius: 18px !important;
+    border-width: 2px !important;
+    gap: 10px !important;
+  }
+
+  .history-topic {
+    font-size: 16px !important;
+    margin-bottom: 4px !important;
+  }
+
+  .chip-row {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 4px !important;
+  }
+
+  .chip-category {
+    min-width: unset !important;
+  }
+
+  .history-card-footer {
+    justify-content: stretch !important;
+    width: 100% !important;
+  }
+
+  .history-switch-btn {
+    width: 100% !important;
+    justify-content: center !important;
+    padding: 10px !important;
+    border-radius: 9999px !important;
+  }
+
+  /* 弹窗适配（家长设置、音效设置、贴纸本、通关勋章） */
+  .parent-modal-card,
+  .settings-modal-card,
+  .sticker-modal-card,
+  .reward-card {
+    width: 94% !important;
+    max-width: 400px !important;
+    padding: 16px 14px !important;
+    border-radius: 22px !important;
+    border-width: 3px !important;
+    max-height: 88dvh !important;
+  }
+
+  .stickers-grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 6px !important;
+  }
+
+  .sticker-cell {
+    padding: 8px 4px !important;
+  }
+
+  .sticker-icon {
+    font-size: 30px !important;
+  }
+
+  .sticker-name {
+    font-size: 11px !important;
+  }
+
+  /* 底部打卡按钮适配 */
+  .homework-bottom-bar {
+    padding: 12px 10px max(12px, env(safe-area-inset-bottom)) !important;
+    position: sticky !important;
+    bottom: 0 !important;
+    z-index: 50 !important;
+  }
+
+  .finish-homework-btn {
+    width: 100% !important;
+    padding: 13px 16px !important;
+    font-size: 15px !important;
+    border-radius: 9999px !important;
+    min-height: 48px !important;
+    box-shadow: 0 8px 24px rgba(255, 77, 109, 0.35) !important;
+  }
+}
+
+/* 超窄屏额外微调 (<= 385px, 例如 Galaxy S24+ 小缩放/大字号模式) */
+@media screen and (max-width: 385px) {
+  .nav-tab .nav-icon {
+    font-size: 16px;
+  }
+
+  .nav-tab .nav-label {
+    font-size: 10px;
+    letter-spacing: -0.5px;
+  }
+
+  .action-btn {
+    padding: 6px 2px;
+    font-size: 11px;
+  }
+
+  .action-btn .btn-text {
+    font-size: 11px;
+  }
+
+  .blend-block {
+    width: 58px !important;
+    height: 58px !important;
+  }
+
+  .blend-block .block-char {
+    font-size: 24px !important;
+  }
 }
 
 

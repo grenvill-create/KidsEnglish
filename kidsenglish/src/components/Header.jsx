@@ -95,7 +95,10 @@ export function Header({
           onClick={() => { playPop(); setActiveTab('overview'); }}
         >
           <span className="nav-icon">🎒</span>
-          <span className="nav-label">今日作业大厅</span>
+          <span className="nav-label">
+            <span className="nav-label-full">今日作业大厅</span>
+            <span className="nav-label-short">作业大厅</span>
+          </span>
         </button>
 
         <button 
@@ -103,7 +106,10 @@ export function Header({
           onClick={() => { playPop(); setActiveTab('english'); }}
         >
           <span className="nav-icon">🔤</span>
-          <span className="nav-label">英语魔法屋</span>
+          <span className="nav-label">
+            <span className="nav-label-full">英语魔法屋</span>
+            <span className="nav-label-short">英语动作</span>
+          </span>
         </button>
 
         <button 
@@ -111,7 +117,10 @@ export function Header({
           onClick={() => { playPop(); setActiveTab('pinyin'); }}
         >
           <span className="nav-icon">🀄</span>
-          <span className="nav-label">拼音大冒险</span>
+          <span className="nav-label">
+            <span className="nav-label-full">拼音大冒险</span>
+            <span className="nav-label-short">拼音复习</span>
+          </span>
         </button>
 
         <button 
@@ -119,7 +128,10 @@ export function Header({
           onClick={() => { playPop(); setActiveTab('reading'); }}
         >
           <span className="nav-icon">📖</span>
-          <span className="nav-label">儿歌绘本指读</span>
+          <span className="nav-label">
+            <span className="nav-label-full">儿歌绘本指读</span>
+            <span className="nav-label-short">儿歌指读</span>
+          </span>
         </button>
 
         <button 
@@ -127,7 +139,10 @@ export function Header({
           onClick={() => { playPop(); setActiveTab('history'); }}
         >
           <span className="nav-icon">📅</span>
-          <span className="nav-label">往期作业清单</span>
+          <span className="nav-label">
+            <span className="nav-label-full">往期作业清单</span>
+            <span className="nav-label-short">往期清单</span>
+          </span>
         </button>
       </nav>
     </header>
