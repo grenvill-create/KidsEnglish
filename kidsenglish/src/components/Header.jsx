@@ -10,10 +10,21 @@ export function Header({
   setActiveTab, 
   onOpenParentModal,
   onOpenStickerBook,
-  unlockedStickersCount
+  unlockedStickersCount,
+  isReviewingPast = false,
+  onBackToToday = null
 }) {
   return (
     <header className="app-header">
+      {isReviewingPast && (
+        <div className="reviewing-past-banner animate-pop">
+          <span>💡 当前正在复习：<strong>{currentDate}</strong> 的作业</span>
+          <button className="back-today-pill" onClick={onBackToToday}>
+            🚀 点击回到今日最新作业
+          </button>
+        </div>
+      )}
+
       <div className="header-top">
         <div className="child-badge" onClick={playPop}>
           <div className="avatar-bubble">👧</div>
@@ -66,13 +77,13 @@ export function Header({
       </div>
 
       {/* 主导航栏 */}
-      <nav className="main-nav">
+      <nav className="main-nav five-tabs">
         <button 
           className={`nav-tab ${activeTab === 'overview' ? 'active' : ''}`}
           onClick={() => { playPop(); setActiveTab('overview'); }}
         >
           <span className="nav-icon">🎒</span>
-          <span className="nav-label">今日作业清单</span>
+          <span className="nav-label">今日作业大厅</span>
         </button>
 
         <button 
@@ -97,6 +108,14 @@ export function Header({
         >
           <span className="nav-icon">📖</span>
           <span className="nav-label">儿歌绘本指读</span>
+        </button>
+
+        <button 
+          className={`nav-tab ${activeTab === 'history' ? 'active' : ''}`}
+          onClick={() => { playPop(); setActiveTab('history'); }}
+        >
+          <span className="nav-icon">📅</span>
+          <span className="nav-label">往期作业清单</span>
         </button>
       </nav>
     </header>

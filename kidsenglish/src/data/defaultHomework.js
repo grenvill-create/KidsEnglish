@@ -260,6 +260,173 @@ export const DEFAULT_HOMEWORK = {
   }
 }
 
+// 历史作业归档列表库（支持按日期翻阅与周末复习）
+export const DEFAULT_HOMEWORK_LIST = [
+  DEFAULT_HOMEWORK,
+  {
+    id: 'archive-2026-09-14',
+    date: '2026年9月14日 星期一',
+    childName: '',
+    english: {
+      title: 'Animals & Fruits 动物与水果小明星',
+      teacherNote: '今天复习日常高频单词：apple, banana, cat, dog，要求能看图说词，并拼读出简单短句。',
+      words: [
+        {
+          id: 'w-prev-1',
+          word: 'apple',
+          gender: 'she',
+          phonetic: '/ˈæpl/',
+          translation: '苹果',
+          emoji: '🍎',
+          image: 'https://images.unsplash.com/photo-1560806887-1e4cd0b6bcd6?w=600&auto=format&fit=crop',
+          sentence: 'What is she eating? She is eating a sweet apple.',
+          sentenceCn: '她在吃什么？她在吃一个甜甜的苹果。'
+        },
+        {
+          id: 'w-prev-2',
+          word: 'banana',
+          gender: 'he',
+          phonetic: '/bəˈnænə/',
+          translation: '香蕉',
+          emoji: '🍌',
+          image: 'https://images.unsplash.com/photo-1571771894821-ad99026a07b1?w=600&auto=format&fit=crop',
+          sentence: 'What is he holding? He is holding a yellow banana.',
+          sentenceCn: '他手里拿着什么？他手里拿着一根黄香蕉。'
+        },
+        {
+          id: 'w-prev-3',
+          word: 'cat',
+          gender: 'she',
+          phonetic: '/kæt/',
+          translation: '小猫',
+          emoji: '🐱',
+          image: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=600&auto=format&fit=crop',
+          sentence: 'Look! The cute cat is sleeping.',
+          sentenceCn: '看呀！可爱的小猫正在睡觉。'
+        },
+        {
+          id: 'w-prev-4',
+          word: 'dog',
+          gender: 'he',
+          phonetic: '/dɔːɡ/',
+          translation: '小狗',
+          emoji: '🐶',
+          image: 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=600&auto=format&fit=crop',
+          sentence: 'The friendly dog is running happily.',
+          sentenceCn: '友好的小狗正在开心地跑。'
+        }
+      ],
+      dailySentence: {
+        en: 'I love my cute puppy and sweet apples!',
+        cn: '我喜欢可爱的小狗和甜甜的苹果！'
+      }
+    },
+    pinyin: {
+      teacherNote: '单韵母 a、o 巩固练习，四声调熟练认读。',
+      letters: [
+        { id: 'p-prev-1', char: 'a', type: '单韵母', mnemonic: '张大嘴巴 a a a，医生看喉咙', soundTip: '声音洪亮长' },
+        { id: 'p-prev-2', char: 'o', type: '单韵母', mnemonic: '圆圆嘴巴 o o o，公鸡喔喔叫', soundTip: '嘴唇拢圆' }
+      ],
+      blends: [
+        { id: 'bl-prev-1', initial: 'b', final: 'ā', result: 'bā', word: '八只小鸭 🦆', example: '数字八' },
+        { id: 'bl-prev-2', initial: 'p', final: 'ō', result: 'pō', word: '山坡 ⛰️', example: '小山坡' }
+      ]
+    },
+    reading: {
+      title: '古诗《咏鹅》',
+      author: '骆宾王',
+      teacherNote: '要求字字指读，感受古诗韵律，试着背诵出整首诗！',
+      image: 'https://images.unsplash.com/photo-1555852095-64e7428df0fa?w=600&auto=format&fit=crop',
+      lines: [
+        [{ char: '鹅', pinyin: 'é' }, { char: '，', pinyin: '' }, { char: '鹅', pinyin: 'é' }, { char: '，', pinyin: '' }, { char: '鹅', pinyin: 'é' }, { char: '，', pinyin: '' }],
+        [{ char: '曲', pinyin: 'qū' }, { char: '项', pinyin: 'xiàng' }, { char: '向', pinyin: 'xiàng' }, { char: '天', pinyin: 'tiān' }, { char: '歌', pinyin: 'gē' }, { char: '。', pinyin: '' }],
+        [{ char: '白', pinyin: 'bái' }, { char: '毛', pinyin: 'máo' }, { char: '浮', pinyin: 'fú' }, { char: '绿', pinyin: 'lǜ' }, { char: '水', pinyin: 'shuǐ' }, { char: '，', pinyin: '' }],
+        [{ char: '红', pinyin: 'hóng' }, { char: '掌', pinyin: 'zhǎng' }, { char: '拨', pinyin: 'bō' }, { char: '清', pinyin: 'qīng' }, { char: '波', pinyin: 'bō' }, { char: '。', pinyin: '' }]
+      ]
+    }
+  },
+  {
+    id: 'archive-2026-09-13',
+    date: '2026年9月13日 星期日',
+    childName: '',
+    english: {
+      title: 'Nature & Colors 大自然与颜色',
+      teacherNote: '周末亲子作业：复习 sun, flower, star, butterfly 4个大自然词汇，说出一句喜欢的事物。',
+      words: [
+        {
+          id: 'w-prev-5',
+          word: 'sun',
+          gender: 'he',
+          phonetic: '/sʌn/',
+          translation: '大太阳',
+          emoji: '☀️',
+          image: 'https://images.unsplash.com/photo-1534447677768-be436bb09401?w=600&auto=format&fit=crop',
+          sentence: 'The big warm sun is shining bright.',
+          sentenceCn: '温暖的大太阳正在闪闪发光。'
+        },
+        {
+          id: 'w-prev-6',
+          word: 'flower',
+          gender: 'she',
+          phonetic: '/ˈflaʊər/',
+          translation: '漂亮的花',
+          emoji: '🌸',
+          image: 'https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=600&auto=format&fit=crop',
+          sentence: 'Look at the pretty flower in the garden.',
+          sentenceCn: '看花园里那朵漂亮的小花。'
+        },
+        {
+          id: 'w-prev-7',
+          word: 'star',
+          gender: 'he',
+          phonetic: '/stɑːr/',
+          translation: '小星星',
+          emoji: '⭐',
+          image: 'https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?w=600&auto=format&fit=crop',
+          sentence: 'Twinkle twinkle little star in the night sky.',
+          sentenceCn: '夜空里一闪一闪的小星星。'
+        },
+        {
+          id: 'w-prev-8',
+          word: 'butterfly',
+          gender: 'she',
+          phonetic: '/ˈbʌtərflaɪ/',
+          translation: '蝴蝶',
+          emoji: '🦋',
+          image: 'https://images.unsplash.com/photo-1526336024174-e58f5cdd8e13?w=600&auto=format&fit=crop',
+          sentence: 'A pink butterfly is dancing in the air.',
+          sentenceCn: '一只粉色蝴蝶正在空中跳舞。'
+        }
+      ],
+      dailySentence: {
+        en: 'The bright sun and pretty butterfly bring me joy!',
+        cn: '明媚的阳光和漂亮的蝴蝶带给我快乐！'
+      }
+    },
+    pinyin: {
+      teacherNote: '声母 m、f 的发音朗读与四声调练习。',
+      letters: [
+        { id: 'p-prev-3', char: 'm', type: '声母', mnemonic: '两个门洞 m m m，小猫咪', soundTip: '双唇闭合，鼻腔发音' },
+        { id: 'p-prev-4', char: 'f', type: '声母', mnemonic: '一根拐棍 f f f，老爷爷', soundTip: '上牙轻碰下唇' }
+      ],
+      blends: [
+        { id: 'bl-prev-3', initial: 'm', final: 'ā', result: 'mā', word: '妈妈 👩', example: '好妈妈' },
+        { id: 'bl-prev-4', initial: 'f', final: 'à', result: 'fà', word: '头发/理发 💇', example: '梳理头发' }
+      ]
+    },
+    reading: {
+      title: '儿歌《小手拍拍》',
+      author: '幼儿经典儿歌',
+      teacherNote: '边做手指动作边跟读，熟练背诵！',
+      image: 'https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?w=600&auto=format&fit=crop',
+      lines: [
+        [{ char: '小', pinyin: 'xiǎo' }, { char: '手', pinyin: 'shǒu' }, { char: '拍', pinyin: 'pāi' }, { char: '拍', pinyin: 'pāi' }, { char: '，', pinyin: '' }, { char: '手', pinyin: 'shǒu' }, { char: '指', pinyin: 'zhǐ' }, { char: '伸', pinyin: 'shēn' }, { char: '出', pinyin: 'chū' }, { char: '来', pinyin: 'lái' }, { char: '。', pinyin: '' }],
+        [{ char: '眼', pinyin: 'yǎn' }, { char: '睛', pinyin: 'jing' }, { char: '在', pinyin: 'zài' }, { char: '哪', pinyin: 'nǎ' }, { char: '里', pinyin: 'lǐ' }, { char: '，', pinyin: '' }, { char: '用', pinyin: 'yòng' }, { char: '手', pinyin: 'shǒu' }, { char: '指', pinyin: 'zhǐ' }, { char: '出', pinyin: 'chū' }, { char: '来', pinyin: 'lái' }, { char: '。', pinyin: '' }]
+      ]
+    }
+  }
+]
+
 // 收集贴纸
 export const STICKERS = [
   { id: 's1', icon: '🦄', name: '梦幻独角兽', desc: '动作词掌握得超快！' },

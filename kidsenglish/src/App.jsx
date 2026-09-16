@@ -1,45 +1,53 @@
 import React, { useState, useEffect } from 'react'
-import { DEFAULT_HOMEWORK, STICKERS } from './data/defaultHomework'
+import { DEFAULT_HOMEWORK, DEFAULT_HOMEWORK_LIST, STICKERS } from './data/defaultHomework'
 import { Header } from './components/Header'
 import { TodayOverview } from './components/TodayOverview'
 import { EnglishHomework } from './components/EnglishHomework'
 import { PinyinHomework } from './components/PinyinHomework'
 import { ReadingHomework } from './components/ReadingHomework'
+import { HomeworkHistory } from './components/HomeworkHistory'
 import { StickerBook } from './components/StickerBook'
 import { ParentModal } from './components/ParentModal'
 import { RewardModal } from './components/RewardModal'
 import './App.css'
 
 function App() {
-  // 1. 本地存储持久化读取
-  const [homework, setHomework] = useState(() => {
+  // 1. 作业列表持久化读取（包含今日与往期历史）
+  const [homeworkList, setHomeworkList] = useState(() => {
     try {
-      const saved = localStorage.getItem('kids_daily_homework_v4')
-      return saved ? JSON.parse(saved) : DEFAULT_HOMEWORK
+      const saved = localStorage.getItem('kids_homework_list_v2')
+      return saved ? JSON.parse(saved) : DEFAULT_HOMEWORK_LIST
     } catch {
-      return DEFAULT_HOMEWORK
+      return DEFAULT_HOMEWORK_LIST
     }
   })
 
-  const [completedTasks, setCompletedTasks] = useState(() => {
+  // 当前正在浏览或练习的某一天作业 ID（默认今天）
+  const [activeHomeworkId, setActiveHomeworkId] = useState(() => {
+    return (homeworkList[0] && homeworkList[0].id) || DEFAULT_HOMEWORK.id
+  })
+
+  // 每一天的打卡记录 Map: { [homeworkId]: { english: boolean, pinyin: boolean, reading: boolean } }
+  const [completedMap, setCompletedMap] = useState(() => {
     try {
-      const saved = localStorage.getItem('kids_completed_tasks_v2')
-      return saved ? JSON.parse(saved) : { english: false, pinyin: false, reading: false }
+      const saved = localStorage.getItem('kids_completed_map_v2')
+      return saved ? JSON.parse(saved) : {}
     } catch {
-      return { english: false, pinyin: false, reading: false }
+      return {}
     }
   })
 
+  // 贴纸本
   const [unlockedStickers, setUnlockedStickers] = useState(() => {
     try {
       const saved = localStorage.getItem('kids_unlocked_stickers_v2')
-      return saved ? JSON.parse(saved) : ['s1', 's4'] // 默认赠送两张可爱新手贴纸
+      return saved ? JSON.parse(saved) : ['s1', 's4']
     } catch {
       return ['s1', 's4']
     }
   })
 
-  // 当前导航 Tab: 'overview' | 'english' | 'pinyin' | 'reading'
+  // 当前激活的视图: 'overview' | 'english' | 'pinyin' | 'reading' | 'history'
   const [activeTab, setActiveTab] = useState('overview')
 
   // 弹窗状态
@@ -47,58 +55,97 @@ function App() {
   const [showStickerBook, setShowStickerBook] = useState(false)
   const [showParentModal, setShowParentModal] = useState(false)
 
-  // 自动同步到 localStorage
+  // 获取当前正在查看的那一天作业
+  const currentHomework = homeworkList.find(h => h.id === activeHomeworkId) || homeworkList[0] || DEFAULT_HOMEWORK
+  const currentCompletedTasks = completedMap[currentHomework.id] || { english: false, pinyin: false, reading: false }
+
+  // 是否正在复习往期（不是最新今天）
+  const isReviewingPast = activeHomeworkId !== (homeworkList[0] && homeworkList[0].id)
+
+  // 自动持久化
   useEffect(() => {
-    localStorage.setItem('kids_daily_homework_v4', JSON.stringify(homework))
-  }, [homework])
+    localStorage.setItem('kids_homework_list_v2', JSON.stringify(homeworkList))
+  }, [homeworkList])
 
   useEffect(() => {
-    localStorage.setItem('kids_completed_tasks_v2', JSON.stringify(completedTasks))
-  }, [completedTasks])
+    localStorage.setItem('kids_completed_map_v2', JSON.stringify(completedMap))
+  }, [completedMap])
 
   useEffect(() => {
     localStorage.setItem('kids_unlocked_stickers_v2', JSON.stringify(unlockedStickers))
   }, [unlockedStickers])
 
-  // 完成一个作业任务打卡
+  // 完成一个作业打卡
   const handleCompleteTask = (taskKey) => {
-    setCompletedTasks(prev => ({
+    setCompletedMap(prev => ({
       ...prev,
-      [taskKey]: true
+      [currentHomework.id]: {
+        ...(prev[currentHomework.id] || {}),
+        [taskKey]: true
+      }
     }))
 
-    // 随机掉落一张未解锁贴纸
+    // 随机解锁一张未获得贴纸
     const lockedStickers = STICKERS.filter(s => !unlockedStickers.includes(s.id))
     let newSticker = null
     if (lockedStickers.length > 0) {
       newSticker = lockedStickers[Math.floor(Math.random() * lockedStickers.length)]
       setUnlockedStickers(prev => [...prev, newSticker.id])
     } else {
-      // 全解锁了，奖励大金星
       newSticker = STICKERS[STICKERS.length - 1]
     }
 
     setRewardSticker(newSticker)
   }
 
-  // 重置今日作业
-  const handleResetHomework = () => {
-    setHomework(DEFAULT_HOMEWORK)
-    setCompletedTasks({ english: false, pinyin: false, reading: false })
-    localStorage.removeItem('kids_daily_homework_v2')
-    localStorage.removeItem('kids_completed_tasks_v2')
+  // 切换查看特定一天的作业
+  const handleSelectHomework = (item, targetTab = 'overview') => {
+    setActiveHomeworkId(item.id)
+    setActiveTab(targetTab)
   }
 
-  // 计算进度
+  // 一键返回今日最新作业
+  const handleBackToToday = () => {
+    if (homeworkList.length > 0) {
+      setActiveHomeworkId(homeworkList[0].id)
+    }
+    setActiveTab('overview')
+  }
+
+  // 家长保存作业
+  const handleSaveHomework = (updatedHomework) => {
+    setHomeworkList(prev => {
+      const idx = prev.findIndex(h => h.id === updatedHomework.id)
+      if (idx !== -1) {
+        const next = [...prev]
+        next[idx] = updatedHomework
+        return next
+      } else {
+        // 如果是全新的一天，添加到最前面
+        return [updatedHomework, ...prev]
+      }
+    })
+  }
+
+  // 重置回预设列表
+  const handleResetHomework = () => {
+    setHomeworkList(DEFAULT_HOMEWORK_LIST)
+    setActiveHomeworkId(DEFAULT_HOMEWORK_LIST[0].id)
+    setCompletedMap({})
+    localStorage.removeItem('kids_homework_list_v2')
+    localStorage.removeItem('kids_completed_map_v2')
+  }
+
+  // 当前作业通关进度
   const totalTasks = 3
-  const completedCount = Object.values(completedTasks).filter(Boolean).length
+  const completedCount = Object.values(currentCompletedTasks).filter(Boolean).length
 
   return (
     <div className="kids-app-container">
       {/* 顶部主视觉栏 */}
       <Header 
-        currentDate={homework.date}
-        childName={homework.childName || '小悦悦'}
+        currentDate={currentHomework.date}
+        childName={currentHomework.childName || ''}
         completedCount={completedCount}
         totalCount={totalTasks}
         activeTab={activeTab}
@@ -106,40 +153,57 @@ function App() {
         onOpenParentModal={() => setShowParentModal(true)}
         onOpenStickerBook={() => setShowStickerBook(true)}
         unlockedStickersCount={unlockedStickers.length}
+        isReviewingPast={isReviewingPast}
+        onBackToToday={handleBackToToday}
       />
 
-      {/* 主视图展示区域 */}
+      {/* 主视图区域 */}
       <main className="main-content-wrap">
+        {/* 1. 当前作业大厅 */}
         {activeTab === 'overview' && (
           <TodayOverview 
-            homework={homework}
-            completedTasks={completedTasks}
+            homework={currentHomework}
+            completedTasks={currentCompletedTasks}
             onNavigateTab={setActiveTab}
             onClaimAllRewards={() => setShowStickerBook(true)}
           />
         )}
 
+        {/* 2. 英语魔法屋 */}
         {activeTab === 'english' && (
           <EnglishHomework 
-            data={homework.english}
-            isCompleted={!!completedTasks.english}
+            data={currentHomework.english}
+            isCompleted={!!currentCompletedTasks.english}
             onCompleteTask={handleCompleteTask}
           />
         )}
 
+        {/* 3. 语文拼音 */}
         {activeTab === 'pinyin' && (
           <PinyinHomework 
-            data={homework.pinyin}
-            isCompleted={!!completedTasks.pinyin}
+            data={currentHomework.pinyin}
+            isCompleted={!!currentCompletedTasks.pinyin}
             onCompleteTask={handleCompleteTask}
           />
         )}
 
+        {/* 4. 绘本指读 */}
         {activeTab === 'reading' && (
           <ReadingHomework 
-            data={homework.reading}
-            isCompleted={!!completedTasks.reading}
+            data={currentHomework.reading}
+            isCompleted={!!currentCompletedTasks.reading}
             onCompleteTask={handleCompleteTask}
+          />
+        )}
+
+        {/* 5. 往期作业清单与归档 */}
+        {activeTab === 'history' && (
+          <HomeworkHistory 
+            homeworkList={homeworkList}
+            activeHomeworkId={activeHomeworkId}
+            completedMap={completedMap}
+            onSelectHomework={handleSelectHomework}
+            onOpenParentModal={() => setShowParentModal(true)}
           />
         )}
       </main>
@@ -155,8 +219,8 @@ function App() {
       {/* 家长布置弹窗 */}
       {showParentModal && (
         <ParentModal 
-          currentHomework={homework}
-          onSaveHomework={setHomework}
+          currentHomework={currentHomework}
+          onSaveHomework={handleSaveHomework}
           onResetHomework={handleResetHomework}
           onClose={() => setShowParentModal(false)}
         />
