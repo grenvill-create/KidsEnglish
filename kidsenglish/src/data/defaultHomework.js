@@ -25,7 +25,7 @@ export const DEFAULT_HOMEWORK = {
         phonetic: '/ˈdrɪŋkɪŋ/',
         translation: '喝水',
         emoji: '🥤',
-        image: 'https://images.unsplash.com/photo-1548839140-29a749e1bc4e?w=600&auto=format&fit=crop',
+        image: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=600&auto=format&fit=crop',
         sentence: 'What is she doing? She is drinking water.',
         sentenceCn: '她在做什么？她正在喝水。'
       },
@@ -278,7 +278,7 @@ export const DEFAULT_HOMEWORK_LIST = [
           phonetic: '/ˈæpl/',
           translation: '苹果',
           emoji: '🍎',
-          image: 'https://images.unsplash.com/photo-1560806887-1e4cd0b6bcd6?w=600&auto=format&fit=crop',
+          image: 'https://images.unsplash.com/photo-1570913149827-d2ac84ab3f9a?w=600&auto=format&fit=crop',
           sentence: 'What is she eating? She is eating a sweet apple.',
           sentenceCn: '她在吃什么？她在吃一个甜甜的苹果。'
         },
@@ -289,7 +289,7 @@ export const DEFAULT_HOMEWORK_LIST = [
           phonetic: '/bəˈnænə/',
           translation: '香蕉',
           emoji: '🍌',
-          image: 'https://images.unsplash.com/photo-1571771894821-ad99026a07b1?w=600&auto=format&fit=crop',
+          image: 'https://images.unsplash.com/photo-1528825871115-3581a5387919?w=600&auto=format&fit=crop',
           sentence: 'What is he holding? He is holding a yellow banana.',
           sentenceCn: '他手里拿着什么？他手里拿着一根黄香蕉。'
         },
@@ -444,7 +444,7 @@ export const STICKERS = [
 ]
 
 export const PRESET_WORDS_BANK = [
-  { word: 'drinking', phonetic: '/ˈdrɪŋkɪŋ/', translation: '喝水', emoji: '🥤', image: 'https://images.unsplash.com/photo-1548839140-29a749e1bc4e?w=600&auto=format&fit=crop', sentence: 'What is she doing? She is drinking water.', sentenceCn: '她在做什么？她正在喝水。' },
+  { word: 'drinking', phonetic: '/ˈdrɪŋkɪŋ/', translation: '喝水', emoji: '🥤', image: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=600&auto=format&fit=crop', sentence: 'What is she doing? She is drinking water.', sentenceCn: '她在做什么？她正在喝水。' },
   { word: 'eating', phonetic: '/ˈiːtɪŋ/', translation: '吃东西', emoji: '🍜', image: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?w=600&auto=format&fit=crop', sentence: 'What is she doing? She is eating yummy noodles.', sentenceCn: '她在做什么？她正在吃香喷喷的面条。' },
   { word: 'waving', phonetic: '/ˈweɪvɪŋ/', translation: '招手', emoji: '👋', image: 'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=600&auto=format&fit=crop', sentence: 'What is he doing? He is waving his hand.', sentenceCn: '他在做什么？他正在挥手。' },
   { word: 'listening', phonetic: '/ˈlɪsnɪŋ/', translation: '听音乐', emoji: '🎧', image: 'https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=600&auto=format&fit=crop', sentence: 'What is she doing? She is listening to music.', sentenceCn: '她在做什么？她正在听音乐。' }

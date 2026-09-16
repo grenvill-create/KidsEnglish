@@ -7,6 +7,11 @@ export function ReadingHomework({ data, isCompleted, onCompleteTask }) {
   const [isReadingAll, setIsReadingAll] = useState(false)
   const [isHideChars, setIsHideChars] = useState(false) // 遮字看拼音背诵模式
   const [isRecited, setIsRecited] = useState(false)
+  const [imgError, setImgError] = useState(false)
+
+  React.useEffect(() => {
+    setImgError(false)
+  }, [data.image])
 
   // 朗读单行
   const handleReadLine = (lineIdx) => {
@@ -83,12 +88,20 @@ export function ReadingHomework({ data, isCompleted, onCompleteTask }) {
         {/* 绘本中心插画与指读区域 */}
         <div className="reading-main-content">
           <div className="reading-cover-wrap">
-            <img 
-              src={data.image} 
-              alt={data.title} 
-              className="reading-cover-img"
-              loading="lazy"
-            />
+            {imgError || !data.image ? (
+              <div className="reading-cover-fallback">
+                <span className="cover-fallback-emoji">📖</span>
+                <span className="cover-fallback-title">{data.title}</span>
+              </div>
+            ) : (
+              <img 
+                src={data.image} 
+                alt={data.title} 
+                className="reading-cover-img"
+                loading="lazy"
+                onError={() => setImgError(true)}
+              />
+            )}
             <div className="cover-badge">🐰 经典儿歌</div>
           </div>
 

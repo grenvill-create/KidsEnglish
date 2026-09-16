@@ -1735,12 +1735,99 @@
   overflow: hidden;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
   border: 3px solid #ffe5ec;
+  background: linear-gradient(135deg, #fff5f5 0%, #f0fdf4 50%, #eff6ff 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .recite-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: opacity 0.3s ease;
+}
+
+.img-hidden {
+  opacity: 0;
+  position: absolute;
+  pointer-events: none;
+}
+
+.img-ready {
+  opacity: 1;
+}
+
+.action-fallback-card {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #fff3b0 0%, #ffe5ec 50%, #e0f2fe 100%);
+  gap: 12px;
+}
+
+.fallback-emoji {
+  font-size: 80px;
+  line-height: 1;
+  filter: drop-shadow(0 8px 18px rgba(255, 117, 143, 0.25));
+  animation: floatGently 2.5s ease-in-out infinite;
+}
+
+.fallback-text {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--primary-pink);
+  background: rgba(255, 255, 255, 0.95);
+  padding: 4px 18px;
+  border-radius: var(--radius-pill);
+  box-shadow: 0 4px 12px rgba(255, 117, 143, 0.18);
+  letter-spacing: 0.5px;
+}
+
+.action-skeleton-placeholder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #fef3c7 0%, #ffe5ec 100%);
+}
+
+.skeleton-emoji {
+  font-size: 56px;
+  opacity: 0.7;
+  animation: bounceSoft 1.5s infinite ease-in-out;
+}
+
+/* 绘本封面加载失败保底 */
+.reading-cover-fallback {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #fff3b0, #fed7aa);
+  gap: 10px;
+}
+
+.cover-fallback-emoji {
+  font-size: 64px;
+}
+
+.cover-fallback-title {
+  font-size: 16px;
+  font-weight: 800;
+  color: #b45309;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 4px 14px;
+  border-radius: var(--radius-pill);
 }
 
 .recite-emoji-tag {
@@ -1755,6 +1842,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 .recite-action-tag {

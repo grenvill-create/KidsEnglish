@@ -2,6 +2,43 @@ import React, { useState, useEffect } from 'react'
 import { speakEnglish, stopSpeech } from '../utils/speech'
 import { playPop, playCorrect, playTryAgain, playMagic, playCheer } from '../utils/sound'
 
+export function ActionImage({ src, alt, emoji, className = '' }) {
+  const [hasError, setHasError] = useState(false)
+  const [isLoaded, setIsLoaded] = useState(false)
+
+  useEffect(() => {
+    setHasError(false)
+    setIsLoaded(false)
+  }, [src])
+
+  if (hasError || !src) {
+    return (
+      <div className={`action-fallback-card ${className}`}>
+        <span className="fallback-emoji">{emoji || '✨'}</span>
+        <span className="fallback-text">{alt}</span>
+      </div>
+    )
+  }
+
+  return (
+    <>
+      {!isLoaded && (
+        <div className={`action-skeleton-placeholder ${className}`}>
+          <span className="skeleton-emoji">{emoji}</span>
+        </div>
+      )}
+      <img
+        src={src}
+        alt={alt}
+        className={`${className} ${isLoaded ? 'img-ready' : 'img-hidden'}`}
+        loading="lazy"
+        onLoad={() => setIsLoaded(true)}
+        onError={() => setHasError(true)}
+      />
+    </>
+  )
+}
+
 export function EnglishHomework({ data, isCompleted, onCompleteTask }) {
   const [currentIdx, setCurrentIdx] = useState(0)
   const [isAnswerHidden, setIsAnswerHidden] = useState(false)
@@ -140,7 +177,7 @@ export function EnglishHomework({ data, isCompleted, onCompleteTask }) {
           <div className="recite-main-card">
             {/* 动作插图 */}
             <div className="recite-image-box">
-              <img src={currentWord.image} alt={currentWord.word} className="recite-img" />
+              <ActionImage src={currentWord.image} alt={currentWord.word} emoji={currentWord.emoji} className="recite-img" />
               <div className="recite-emoji-tag">{currentWord.emoji}</div>
               <div className="recite-action-tag">动作：{currentWord.translation}</div>
             </div>
@@ -276,7 +313,7 @@ export function EnglishHomework({ data, isCompleted, onCompleteTask }) {
                   onClick={() => handleMatchPicture(w)}
                 >
                   <div className="slot-img-wrap">
-                    <img src={w.image} alt={w.word} className="slot-img" />
+                    <ActionImage src={w.image} alt={w.word} emoji={w.emoji} className="slot-img" />
                     <span className="slot-emoji">{w.emoji}</span>
                   </div>
 
@@ -346,7 +383,7 @@ export function EnglishHomework({ data, isCompleted, onCompleteTask }) {
                   speakEnglish(w.word)
                 }}
               >
-                <img src={w.image} alt={w.word} className="mini-card-img" />
+                <ActionImage src={w.image} alt={w.word} emoji={w.emoji} className="mini-card-img" />
                 <div className="mini-card-info">
                   <span className="mini-emoji">{w.emoji}</span>
                   <strong className="mini-word">{w.word}</strong>
@@ -380,7 +417,7 @@ export function EnglishHomework({ data, isCompleted, onCompleteTask }) {
                 className="quiz-option-card"
                 onClick={() => handleQuizChoice(opt)}
               >
-                <img src={opt.image} alt={opt.word} className="quiz-opt-img" />
+                <ActionImage src={opt.image} alt={opt.word} emoji={opt.emoji} className="quiz-opt-img" />
                 <span className="quiz-opt-label">{opt.emoji} {opt.translation}</span>
                 <span className="quiz-opt-word">{opt.word}</span>
               </div>

@@ -13,12 +13,43 @@ import { SettingsModal } from './components/SettingsModal'
 import { getSoundEnabled, setSoundEnabled } from './utils/sound'
 import './App.css'
 
+function sanitizeHomeworkList(list) {
+  if (!Array.isArray(list) || list.length === 0) return DEFAULT_HOMEWORK_LIST
+  const FIXED_IMAGES = {
+    'drinking': 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=600&auto=format&fit=crop',
+    'apple': 'https://images.unsplash.com/photo-1570913149827-d2ac84ab3f9a?w=600&auto=format&fit=crop',
+    'banana': 'https://images.unsplash.com/photo-1528825871115-3581a5387919?w=600&auto=format&fit=crop'
+  }
+
+  let hasChanges = false
+  const updatedList = list.map(hw => {
+    if (!hw || !hw.english || !Array.isArray(hw.english.words)) return hw
+    const newWords = hw.english.words.map(w => {
+      if (w && FIXED_IMAGES[w.word]) {
+        if (!w.image || w.image.includes('1548839140') || w.image.includes('1560806887') || w.image.includes('1571771894')) {
+          hasChanges = true
+          return { ...w, image: FIXED_IMAGES[w.word] }
+        }
+      }
+      return w
+    })
+    return { ...hw, english: { ...hw.english, words: newWords } }
+  })
+
+  if (hasChanges) {
+    try {
+      localStorage.setItem('kids_homework_list_v2', JSON.stringify(updatedList))
+    } catch {}
+  }
+  return updatedList
+}
+
 function App() {
   // 1. 作业列表持久化读取（包含今日与往期历史）
   const [homeworkList, setHomeworkList] = useState(() => {
     try {
       const saved = localStorage.getItem('kids_homework_list_v2')
-      return saved ? JSON.parse(saved) : DEFAULT_HOMEWORK_LIST
+      return saved ? sanitizeHomeworkList(JSON.parse(saved)) : DEFAULT_HOMEWORK_LIST
     } catch {
       return DEFAULT_HOMEWORK_LIST
     }
