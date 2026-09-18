@@ -152,21 +152,21 @@ function StatementsHomeworkView({ data, isCompleted, onCompleteTask }) {
           className={`sub-tab-btn ${activeSubTab === 'rewrite' ? 'active' : ''}`}
           onClick={() => { playPop(); setActiveSubTab('rewrite'); }}
         >
-          {data.theme === 'counting-sheep' ? '🐑 睡前句子规范秀' : '✏️ 句子改写互动秀'} ({currentSentIdx + 1}/{sentences.length})
+          {data.theme === 'sweet-sentences' ? '🍬 糖果三段式造句' : (data.theme === 'counting-sheep' ? '🐑 睡前句子规范秀' : '✏️ 句子改写互动秀')} ({currentSentIdx + 1}/{sentences.length})
         </button>
 
         <button 
           className={`sub-tab-btn ${activeSubTab === 'quiz' ? 'active' : ''}`}
           onClick={() => { playPop(); setActiveSubTab('quiz'); }}
         >
-          {data.theme === 'counting-sheep' ? '⭐ 小羊首字母大写闯关' : '🐸 找茬改错闯关'}
+          {data.theme === 'sweet-sentences' ? '🔍 句子三成分拆解与闯关' : (data.theme === 'counting-sheep' ? '⭐ 小羊首字母大写闯关' : '🐸 找茬改错闯关')}
         </button>
 
         <button 
           className={`sub-tab-btn ${activeSubTab === 'writing' ? 'active' : ''}`}
           onClick={() => { playPop(); setActiveSubTab('writing'); }}
         >
-          {data.theme === 'counting-sheep' ? '📖 睡前绘本抄写专区' : '📝 3句话小作文指导'}
+          {data.theme === 'sweet-sentences' ? '🍭 自由糖果拼词台' : (data.theme === 'counting-sheep' ? '📖 睡前绘本抄写专区' : '📝 3句话小作文指导')}
         </button>
 
         <button 
@@ -190,8 +190,8 @@ function StatementsHomeworkView({ data, isCompleted, onCompleteTask }) {
           {/* 规则提醒小横幅 */}
           <div className="rule-banner-box">
             <div className="rule-banner-header">
-              <span className="banner-title-icon">{data.theme === 'counting-sheep' ? '🐑' : '🐸'}</span>
-              <strong>{data.title || (data.theme === 'counting-sheep' ? 'Counting Sheep: Capitalizing sentence beginnings 🐑' : 'Hop to It Some More! 句子大写与标点规范')}</strong>
+              <span className="banner-title-icon">{data.theme === 'sweet-sentences' ? '🍬' : (data.theme === 'counting-sheep' ? '🐑' : '🐸')}</span>
+              <strong>{data.title || (data.theme === 'sweet-sentences' ? 'Sweet Sentences: Writing 3-part sentences 🍬' : (data.theme === 'counting-sheep' ? 'Counting Sheep: Capitalizing sentence beginnings 🐑' : 'Hop to It Some More! 句子大写与标点规范'))}</strong>
             </div>
             <p className="rule-teacher-quote">
               <strong>👩‍🏫 老师作业要求：</strong> {data.teacherNote}
@@ -247,7 +247,32 @@ function StatementsHomeworkView({ data, isCompleted, onCompleteTask }) {
             </div>
 
             {/* 作业纸仿真展示区 */}
-            {currentSent.sheepWords ? (
+            {currentSent.namingPart ? (
+              <div className="candy-worksheet-simulation">
+                <div className="candy-wrapper-banner">
+                  <div className="candy-wrapper-title">
+                    <span className="candy-wrapper-icon">{currentSent.candyEmoji}</span>
+                    <strong>{currentSent.colorName}糖果纸：3-Part 三段式造句拼图</strong>
+                  </div>
+                  <div className="candy-parts-row">
+                    <div className="candy-part-box naming">
+                      <span className="part-type-label">1. naming part (谁)</span>
+                      <strong className="part-text">{currentSent.namingPart}</strong>
+                    </div>
+                    <span className="part-plus">+</span>
+                    <div className="candy-part-box action">
+                      <span className="part-type-label">2. action (动作)</span>
+                      <strong className="part-text">{currentSent.actionPart}</strong>
+                    </div>
+                    <span className="part-plus">+</span>
+                    <div className="candy-part-box where-when">
+                      <span className="part-type-label">3. where/when (地点/时间)</span>
+                      <strong className="part-text">{currentSent.whereWhenPart}</strong>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ) : currentSent.sheepWords ? (
               <div className="sheep-worksheet-simulation">
                 <div className="sheep-cloud-figure">
                   <span className="sheep-badge-avatar">🐑</span>
@@ -407,11 +432,52 @@ function StatementsHomeworkView({ data, isCompleted, onCompleteTask }) {
         </div>
       )}
 
-      {/* --- 模式 2：找茬改错闯关小游戏 --- */}
+      {/* --- 模式 2：找茬改错与成分拆解闯关 --- */}
       {activeSubTab === 'quiz' && (
         <div className="statements-quiz-section animate-pop">
+          {/* 试卷底部拓展题：三段式句子拆解 */}
+          {data.threePartAnalyzer && (
+            <div className="three-part-analyzer-card animate-pop">
+              <div className="analyzer-header">
+                <span className="analyzer-badge">💡 试卷底部拓展大挑战 (On another writing page)</span>
+                <h4>{data.threePartAnalyzer.prompt}</h4>
+                <p className="analyzer-cn-tip">{data.threePartAnalyzer.promptCn}</p>
+              </div>
+
+              <div className="target-sentence-hero">
+                <span className="target-quote">“</span>
+                <InteractiveSentence text={data.threePartAnalyzer.targetSentence} onWordClick={handleWordClick} />
+                <span className="target-quote">”</span>
+                <button 
+                  className="hero-listen-btn"
+                  onClick={() => { playPop(); speakEnglish(data.threePartAnalyzer.targetSentence); }}
+                >
+                  🔊 听整句读音
+                </button>
+              </div>
+              <div className="target-cn-sub">中文释义：{data.threePartAnalyzer.translation}</div>
+
+              <div className="parts-analysis-grid">
+                {data.threePartAnalyzer.parts.map((p, idx) => (
+                  <div key={idx} className="part-analysis-card">
+                    <div className="part-card-top">
+                      <span className="part-icon">{p.icon}</span>
+                      <strong className="part-name">{p.name}</strong>
+                      <span className="part-tag-pill">{p.tag}</span>
+                    </div>
+                    <div className="part-card-answer">
+                      <span className="ans-label">正确填入：</span>
+                      <strong className="ans-word">{p.answer}</strong>
+                    </div>
+                    <div className="part-card-cn">{p.cn}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
           <div className="quiz-header">
-            <h3>{data.theme === 'counting-sheep' ? '🐑 小羊首字母大写挑战：找出句首大写规则！' : '🐸 找茬捉虫大挑战：找出句子哪里忘记了规则！'}</h3>
+            <h3>{data.theme === 'sweet-sentences' ? '🍬 糖果三段式拼句与改错大挑战！' : (data.theme === 'counting-sheep' ? '🐑 小羊首字母大写挑战：找出句首大写规则！' : '🐸 找茬捉虫大挑战：找出句子哪里忘记了规则！')}</h3>
             <span className="score-pill">⭐ 答对: {quizScore} 题</span>
           </div>
 

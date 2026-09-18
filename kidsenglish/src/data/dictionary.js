@@ -1,7 +1,189 @@
 // 英语儿童作业词典数据库：支持所有作业单词点击即查（发音、国际音标、中文释义、英文释义、例句与语法小秘诀）
 
 export const WORD_DICTIONARY = {
-  // === 0. 星期四：数羊与睡前句型作业核心词汇 (Counting Sheep) ===
+  // === 0. 星期五：糖果三段式造句核心词汇 (Sweet Sentences: 3-part sentences) ===
+  'doughnut': {
+    word: 'doughnut',
+    displayWord: 'doughnut / donut (复数: doughnuts)',
+    phonetic: '/ˈdoʊnʌt/',
+    pos: 'n. 名词 (复数: doughnuts)',
+    cn: '甜甜圈，油炸圈饼',
+    en: 'A small sweet ring-shaped cake made of fried dough, often glazed with chocolate or sprinkles.',
+    emoji: '🍩',
+    exampleEn: 'I ate doughnuts at the bakery.',
+    exampleCn: '我在面包店吃了甜甜圈。',
+    tip: '💡 拼写提示：美式英语经常简写为 donut，英式标准拼写为 doughnut。'
+  },
+  'doughnuts': {
+    word: 'doughnuts',
+    displayWord: 'doughnuts (复数)',
+    phonetic: '/ˈdoʊnʌts/',
+    pos: 'n. 名词 (doughnut 的复数)',
+    cn: '许多甜甜圈',
+    en: 'More than one doughnut.',
+    emoji: '🍩',
+    exampleEn: 'The bakery has delicious strawberry doughnuts.',
+    exampleCn: '这家面包店有香甜的草莓甜甜圈。',
+    tip: '💡 单数一个用 a doughnut，复数多个用 doughnuts。'
+  },
+  'candy': {
+    word: 'candy',
+    displayWord: 'candy (复数: candies)',
+    phonetic: '/ˈkændi/',
+    pos: 'n. 名词 (美式常用)',
+    cn: '糖果，甜食',
+    en: 'A sweet food made with sugar or syrup, flavored with fruit or chocolate.',
+    emoji: '🍬',
+    exampleEn: 'She ate candy at the party.',
+    exampleCn: '她在聚会上吃了糖果。',
+    tip: '💡 英美差异：美式英语用 candy，英式英语常用 sweets。吃完糖要记得刷牙漱口哦！'
+  },
+  'gum': {
+    word: 'gum',
+    displayWord: 'gum / chewing gum',
+    phonetic: '/ɡʌm/',
+    pos: 'n. 名词 (口香糖 / 泡泡糖)',
+    cn: '口香糖，泡泡糖；牙龈',
+    en: 'A sweet flavored candy that you chew on for a long time and do not swallow.',
+    emoji: '🫧',
+    exampleEn: 'He chewed gum at the circus.',
+    exampleCn: '他在马戏团嚼了泡泡糖。',
+    tip: '💡 用法提示：chew gum 是固定搭配，表示“嚼口香糖”。泡泡糖是 bubble gum！'
+  },
+  'chew': {
+    word: 'chew',
+    displayWord: 'chew (过去式: chewed)',
+    phonetic: '/tʃuː/',
+    pos: 'v. 动词',
+    cn: '咀嚼，细嚼',
+    en: 'To bite and grind food with teeth in your mouth.',
+    emoji: '🦷',
+    exampleEn: 'Chew your food slowly before swallowing.',
+    exampleCn: '咽下去之前要慢慢咀嚼食物哦。',
+    tip: '💡 动作搭配：chewed gum（嚼了口香糖），过去式规则变化直接加 -ed。'
+  },
+  'chewed': {
+    word: 'chewed',
+    displayWord: 'chewed (动词过去式)',
+    phonetic: '/tʃuːd/',
+    pos: 'v. 动词 (chew 的过去式)',
+    cn: '嚼了，咀嚼了',
+    en: 'Past tense of chew.',
+    emoji: '🦷',
+    exampleEn: 'He chewed gum at the circus.',
+    exampleCn: '他在马戏团里嚼了口香糖。',
+    tip: '💡 发音要点：末尾 -ed 发浊辅音 /d/，整体读作 /tʃuːd/。'
+  },
+  'bakery': {
+    word: 'bakery',
+    displayWord: 'bakery',
+    phonetic: '/ˈbeɪkəri/',
+    pos: 'n. 名词 (复数: bakeries)',
+    cn: '面包店，西饼屋，烘焙坊',
+    en: 'A shop where fresh bread, cakes, doughnuts, and cookies are baked and sold.',
+    emoji: '🥖',
+    exampleEn: 'The smell of fresh bread came from the bakery.',
+    exampleCn: '面包店里飘来刚出炉面包的诱人香味。',
+    tip: '💡 构词小魔术：bake（烘烤）+ -ry（场所）= bakery（烘烤的地方/面包店）。'
+  },
+  'party': {
+    word: 'party',
+    displayWord: 'party (复数: parties)',
+    phonetic: '/ˈpɑːrti/',
+    pos: 'n. 名词',
+    cn: '聚会，派对',
+    en: 'A social gathering of friends to celebrate, play games, and have fun.',
+    emoji: '🎈',
+    exampleEn: 'We played games at the birthday party.',
+    exampleCn: '我们在生日派对上玩了有趣的游戏。',
+    tip: '💡 地点介词：at the party（在派对上）。'
+  },
+  'circus': {
+    word: 'circus',
+    displayWord: 'circus',
+    phonetic: '/ˈsɜːrkəs/',
+    pos: 'n. 名词',
+    cn: '马戏团，杂技场',
+    en: 'A traveling show with acrobats, clowns, and animals performed in a large tent.',
+    emoji: '🎪',
+    exampleEn: 'The clowns were so funny at the circus!',
+    exampleCn: '马戏团里的小丑太滑稽可爱了！',
+    tip: '💡 地点介词：at the circus（在马戏团里观看表演）。'
+  },
+  'noon': {
+    word: 'noon',
+    displayWord: 'noon (正午)',
+    phonetic: '/nuːn/',
+    pos: 'n. 名词',
+    cn: '正午，中午十二点',
+    en: 'Twelve o’clock in the middle of the day; midday.',
+    emoji: '🕛',
+    exampleEn: 'The doughnut shop closed at noon.',
+    exampleCn: '这家甜甜圈店在中午十二点关门了。',
+    tip: '💡 语法时间：at noon 表示“在正午”。反义词是 midnight（午夜）。'
+  },
+  'shop': {
+    word: 'shop',
+    displayWord: 'shop',
+    phonetic: '/ʃɑːp/',
+    pos: 'n. 名词 & v. 动词',
+    cn: '商店，店铺；购物',
+    en: 'A building or room where goods or services are sold.',
+    emoji: '🏪',
+    exampleEn: 'Let’s go to the doughnut shop.',
+    exampleCn: '我们一起去甜甜圈店吧。',
+    tip: '💡 复合名词：doughnut shop（甜甜圈店），toy shop（玩具店），bookshop（书店）。'
+  },
+  'closed': {
+    word: 'closed',
+    displayWord: 'closed (过去式/形容词)',
+    phonetic: '/kloʊzd/',
+    pos: 'adj. 关门的 / v. 关上了 (close 过去式)',
+    cn: '关门的，停止营业的；关上了',
+    en: 'Not open for business; having been shut.',
+    emoji: '🔒',
+    exampleEn: 'The museum is closed on Mondays.',
+    exampleCn: '博物馆每逢周一闭馆。',
+    tip: '💡 辨析：The shop is open（开门营业） vs The shop is closed（关门停业）。'
+  },
+  'part': {
+    word: 'part',
+    displayWord: 'part (三段式造句)',
+    phonetic: '/pɑːrt/',
+    pos: 'n. 名词',
+    cn: '部分，部件',
+    en: 'One of the sections or pieces that together make up a whole thing.',
+    emoji: '🧩',
+    exampleEn: 'A complete sentence has three parts: naming part, action, and where or when.',
+    exampleCn: '一个完整的句子包含三个部分：人物、动作、地点或时间。',
+    tip: '💡 本周核心语法：3-part sentences（三段式造句法），像拼拼图一样造句！'
+  },
+  'sweet': {
+    word: 'sweet',
+    displayWord: 'sweet',
+    phonetic: '/swiːt/',
+    pos: 'adj. 甜美的，香甜的 / n. 糖果',
+    cn: '甜的，香甜的，美好的',
+    en: 'Tasting like sugar or honey; pleasant and lovely.',
+    emoji: '🍭',
+    exampleEn: 'Have a sweet dream tonight!',
+    exampleCn: '今晚做个香甜的美梦吧！',
+    tip: '💡 Sweet Sentences：用甜甜的糖果组合出香甜美味的完整好句子！'
+  },
+  'ate': {
+    word: 'ate',
+    displayWord: 'ate (动词过去式)',
+    phonetic: '/eɪt/',
+    pos: 'v. 动词 (eat 的过去式)',
+    cn: '吃了 (已经吃完)',
+    en: 'Past tense of eat.',
+    emoji: '😋',
+    exampleEn: 'I ate doughnuts at the bakery.',
+    exampleCn: '我在面包店吃了甜甜圈。',
+    tip: '💡 语法不规则变化：eat（吃）的过去式是 ate（读音同数字 eight /eɪt/）。'
+  },
+
+  // === 1. 星期四：数羊与睡前句型作业核心词汇 (Counting Sheep) ===
   'sheep': {
     word: 'sheep',
     displayWord: 'sheep (单复数同形)',

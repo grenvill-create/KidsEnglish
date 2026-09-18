@@ -5188,5 +5188,244 @@ input:checked + .slider-round:before {
   gap: 4px;
 }
 
+/* === Sweet Sentences 糖果三段式专属样式 === */
+.candy-worksheet-simulation {
+  background: linear-gradient(135deg, #fff1f2 0%, #fef3c7 50%, #ecfdf5 100%);
+  border: 2px dashed #f472b6;
+  border-radius: 18px;
+  padding: 16px 20px;
+  margin-bottom: 18px;
+  box-shadow: 0 4px 14px rgba(244, 114, 182, 0.12);
+}
+
+.candy-wrapper-banner {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.candy-wrapper-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  color: #9d174d;
+}
+
+.candy-wrapper-icon {
+  font-size: 24px;
+}
+
+.candy-parts-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.candy-part-box {
+  background: #ffffff;
+  border: 2px solid #fbcfe8;
+  border-radius: 12px;
+  padding: 8px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+.candy-part-box.naming {
+  border-color: #93c5fd;
+  background: #eff6ff;
+}
+
+.candy-part-box.action {
+  border-color: #fde047;
+  background: #fefce8;
+}
+
+.candy-part-box.where-when {
+  border-color: #86efac;
+  background: #f0fdf4;
+}
+
+.part-type-label {
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #64748b;
+}
+
+.candy-part-box.naming .part-type-label { color: #1d4ed8; }
+.candy-part-box.action .part-type-label { color: #a16207; }
+.candy-part-box.where-when .part-type-label { color: #15803d; }
+
+.part-text {
+  font-size: 16px;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.part-plus {
+  font-size: 20px;
+  font-weight: 900;
+  color: #ec4899;
+}
+
+/* 试卷底部拓展：三段式句子拆解特训卡片 */
+.three-part-analyzer-card {
+  background: linear-gradient(135deg, #ffffff 0%, #fdf4ff 100%);
+  border: 2px solid #e879f9;
+  border-radius: 20px;
+  padding: 20px 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 6px 20px rgba(217, 70, 239, 0.1);
+}
+
+.analyzer-header {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.analyzer-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #fae8ff;
+  color: #86198f;
+  font-size: 12px;
+  font-weight: 800;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  border: 1px solid #f0abfc;
+  width: fit-content;
+}
+
+.analyzer-header h4 {
+  font-size: 16px;
+  font-weight: 800;
+  color: #1e293b;
+  margin: 0;
+}
+
+.analyzer-cn-tip {
+  font-size: 13px;
+  color: #64748b;
+  margin: 0;
+}
+
+.target-sentence-hero {
+  background: #ffffff;
+  border: 2px solid #d8b4fe;
+  border-radius: 14px;
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  font-size: 19px;
+  font-weight: 800;
+  color: #1e1b4b;
+}
+
+.target-quote {
+  font-size: 26px;
+  color: #c084fc;
+  line-height: 1;
+}
+
+.hero-listen-btn {
+  margin-left: auto;
+  background: #f3e8ff;
+  color: #7e22ce;
+  border: 1px solid #d8b4fe;
+  border-radius: 9999px;
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.hero-listen-btn:hover {
+  background: #7e22ce;
+  color: #fff;
+  transform: scale(1.04);
+}
+
+.target-cn-sub {
+  font-size: 13px;
+  color: #701a75;
+  font-weight: 600;
+  margin-top: 6px;
+  margin-bottom: 16px;
+  padding-left: 6px;
+}
+
+.parts-analysis-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+.part-analysis-card {
+  background: #ffffff;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.part-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.part-icon { font-size: 20px; }
+.part-name { font-size: 13px; color: #334155; }
+
+.part-tag-pill {
+  background: #f1f5f9;
+  color: #475569;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 9999px;
+}
+
+.part-card-answer {
+  background: #f8fafc;
+  border-radius: 8px;
+  padding: 8px 12px;
+  border: 1px dashed #cbd5e1;
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.ans-label { font-size: 12px; color: #64748b; }
+.ans-word { font-size: 16px; color: #0284c7; font-weight: 900; }
+
+.part-card-cn {
+  font-size: 12px;
+  color: #64748b;
+  line-height: 1.4;
+}
+
+@media (max-width: 640px) {
+  .parts-analysis-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 
 

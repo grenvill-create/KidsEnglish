@@ -14,6 +14,14 @@ import catSleepsBedImg from '../assets/cat_sleeps_bed.jpg'
 import skyTurnedDarkImg from '../assets/sky_turned_dark.jpg'
 import eyesCloseSleepImg from '../assets/eyes_close_sleep.jpg'
 
+import sweetSentencesCover from '../assets/sweet_sentences_cover.jpg'
+import realDoughnutsImg from '../assets/real_doughnuts.jpg'
+import realSweetCandyImg from '../assets/real_sweet_candy.jpg'
+import realChewingGumImg from '../assets/real_chewing_gum.jpg'
+import realBakeryShopImg from '../assets/real_bakery_shop.jpg'
+import realPartyImg from '../assets/real_party.jpg'
+import realCircusImg from '../assets/real_circus.jpg'
+
 export const REAL_IMAGES = {
   tadpole: realTadpoleImg,
   frog: realFrogImg,
@@ -27,13 +35,328 @@ export const REAL_IMAGES = {
   bedCozy: bedSoftCozyImg,
   catSleeps: catSleepsBedImg,
   skyDark: skyTurnedDarkImg,
-  eyesClose: eyesCloseSleepImg
+  eyesClose: eyesCloseSleepImg,
+  sweetCover: sweetSentencesCover,
+  doughnuts: realDoughnutsImg,
+  candy: realSweetCandyImg,
+  gum: realChewingGumImg,
+  bakery: realBakeryShopImg,
+  party: realPartyImg,
+  circus: realCircusImg
 }
 
 export const CUTE_FROG_IMAGE = cuteFrogImg
 export const COUNTING_SHEEP_COVER = countingSheepCover
+export const SWEET_SENTENCES_COVER = sweetSentencesCover
 
-// 星期四最新作业：Counting Sheep 🐑 (句首单词规范首字母大写 + 睡前绘本抄写专区)
+// 星期五今日最新作业：Sweet Sentences 🍬 (三段式造句：人物 + 动作 + 地点/时间)
+export const HOMEWORK_SWEET_SENTENCES = {
+  id: 'homework-sweet-sentences',
+  date: '2026年9月18日 星期五',
+  childName: '',
+  theme: 'sweet-sentences',
+  
+  // 1. 英语作业：Sweet Sentences: Writing 3-part sentences
+  english: {
+    title: 'Sweet Sentences: Writing 3-part sentences 🍬',
+    topic: 'Writing 3-Part Sentences (三段式造句与句子结构分析)',
+    teacherNote: 'FRIDAY: * Checked homework & Reading - Made provisions and corrections. * Practiced writing more and getting familiar with capitalization and punctuation. * Identified words with uppercase letters. * Maths: Flowers in a Pot - Matching maths dots with number words. * Practiced writing uppercase and lowercase letters of the alphabet. HOMEWORK: SWEET SENTENCES: Using 3-part sentences. On another writing page, name the three parts of this sentence: The doughnut shop closed at noon.',
+    instruction: '从糖果表的三列中（naming part 人物、action 动作、where or when 地点或时间）各选一个词块，拼出3句美味香甜的完整句子！工整写在糖果线上，句首大写、句尾加句号。并分析找出 "The doughnut shop closed at noon." 的三部分！',
+    ruleTips: [
+      { id: 'r1', title: '🍬 3-Part 句型三段式', desc: '每一个完整的句子像美味糖果一样由三部分组成：1. Naming part（人物主语） 2. Action（谓语动作） 3. Where or When（地点或时间状语）！' },
+      { id: 'r2', title: '🔠 句首首字母必须大写', desc: '句子开头的第一个单词必须大写（例如：I, She, He, The），像立正的小卫兵！' },
+      { id: 'r3', title: '🔴 句末圆点句号不能忘', desc: '陈述句写完后，末尾必须点上一个小圆点句号 (.)！' },
+      { id: 'r4', title: '🔍 句子三成分深度拆解', desc: 'The doughnut shop（主语主体/naming part）+ closed（动作/action）+ at noon（时间/when）！' }
+    ],
+    tableParts: {
+      namingParts: [
+        { id: 'np1', text: 'I', cn: '我', capital: 'I' },
+        { id: 'np2', text: 'She', cn: '她', capital: 'She' },
+        { id: 'np3', text: 'He', cn: '他', capital: 'He' }
+      ],
+      actions: [
+        { id: 'act1', text: 'ate doughnuts', cn: '吃了甜甜圈', keyWord: 'doughnuts' },
+        { id: 'act2', text: 'ate candy', cn: '吃了糖果', keyWord: 'candy' },
+        { id: 'act3', text: 'chewed gum', cn: '嚼了泡泡糖', keyWord: 'gum' }
+      ],
+      whereOrWhen: [
+        { id: 'ww1', text: 'at the bakery', cn: '在面包店', type: 'where', keyWord: 'bakery' },
+        { id: 'ww2', text: 'at the party', cn: '在聚会上', type: 'where', keyWord: 'party' },
+        { id: 'ww3', text: 'at the circus', cn: '在马戏团', type: 'where', keyWord: 'circus' }
+      ]
+    },
+    sentences: [
+      {
+        id: 'sw1',
+        num: 1,
+        colorTheme: 'pink',
+        colorName: '粉色糖果',
+        candyEmoji: '🍬',
+        namingPart: 'I',
+        actionPart: 'ate doughnuts',
+        whereWhenPart: 'at the bakery',
+        raw: 'I ate doughnuts at the bakery.',
+        corrected: 'I ate doughnuts at the bakery.',
+        translation: '我在面包店里吃了甜甜圈。',
+        capitalChar: 'I',
+        rawFirstChar: 'I',
+        hasPeriod: true,
+        emoji: '🍩',
+        image: realDoughnutsImg,
+        subject: 'I (我) + ate doughnuts + at the bakery',
+        keyWords: [
+          { en: 'I', cn: '我' },
+          { en: 'ate', cn: '吃了 (eat过去式)' },
+          { en: 'doughnuts', cn: '甜甜圈' },
+          { en: 'bakery', cn: '面包店' }
+        ],
+        scienceTip: '三段式拆解：[Naming part: I] + [Action: ate doughnuts] + [Where: at the bakery]！',
+        pencilGuide: '第1题（粉色糖果纸）：在第一条横线上工整抄写 "I ate doughnuts at the bakery."，句首 "I" 大写，单词间空出一指宽，句末点上句号 "."。'
+      },
+      {
+        id: 'sw2',
+        num: 2,
+        colorTheme: 'yellow',
+        colorName: '黄色糖果',
+        candyEmoji: '🍭',
+        namingPart: 'She',
+        actionPart: 'ate candy',
+        whereWhenPart: 'at the party',
+        raw: 'She ate candy at the party.',
+        corrected: 'She ate candy at the party.',
+        translation: '她在派对上吃了糖果。',
+        capitalChar: 'S',
+        rawFirstChar: 'S',
+        hasPeriod: true,
+        emoji: '🍬',
+        image: realPartyImg,
+        subject: 'She (她) + ate candy + at the party',
+        keyWords: [
+          { en: 'She', cn: '她' },
+          { en: 'ate', cn: '吃了' },
+          { en: 'candy', cn: '糖果' },
+          { en: 'party', cn: '派对/聚会' }
+        ],
+        scienceTip: '三段式拆解：[Naming part: She] + [Action: ate candy] + [Where: at the party]！',
+        pencilGuide: '第2题（黄色糖果纸）：在第二条横线上工整写下 "She ate candy at the party."，首字母 "S" 大写，句末画句号 "."。'
+      },
+      {
+        id: 'sw3',
+        num: 3,
+        colorTheme: 'green',
+        colorName: '绿色糖果',
+        candyEmoji: '🫧',
+        namingPart: 'He',
+        actionPart: 'chewed gum',
+        whereWhenPart: 'at the circus',
+        raw: 'He chewed gum at the circus.',
+        corrected: 'He chewed gum at the circus.',
+        translation: '他在马戏团嚼了口香糖。',
+        capitalChar: 'H',
+        rawFirstChar: 'H',
+        hasPeriod: true,
+        emoji: '🎪',
+        image: realCircusImg,
+        subject: 'He (他) + chewed gum + at the circus',
+        keyWords: [
+          { en: 'He', cn: '他' },
+          { en: 'chewed', cn: '嚼了 (chew过去式)' },
+          { en: 'gum', cn: '口香糖/泡泡糖' },
+          { en: 'circus', cn: '马戏团' }
+        ],
+        scienceTip: '三段式拆解：[Naming part: He] + [Action: chewed gum] + [Where: at the circus]！',
+        pencilGuide: '第3题（绿色糖果纸）：在第三条横线上工整写下 "He chewed gum at the circus."，首字母 "H" 大写，句末画句号 "."。'
+      }
+    ],
+    threePartAnalyzer: {
+      targetSentence: 'The doughnut shop closed at noon.',
+      translation: '这家甜甜圈店在中午十二点关门了。',
+      prompt: 'On another writing page, name the three parts of this sentence: The doughnut shop closed at noon.',
+      promptCn: '在另一张纸上，写出这个句子的三个组成部分：',
+      parts: [
+        {
+          name: '1. Naming part (人物/主语主体)',
+          answer: 'The doughnut shop',
+          cn: '甜甜圈店 (全句讲的是谁/什么主体)',
+          tag: 'Who or what',
+          icon: '🏪'
+        },
+        {
+          name: '2. Action (动作/谓语动词)',
+          answer: 'closed',
+          cn: '关门停业了 (发生了什么动作)',
+          tag: 'What happened',
+          icon: '🔒'
+        },
+        {
+          name: '3. Where or when (地点或时间/状语)',
+          answer: 'at noon',
+          cn: '在正午十二点 (在什么时候/时间状语)',
+          tag: 'When (时间)',
+          icon: '🕛'
+        }
+      ]
+    },
+    words: [
+      {
+        id: 'sw-w1',
+        word: 'doughnut',
+        phonetic: '/ˈdoʊnʌt/',
+        translation: '甜甜圈',
+        emoji: '🍩',
+        image: realDoughnutsImg,
+        sentence: 'I ate sweet doughnuts at the bakery.',
+        sentenceCn: '我在面包店吃了香甜的甜甜圈。'
+      },
+      {
+        id: 'sw-w2',
+        word: 'candy',
+        phonetic: '/ˈkændi/',
+        translation: '糖果',
+        emoji: '🍬',
+        image: realSweetCandyImg,
+        sentence: 'She ate candy at the party.',
+        sentenceCn: '她在聚会上吃了糖果。'
+      },
+      {
+        id: 'sw-w3',
+        word: 'gum',
+        phonetic: '/ɡʌm/',
+        translation: '口香糖 / 泡泡糖',
+        emoji: '🫧',
+        image: realChewingGumImg,
+        sentence: 'He chewed gum and blew a big bubble.',
+        sentenceCn: '他嚼了泡泡糖，吹了一个大大的泡泡。'
+      },
+      {
+        id: 'sw-w4',
+        word: 'bakery',
+        phonetic: '/ˈbeɪkəri/',
+        translation: '面包店 / 烘焙房',
+        emoji: '🥖',
+        image: realBakeryShopImg,
+        sentence: 'The bakery smells like fresh bread.',
+        sentenceCn: '面包店里飘着新鲜出炉面包的香味。'
+      },
+      {
+        id: 'sw-w5',
+        word: 'party',
+        phonetic: '/ˈpɑːrti/',
+        translation: '聚会 / 生日派对',
+        emoji: '🎈',
+        image: realPartyImg,
+        sentence: 'We had lots of fun at the party.',
+        sentenceCn: '我们在派对上玩得非常开心。'
+      },
+      {
+        id: 'sw-w6',
+        word: 'circus',
+        phonetic: '/ˈsɜːrkəs/',
+        translation: '马戏团 / 杂技大篷',
+        emoji: '🎪',
+        image: realCircusImg,
+        sentence: 'We saw acrobats perform at the circus.',
+        sentenceCn: '我们在马戏团看到了杂技演员的精彩表演。'
+      }
+    ],
+    writingWorkshop: {
+      title: '🍬 3-Part Sentences 糖果三段式拼词台',
+      promptCn: '用糖果上的三部分（Naming part + Action + Where/When）自由组合出更多香甜的完整句子！',
+      tips: [
+        '第 1 步：挑选主语人物（Naming part）：谁在做事情？（I / She / He）',
+        '第 2 步：挑选动作（Action）：做了什么事情？（ate doughnuts / ate candy / chewed gum）',
+        '第 3 步：挑选地点或时间（Where or when）：在哪里或在何时？（at the bakery / at the party / at the circus）',
+        '第 4 步：在纸上工整写下，句首大写，单词间留空，句末点上圆点句号！'
+      ],
+      samples: [
+        {
+          id: 'ss1',
+          name: '🍬 糖果范例 1：我在面包店',
+          lines: [
+            { en: 'I ate doughnuts at the bakery.', cn: '我在面包店吃了甜甜圈。' },
+            { en: 'The strawberry doughnuts were sweet and warm.', cn: '草莓甜甜圈又香甜又温暖。' },
+            { en: 'I loved my visit to the bakery.', cn: '我很喜欢这次去面包店的美妙时光。' }
+          ]
+        },
+        {
+          id: 'ss2',
+          name: '🍭 糖果范例 2：她在派对上',
+          lines: [
+            { en: 'She ate candy at the party.', cn: '她在派对上吃了糖果。' },
+            { en: 'She shared colorful candies with her friends.', cn: '她和小伙伴们分享了五彩缤纷的糖果。' },
+            { en: 'Everyone clapped and sang together.', cn: '大家一起拍手欢唱。' }
+          ]
+        },
+        {
+          id: 'ss3',
+          name: '🎪 糖果范例 3：他在马戏团',
+          lines: [
+            { en: 'He chewed gum at the circus.', cn: '他在马戏团嚼了泡泡糖。' },
+            { en: 'He blew a big round pink bubble.', cn: '他吹出了一个大大的粉色圆泡泡。' },
+            { en: 'The funny clown smiled at him.', cn: '滑稽可爱的小丑朝他微笑了。' }
+          ]
+        }
+      ],
+      interactiveStarters: [
+        {
+          label: '🍬 糖果主语人物 (Naming part)',
+          starters: ['I', 'She', 'He', 'The children', 'My friend', 'The baker']
+        },
+        {
+          label: '⚡ 动作词汇 (Action)',
+          starters: ['ate doughnuts', 'ate candy', 'chewed gum', 'bought fresh bread', 'drank sweet juice']
+        },
+        {
+          label: '📍 地点与时间 (Where or when)',
+          starters: ['at the bakery.', 'at the party.', 'at the circus.', 'at noon.', 'in the morning.', 'before dinner.']
+        }
+      ]
+    }
+  },
+
+  // 2. 语文拼音复习
+  pinyin: {
+    teacherNote: 'FRIDAY 拼音与大小写字母练习：复习声母 g、k、h 拼读，规范 26 个英文字母大写与小写书写。',
+    letters: [
+      { id: 'p1', char: 'g', type: '声母', mnemonic: '9字加弯 g g g，白鸽飞舞 🕊️', soundTip: '舌根抵住软腭，突然放开' },
+      { id: 'p2', char: 'k', type: '声母', mnemonic: '两只蝌蚪 k k k，清泉戏水 🟢', soundTip: '舌根抵住软腭，强力喷气' },
+      { id: 'p3', char: 'h', type: '声母', mnemonic: '一把靠背椅 h h h，喝水解渴 🥤', soundTip: '舌根靠近软腭，气流摩擦而出' }
+    ],
+    blends: [
+      { id: 'bl1', initial: 'g', final: 'āo', result: 'gāo', word: '蛋糕与甜甜圈 🍰', example: '蛋糕、高兴' },
+      { id: 'bl2', initial: 'k', final: 'ě', result: 'kě', word: '可口的糖果 🍬', example: '可口、可爱' },
+      { id: 'bl3', initial: 'h', final: 'uā', result: 'huā', word: '花盆里的花朵 🌸', example: '花朵、鲜花' }
+    ]
+  },
+
+  // 3. 语文阅读指读
+  reading: {
+    title: '童谣《甜甜圈与糖果店》',
+    author: '双语趣味儿歌',
+    teacherNote: '朗读周五甜蜜童谣，在节奏中掌握 naming part、action 与 where or when！',
+    image: sweetSentencesCover,
+    lines: [
+      [
+        { char: '小', pinyin: 'xiǎo' }, { char: '朋', pinyin: 'péng' }, { char: '友', pinyin: 'you' }, { char: '，', pinyin: '' },
+        { char: '去', pinyin: 'qù' }, { char: '糖', pinyin: 'táng' }, { char: '果', pinyin: 'guǒ' }, { char: '店', pinyin: 'diàn' }, { char: '。', pinyin: '' }
+      ],
+      [
+        { char: '吃', pinyin: 'chī' }, { char: '个', pinyin: 'gè' }, { char: '圈', pinyin: 'quān' }, { char: '，', pinyin: '' },
+        { char: '甜', pinyin: 'tián' }, { char: '又', pinyin: 'yòu' }, { char: '香', pinyin: 'xiāng' }, { char: '。', pinyin: '' }
+      ],
+      [
+        { char: '吹', pinyin: 'chuī' }, { char: '泡', pinyin: 'pào' }, { char: '泡', pinyin: 'pao' }, { char: '，', pinyin: '' },
+        { char: '圆', pinyin: 'yuán' }, { char: '又', pinyin: 'yòu' }, { char: '大', pinyin: 'dà' }, { char: '。', pinyin: '' }
+      ],
+      [
+        { char: '做', pinyin: 'zuò' }, { char: '好', pinyin: 'hǎo' }, { char: '句', pinyin: 'jù' }, { char: '，', pinyin: '' },
+        { char: '大', pinyin: 'dà' }, { char: '大', pinyin: 'dà' }, { char: '赞', pinyin: 'zàn' }, { char: '！', pinyin: '' }
+      ]
+    ]
+  }
+}
+
+// 星期四作业：Counting Sheep 🐑 (句首单词规范首字母大写 + 睡前绘本抄写专区)
 export const HOMEWORK_COUNTING_SHEEP = {
   id: 'homework-counting-sheep',
   date: '2026年9月17日 星期四',
@@ -895,11 +1218,12 @@ export const HOMEWORK_2026_09_15 = {
   }
 }
 
-// 今日最新默认作业为星期四：Counting Sheep
-export const DEFAULT_HOMEWORK = HOMEWORK_COUNTING_SHEEP
+// 今日最新默认作业为星期五：Sweet Sentences
+export const DEFAULT_HOMEWORK = HOMEWORK_SWEET_SENTENCES
 
 // 历史作业归档列表库（支持按日期翻阅与周末复习）
 export const DEFAULT_HOMEWORK_LIST = [
+  HOMEWORK_SWEET_SENTENCES,
   HOMEWORK_COUNTING_SHEEP,
   HOMEWORK_2026_09_16,
   HOMEWORK_2026_09_15,

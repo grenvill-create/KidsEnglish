@@ -33,7 +33,13 @@ function sanitizeHomeworkList(list) {
     'hug': REAL_IMAGES.hugNight,
     'cozy': REAL_IMAGES.bedCozy,
     'sleep': REAL_IMAGES.catSleeps,
-    'dark': REAL_IMAGES.skyDark
+    'dark': REAL_IMAGES.skyDark,
+    'doughnut': REAL_IMAGES.doughnuts,
+    'candy': REAL_IMAGES.candy,
+    'gum': REAL_IMAGES.gum,
+    'bakery': REAL_IMAGES.bakery,
+    'party': REAL_IMAGES.party,
+    'circus': REAL_IMAGES.circus
   }
 
   const REAL_SENTENCE_MAP = {
@@ -47,7 +53,10 @@ function sanitizeHomeworkList(list) {
     'cs3': REAL_IMAGES.bedCozy,
     'cs4': REAL_IMAGES.catSleeps,
     'cs5': REAL_IMAGES.skyDark,
-    'cs6': REAL_IMAGES.eyesClose
+    'cs6': REAL_IMAGES.eyesClose,
+    'sw1': REAL_IMAGES.doughnuts,
+    'sw2': REAL_IMAGES.party,
+    'sw3': REAL_IMAGES.circus
   }
 
   let hasChanges = false
