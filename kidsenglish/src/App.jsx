@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { DEFAULT_HOMEWORK, DEFAULT_HOMEWORK_LIST, STICKERS, CUTE_FROG_IMAGE } from './data/defaultHomework'
+import { DEFAULT_HOMEWORK, DEFAULT_HOMEWORK_LIST, STICKERS, CUTE_FROG_IMAGE, REAL_IMAGES } from './data/defaultHomework'
 import { Header } from './components/Header'
 import { TodayOverview } from './components/TodayOverview'
 import { EnglishHomework } from './components/EnglishHomework'
@@ -21,9 +21,40 @@ function sanitizeHomeworkList(list) {
     'banana': 'https://images.unsplash.com/photo-1528825871115-3581a5387919?w=600&auto=format&fit=crop'
   }
 
+  const REAL_WORDS_MAP = {
+    'tadpole': REAL_IMAGES.tadpole,
+    'frog': REAL_IMAGES.frog,
+    'toad': REAL_IMAGES.toad,
+    'wet': REAL_IMAGES.wet,
+    'bumpy': REAL_IMAGES.bumpy,
+    'bushes': REAL_IMAGES.bushes,
+    'sheep': REAL_IMAGES.sheepCover,
+    'read': REAL_IMAGES.readBooks,
+    'hug': REAL_IMAGES.hugNight,
+    'cozy': REAL_IMAGES.bedCozy,
+    'sleep': REAL_IMAGES.catSleeps,
+    'dark': REAL_IMAGES.skyDark
+  }
+
+  const REAL_SENTENCE_MAP = {
+    's1': REAL_IMAGES.tadpole,
+    's2': REAL_IMAGES.frog,
+    's3': REAL_IMAGES.bushes,
+    's4': REAL_IMAGES.wet,
+    's5': REAL_IMAGES.bumpy,
+    'cs1': REAL_IMAGES.readBooks,
+    'cs2': REAL_IMAGES.hugNight,
+    'cs3': REAL_IMAGES.bedCozy,
+    'cs4': REAL_IMAGES.catSleeps,
+    'cs5': REAL_IMAGES.skyDark,
+    'cs6': REAL_IMAGES.eyesClose
+  }
+
   let hasChanges = false
   const updatedList = list.map(hw => {
     let modifiedHw = { ...hw }
+
+    // 修复 Action Words 历史作业中的破损图片
     if (modifiedHw.english && Array.isArray(modifiedHw.english.words)) {
       const newWords = modifiedHw.english.words.map(w => {
         if (w && FIXED_IMAGES[w.word]) {
@@ -32,9 +63,30 @@ function sanitizeHomeworkList(list) {
             return { ...w, image: FIXED_IMAGES[w.word] }
           }
         }
+        // 升级今日真实作业中的青蛙/蝌蚪/蟾蜍等真实摄影照片
+        if (w && REAL_WORDS_MAP[w.word]) {
+          if (w.image !== REAL_WORDS_MAP[w.word]) {
+            hasChanges = true
+            return { ...w, image: REAL_WORDS_MAP[w.word] }
+          }
+        }
         return w
       })
       modifiedHw.english = { ...modifiedHw.english, words: newWords }
+    }
+
+    // 升级今日句子改写中的真实大图
+    if (modifiedHw.english && Array.isArray(modifiedHw.english.sentences)) {
+      const newSentences = modifiedHw.english.sentences.map(s => {
+        if (s && REAL_SENTENCE_MAP[s.id]) {
+          if (s.image !== REAL_SENTENCE_MAP[s.id]) {
+            hasChanges = true
+            return { ...s, image: REAL_SENTENCE_MAP[s.id] }
+          }
+        }
+        return s
+      })
+      modifiedHw.english = { ...modifiedHw.english, sentences: newSentences }
     }
 
     // 确保今日儿歌《小青蛙》的封面配图为可爱小青蛙插画

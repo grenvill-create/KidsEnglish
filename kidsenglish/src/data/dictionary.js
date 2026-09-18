@@ -1,7 +1,237 @@
 // 英语儿童作业词典数据库：支持所有作业单词点击即查（发音、国际音标、中文释义、英文释义、例句与语法小秘诀）
 
 export const WORD_DICTIONARY = {
-  // === 1. 今日青蛙与蟾蜍作业核心词汇 (Hop to It Some More) ===
+  // === 0. 星期四：数羊与睡前句型作业核心词汇 (Counting Sheep) ===
+  'sheep': {
+    word: 'sheep',
+    displayWord: 'sheep (单复数同形)',
+    phonetic: '/ʃiːp/',
+    pos: 'n. 名词 (单复数同形: one sheep, two sheep)',
+    cn: '绵羊 (数绵羊助眠)',
+    en: 'A fluffy animal with thick wool that says baa. People count sheep to help them fall asleep.',
+    emoji: '🐑',
+    exampleEn: 'One sheep, two sheep, three sheep jumping over the fence.',
+    exampleCn: '一只羊，两只羊，三只羊跳过栅栏。',
+    tip: '💡 语法常识：sheep 的单数和复数拼写完全相同，千万不要在后面加 s 变成 sheeps 哦！'
+  },
+  'count': {
+    word: 'count',
+    displayWord: 'count',
+    phonetic: '/kaʊnt/',
+    pos: 'v. 动词',
+    cn: '数数，计算',
+    en: 'To name numbers in order, one by one.',
+    emoji: '🔢',
+    exampleEn: 'Can you count from 1 to 10?',
+    exampleCn: '你能从1数到10吗？',
+    tip: '💡 睡前数羊（Counting Sheep）是欧美小朋友最经典的助眠小游戏。'
+  },
+  'read': {
+    word: 'read',
+    displayWord: 'read',
+    phonetic: '/riːd/',
+    pos: 'v. 动词 (过去式 read 读音为 /red/)',
+    cn: '读，阅读',
+    en: 'To look at written words and understand their meaning.',
+    emoji: '📖',
+    exampleEn: 'We read books before bed.',
+    exampleCn: '我们在睡前读书。',
+    tip: '💡 自然拼读：ea 发长元音 /iː/。睡前读绘本能让我们心神宁静。'
+  },
+  'hug': {
+    word: 'hug',
+    displayWord: 'hug',
+    phonetic: '/hʌɡ/',
+    pos: 'v. 动词 & n. 名词',
+    cn: '拥抱，搂抱',
+    en: 'To put your arms around someone closely to show love, warmth, and care.',
+    emoji: '🫂',
+    exampleEn: 'Then we hug good night.',
+    exampleCn: '然后我们拥抱说晚安。',
+    tip: '💡 爱的表达：Give Mommy and Daddy a big hug before sleeping!'
+  },
+  'bed': {
+    word: 'bed',
+    displayWord: 'bed',
+    phonetic: '/bed/',
+    pos: 'n. 名词',
+    cn: '床，睡觉的地方',
+    en: 'A comfortable piece of furniture used for sleeping or resting.',
+    emoji: '🛏️',
+    exampleEn: 'My bed is soft and cozy.',
+    exampleCn: '我的小床又软又舒服。',
+    tip: '💡 常用固定短语：before bed（睡前）, go to bed（上床睡觉）。'
+  },
+  'cozy': {
+    word: 'cozy',
+    displayWord: 'cozy (英式亦作 cosy)',
+    phonetic: '/ˈkoʊzi/',
+    pos: 'adj. 形容词',
+    cn: '温暖舒适的，温馨惬意的',
+    en: 'Warm, comfortable, and feeling safe and relaxed.',
+    emoji: '☕',
+    exampleEn: 'Our house feels warm and cozy in winter.',
+    exampleCn: '冬天我们家里感觉格外温暖惬意。',
+    tip: '💡 宝贝的被窝（soft and cozy bed）就像温暖的怀抱一样让人放松。'
+  },
+  'soft': {
+    word: 'soft',
+    displayWord: 'soft',
+    phonetic: '/sɔːft/',
+    pos: 'adj. 形容词',
+    cn: '柔软的，软和的',
+    en: 'Pleasant to touch, easy to press down, not hard or rough.',
+    emoji: '🧸',
+    exampleEn: 'The fluffy pillow is very soft.',
+    exampleCn: '这个毛茸茸的枕头非常柔软。',
+    tip: '💡 反义词是 hard（坚硬的）。羊毛（wool）和羽绒（down）都是 soft 的。'
+  },
+  'cat': {
+    word: 'cat',
+    displayWord: 'cat',
+    phonetic: '/kæt/',
+    pos: 'n. 名词',
+    cn: '小猫',
+    en: 'A small furry pet that purrs softly when happy.',
+    emoji: '🐱',
+    exampleEn: 'My cat sleeps with me on the bed.',
+    exampleCn: '我的小猫和我一起在床上睡觉。',
+    tip: '💡 基础自然拼读：/k/ - /æ/ - /t/ -> cat！'
+  },
+  'sleep': {
+    word: 'sleep',
+    displayWord: 'sleep / sleeps',
+    phonetic: '/sliːp/',
+    pos: 'v. 动词 & n. 名词',
+    cn: '睡觉，睡眠',
+    en: 'To rest with eyes closed while body and mind recharge.',
+    emoji: '😴',
+    exampleEn: 'Babies need plenty of good sleep.',
+    exampleCn: '小宝宝们需要充足的好睡眠。',
+    tip: '💡 第三人称单数加 s：My cat sleeps with me. 主语是单数 cat，动词用 sleeps。'
+  },
+  'sky': {
+    word: 'sky',
+    displayWord: 'sky',
+    phonetic: '/skaɪ/',
+    pos: 'n. 名词',
+    cn: '天空',
+    en: 'The expanse of air over the Earth where stars, clouds, and the moon appear.',
+    emoji: '🌌',
+    exampleEn: 'The sky has turned dark.',
+    exampleCn: '天空已经变暗变黑了。',
+    tip: '💡 字母 y 发双元音 /aɪ/。白天是 blue sky，夜晚是 dark starry sky。'
+  },
+  'dark': {
+    word: 'dark',
+    displayWord: 'dark',
+    phonetic: '/dɑːrk/',
+    pos: 'adj. 形容词 & n. 名词',
+    cn: '黑暗的，深色的，黑夜',
+    en: 'Having no light or very little light; night-time.',
+    emoji: '🌙',
+    exampleEn: 'It is dark outside, turn on the night lamp.',
+    exampleCn: '外面天黑了，把小夜灯打开吧。',
+    tip: '💡 反义词是 bright（明亮的）或 light（光亮）。'
+  },
+  'turn': {
+    word: 'turn',
+    displayWord: 'turn / turned',
+    phonetic: '/tɜːrn/',
+    pos: 'v. 动词 (过去式/过去分词: turned)',
+    cn: '变成，转变成；转动',
+    en: 'To become or change into a different state.',
+    emoji: '🔄',
+    exampleEn: 'Leaves turn yellow in autumn.',
+    exampleCn: '秋天树叶会变黄。The sky has turned dark（天空变黑了）。',
+    tip: '💡 句型拓展：has turned dark 是现在完成时，表示天空已经变成了黑夜的状态。'
+  },
+  'eye': {
+    word: 'eye',
+    displayWord: 'eye / eyes',
+    phonetic: '/aɪ/',
+    pos: 'n. 名词 (复数: eyes /aɪz/)',
+    cn: '眼睛 (复数: 双眼)',
+    en: 'The parts of your body that you use to see the world.',
+    emoji: '👀',
+    exampleEn: 'My eyes close gently.',
+    exampleCn: '我的双眼轻轻闭上了。',
+    tip: '💡 宝贝有两只眼睛，所以一般用复数 eyes 读 /aɪz/。'
+  },
+  'eyes': {
+    word: 'eyes',
+    displayWord: 'eyes',
+    phonetic: '/aɪz/',
+    pos: 'n. 名词 (eye 的复数形式)',
+    cn: '双眼，双目',
+    en: 'Both eyes together.',
+    emoji: '👀',
+    exampleEn: 'Close your eyes and sweet dreams!',
+    exampleCn: '闭上你的眼睛，祝你好梦！',
+    tip: '💡 句子主语为复数 eyes 时，动词用原形 close（不加 s）。'
+  },
+  'close': {
+    word: 'close',
+    displayWord: 'close',
+    phonetic: '/kloʊz/',
+    pos: 'v. 动词 (反义词: open)',
+    cn: '闭上，合上，关上',
+    en: 'To shut something, like your eyes, a door, or a book.',
+    emoji: '🚪',
+    exampleEn: 'Close your eyes and listen to the music.',
+    exampleCn: '闭上眼睛，听听音乐吧。',
+    tip: '💡 注意读音：作动词“关/闭”读 /kloʊz/（末尾浊音 z）；作形容词“亲近的”读 /kloʊs/（清音 s）。'
+  },
+  'bedtime': {
+    word: 'bedtime',
+    displayWord: 'bedtime',
+    phonetic: '/ˈbedtaɪm/',
+    pos: 'n. 名词',
+    cn: '就寝时间，睡前时刻',
+    en: 'The time at which one usually goes to bed.',
+    emoji: '⏰',
+    exampleEn: 'Bedtime stories are full of magic.',
+    exampleCn: '睡前故事总是充满神奇的魔力。',
+    tip: '💡 复合词：bed（床）+ time（时间）= bedtime（睡前时间）。'
+  },
+  'capital': {
+    word: 'capital',
+    displayWord: 'capital',
+    phonetic: '/ˈkæpɪtl/',
+    pos: 'adj. 大写的 / n. 大写字母',
+    cn: '大写字母，首字母大写的',
+    en: 'An uppercase letter like A, B, C used at the beginning of sentences.',
+    emoji: '🔤',
+    exampleEn: 'Every English sentence begins with a capital letter.',
+    exampleCn: '每一个英语句子都必须以大写字母开头。',
+    tip: '💡 本次作业核心规则：句首单词的首字母必须像大将军一样站得高高的大写（Capitalize）！'
+  },
+  'circle': {
+    word: 'circle',
+    displayWord: 'circle',
+    phonetic: '/ˈsɜːrkl/',
+    pos: 'v. 圈出，画圈 / n. 圆圈',
+    cn: '圈出，画圆圈',
+    en: 'To draw a round ring around a word or letter.',
+    emoji: '⭕',
+    exampleEn: 'Circle the capital letter at the beginning.',
+    exampleCn: '圈出句首的大写字母。',
+    tip: '💡 练习指令：Circle（圈出），Underline（下划线），Check（打勾）。'
+  },
+  'favorite': {
+    word: 'favorite',
+    displayWord: 'favorite (英式: favourite)',
+    phonetic: '/ˈfeɪvərɪt/',
+    pos: 'adj. 最喜爱的 / n. 最喜爱的人或物',
+    cn: '最喜爱的，特别偏爱的',
+    en: 'Best liked above all others.',
+    emoji: '💖',
+    exampleEn: 'What is your favorite bedtime book?',
+    exampleCn: '你最喜欢的睡前绘本是哪一本呀？',
+    tip: '💡 句型表达：My favorite book is ...（我最喜爱的书是……）。'
+  },
+
+  // === 1. 青蛙与蟾蜍作业核心词汇 (Hop to It Some More) ===
   'tadpole': {
     word: 'tadpole',
     displayWord: 'tadpole / tadpoles',

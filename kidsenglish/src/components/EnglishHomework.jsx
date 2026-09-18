@@ -152,21 +152,21 @@ function StatementsHomeworkView({ data, isCompleted, onCompleteTask }) {
           className={`sub-tab-btn ${activeSubTab === 'rewrite' ? 'active' : ''}`}
           onClick={() => { playPop(); setActiveSubTab('rewrite'); }}
         >
-          ✏️ 句子改写互动秀 ({currentSentIdx + 1}/{sentences.length})
+          {data.theme === 'counting-sheep' ? '🐑 睡前句子规范秀' : '✏️ 句子改写互动秀'} ({currentSentIdx + 1}/{sentences.length})
         </button>
 
         <button 
           className={`sub-tab-btn ${activeSubTab === 'quiz' ? 'active' : ''}`}
           onClick={() => { playPop(); setActiveSubTab('quiz'); }}
         >
-          🐸 找茬改错闯关
+          {data.theme === 'counting-sheep' ? '⭐ 小羊首字母大写闯关' : '🐸 找茬改错闯关'}
         </button>
 
         <button 
           className={`sub-tab-btn ${activeSubTab === 'writing' ? 'active' : ''}`}
           onClick={() => { playPop(); setActiveSubTab('writing'); }}
         >
-          📝 3句话小作文指导
+          {data.theme === 'counting-sheep' ? '📖 睡前绘本抄写专区' : '📝 3句话小作文指导'}
         </button>
 
         <button 
@@ -190,8 +190,8 @@ function StatementsHomeworkView({ data, isCompleted, onCompleteTask }) {
           {/* 规则提醒小横幅 */}
           <div className="rule-banner-box">
             <div className="rule-banner-header">
-              <span className="banner-title-icon">🐸</span>
-              <strong>Hop to It Some More! 句子大写与标点规范</strong>
+              <span className="banner-title-icon">{data.theme === 'counting-sheep' ? '🐑' : '🐸'}</span>
+              <strong>{data.title || (data.theme === 'counting-sheep' ? 'Counting Sheep: Capitalizing sentence beginnings 🐑' : 'Hop to It Some More! 句子大写与标点规范')}</strong>
             </div>
             <p className="rule-teacher-quote">
               <strong>👩‍🏫 老师作业要求：</strong> {data.teacherNote}
@@ -199,11 +199,11 @@ function StatementsHomeworkView({ data, isCompleted, onCompleteTask }) {
             <div className="rule-badges-grid">
               <div className="rule-chip">
                 <span className="chip-icon">🔠</span>
-                <span className="chip-text"><strong>首字母大写</strong>：句首字母必须写成大写！</span>
+                <span className="chip-text"><strong>首字母大写</strong>：句首单词首字母必须写成大写！</span>
               </div>
               <div className="rule-chip">
                 <span className="chip-icon">🔴</span>
-                <span className="chip-text"><strong>句末加句号</strong>：陈述句结尾必须加圆点 (.)！</span>
+                <span className="chip-text"><strong>句末加标点</strong>：陈述句结尾必须加圆点句号 (.)！</span>
               </div>
               <div className="rule-chip">
                 <span className="chip-icon">✏️</span>
@@ -246,17 +246,36 @@ function StatementsHomeworkView({ data, isCompleted, onCompleteTask }) {
               </div>
             </div>
 
-            {/* 原句与错误诊断提示 */}
-            <div className="raw-sentence-box">
-              <div className="box-label">
-                <span className="label-icon">⚠️</span>
-                <span>作业纸上的未改写原句（点击单词查释义）：</span>
+            {/* 作业纸仿真展示区 */}
+            {currentSent.sheepWords ? (
+              <div className="sheep-worksheet-simulation">
+                <div className="sheep-cloud-figure">
+                  <span className="sheep-badge-avatar">🐑</span>
+                  <div className="sheep-wool-bubble">
+                    <span className="sheep-wool-text">{currentSent.sheepWords}</span>
+                  </div>
+                </div>
+                <div className="sheep-writing-rule-guide">
+                  <span className="guide-arrow">👉 改写首字母大写：</span>
+                  <span className={`guide-target-word ${isCapitalized ? 'magic-active' : ''}`}>
+                    {isCapitalized ? currentSent.capitalWord : '__________'}
+                  </span>
+                  <span className="guide-rest-part">{currentSent.rawRest}</span>
+                </div>
               </div>
-              <div className="raw-sentence-text">
-                <InteractiveSentence text={currentSent.raw} onWordClick={handleWordClick} />
-                <span className="missing-period-tag">[缺少句号]</span>
+            ) : (
+              /* 原句与错误诊断提示 (青蛙蟾蜍作业) */
+              <div className="raw-sentence-box">
+                <div className="box-label">
+                  <span className="label-icon">⚠️</span>
+                  <span>作业纸上的未改写原句（点击单词查释义）：</span>
+                </div>
+                <div className="raw-sentence-text">
+                  <InteractiveSentence text={currentSent.raw} onWordClick={handleWordClick} />
+                  {!currentSent.hasPeriod && <span className="missing-period-tag">[缺少句号]</span>}
+                </div>
               </div>
-            </div>
+            )}
 
             {/* 魔法修改互动按键 */}
             <div className="magic-action-bar">
@@ -268,10 +287,10 @@ function StatementsHomeworkView({ data, isCompleted, onCompleteTask }) {
               </button>
 
               <button 
-                className={`magic-btn period-magic-btn ${hasPeriodAdded ? 'applied' : ''}`}
+                className={`magic-btn period-magic-btn ${hasPeriodAdded || currentSent.hasPeriod ? 'applied' : ''}`}
                 onClick={handleApplyPeriod}
               >
-                {hasPeriodAdded ? '✅ 句号已加上 (.)' : '🔴 施放句号魔法 (句末加 ".")'}
+                {currentSent.hasPeriod ? '✅ 句末标点齐全 (.)' : (hasPeriodAdded ? '✅ 句号已加上 (.)' : '🔴 施放句号魔法 (句末加 ".")')}
               </button>
 
               <button 
@@ -314,10 +333,10 @@ function StatementsHomeworkView({ data, isCompleted, onCompleteTask }) {
                     {isCapitalized ? currentSent.capitalChar : currentSent.rawFirstChar}
                   </span>
                   <span className="hw-body">
-                    {currentSent.corrected.slice(1, -1)}
+                    {currentSent.corrected.slice(1, currentSent.corrected.endsWith('.') ? -1 : undefined)}
                   </span>
-                  <span className={`hw-period ${hasPeriodAdded ? 'magic-active' : ''}`}>
-                    {hasPeriodAdded ? '.' : ''}
+                  <span className={`hw-period ${hasPeriodAdded || currentSent.hasPeriod ? 'magic-active' : ''}`}>
+                    .
                   </span>
                 </div>
               </div>
@@ -392,7 +411,7 @@ function StatementsHomeworkView({ data, isCompleted, onCompleteTask }) {
       {activeSubTab === 'quiz' && (
         <div className="statements-quiz-section animate-pop">
           <div className="quiz-header">
-            <h3>🐸 找茬捉虫大挑战：找出句子哪里忘记了规则！</h3>
+            <h3>{data.theme === 'counting-sheep' ? '🐑 小羊首字母大写挑战：找出句首大写规则！' : '🐸 找茬捉虫大挑战：找出句子哪里忘记了规则！'}</h3>
             <span className="score-pill">⭐ 答对: {quizScore} 题</span>
           </div>
 
@@ -424,21 +443,21 @@ function StatementsHomeworkView({ data, isCompleted, onCompleteTask }) {
                     }, 1400)
                   }}
                 >
-                  🌟 开头 "{sentences[quizIdx].rawFirstChar}" 应该大写成 "{sentences[quizIdx].capitalChar}"，而且句末必须加上句号 "."
+                  🌟 开头 "{sentences[quizIdx].rawFirstChar}" 应该大写成 "{sentences[quizIdx].capitalChar}"（{sentences[quizIdx].capitalWord || sentences[quizIdx].capitalChar}），句末必须有标点符号 "."
                 </button>
 
                 <button 
                   className="quiz-choice-btn wrong-opt"
                   onClick={() => { playTryAgain(); setQuizFeedback('wrong'); }}
                 >
-                  ❌ 这句话写得很完美，不需要任何修改
+                  ❌ 直接照抄小写形式，句首单词不需要大写
                 </button>
 
                 <button 
                   className="quiz-choice-btn wrong-opt"
                   onClick={() => { playTryAgain(); setQuizFeedback('wrong'); }}
                 >
-                  ❌ 只要句号就行，开头不需要大写
+                  ❌ 只要句末有句号就行，句首不需要大写
                 </button>
               </div>
 
@@ -498,6 +517,14 @@ function StatementsHomeworkView({ data, isCompleted, onCompleteTask }) {
 
             {writingTask.samples && writingTask.samples[activeSampleIdx] && (
               <div className="sample-card-body animate-pop">
+                {writingTask.samples[activeSampleIdx].bookTitle && (
+                  <div className="sample-book-badge">
+                    <span className="sample-book-title">📚 推荐经典绘本：<strong>{writingTask.samples[activeSampleIdx].bookTitle}</strong></span>
+                    {writingTask.samples[activeSampleIdx].capitalLetter && (
+                      <span className="circle-cap-tag">⭕ 绘本抄写任务：圈出句首大写字母 <strong>"{writingTask.samples[activeSampleIdx].capitalLetter}"</strong></span>
+                    )}
+                  </div>
+                )}
                 <div className="sample-lines-list">
                   {writingTask.samples[activeSampleIdx].lines.map((line, lIdx) => (
                     <div key={lIdx} className="sample-line-item">
@@ -582,11 +609,15 @@ function StatementsHomeworkView({ data, isCompleted, onCompleteTask }) {
               >
                 <ActionImage src={w.image} alt={w.word} emoji={w.emoji} className="mini-card-img" />
                 <div className="mini-card-info">
-                  <span className="mini-emoji">{w.emoji}</span>
-                  <strong className="mini-word">{w.word}</strong>
-                  <span className="mini-phonetic">{w.phonetic}</span>
-                  <span className="mini-cn">{w.translation}</span>
-                  <button className="mini-sound-btn" title="查看音标与释义">📖 详细释义</button>
+                  <div className="mini-card-top-line">
+                    <span className="mini-emoji">{w.emoji}</span>
+                    <strong className="mini-word">{w.word}</strong>
+                    {w.phonetic && <span className="mini-phonetic">{w.phonetic}</span>}
+                  </div>
+                  <div className="mini-card-sub-line">
+                    <span className="mini-cn">{w.translation}</span>
+                    <span className="mini-lookup-tag">📖 详细释义</span>
+                  </div>
                 </div>
               </div>
             ))}
@@ -1031,10 +1062,15 @@ function ActionWordsHomeworkView({ data, isCompleted, onCompleteTask }) {
               >
                 <ActionImage src={w.image} alt={w.word} emoji={w.emoji} className="mini-card-img" />
                 <div className="mini-card-info">
-                  <span className="mini-emoji">{w.emoji}</span>
-                  <strong className="mini-word">{w.word}</strong>
-                  <span className="mini-cn">{w.translation}</span>
-                  <button className="mini-sound-btn" title="查看音标与释义">📖 详细释义</button>
+                  <div className="mini-card-top-line">
+                    <span className="mini-emoji">{w.emoji}</span>
+                    <strong className="mini-word">{w.word}</strong>
+                    {w.phonetic && <span className="mini-phonetic">{w.phonetic}</span>}
+                  </div>
+                  <div className="mini-card-sub-line">
+                    <span className="mini-cn">{w.translation}</span>
+                    <span className="mini-lookup-tag">📖 详细释义</span>
+                  </div>
                 </div>
               </div>
             ))}

@@ -1,9 +1,369 @@
+import realTadpoleImg from '../assets/real_tadpole.jpg'
+import realFrogImg from '../assets/real_frog.jpg'
+import realToadImg from '../assets/real_toad.jpg'
+import realWetImg from '../assets/real_wet.jpg'
+import realBumpyImg from '../assets/real_bumpy.jpg'
+import realBushesImg from '../assets/real_bushes.jpg'
 import cuteFrogImg from '../assets/cute_little_frog.jpg'
 
-export const CUTE_FROG_IMAGE = cuteFrogImg
+import countingSheepCover from '../assets/counting_sheep_cover.jpg'
+import readBooksBedImg from '../assets/read_books_bed.jpg'
+import hugGoodNightImg from '../assets/hug_good_night.jpg'
+import bedSoftCozyImg from '../assets/bed_soft_cozy.jpg'
+import catSleepsBedImg from '../assets/cat_sleeps_bed.jpg'
+import skyTurnedDarkImg from '../assets/sky_turned_dark.jpg'
+import eyesCloseSleepImg from '../assets/eyes_close_sleep.jpg'
 
-// 今日作业：Hop to It Some More! 🐸 (句子首字母大写与标点规范)
-export const DEFAULT_HOMEWORK = {
+export const REAL_IMAGES = {
+  tadpole: realTadpoleImg,
+  frog: realFrogImg,
+  toad: realToadImg,
+  wet: realWetImg,
+  bumpy: realBumpyImg,
+  bushes: realBushesImg,
+  sheepCover: countingSheepCover,
+  readBooks: readBooksBedImg,
+  hugNight: hugGoodNightImg,
+  bedCozy: bedSoftCozyImg,
+  catSleeps: catSleepsBedImg,
+  skyDark: skyTurnedDarkImg,
+  eyesClose: eyesCloseSleepImg
+}
+
+export const CUTE_FROG_IMAGE = cuteFrogImg
+export const COUNTING_SHEEP_COVER = countingSheepCover
+
+// 星期四最新作业：Counting Sheep 🐑 (句首单词规范首字母大写 + 睡前绘本抄写专区)
+export const HOMEWORK_COUNTING_SHEEP = {
+  id: 'homework-counting-sheep',
+  date: '2026年9月17日 星期四',
+  childName: '',
+  theme: 'counting-sheep',
+  
+  // 1. 英语作业：Counting Sheep: Capitalizing sentence beginnings
+  english: {
+    title: 'Counting Sheep: Capitalizing sentence beginnings 🐑',
+    topic: 'Capitalizing Sentence Beginnings (句首字母大写规范)',
+    teacherNote: 'THURSDAY: * Checked homework & Reading - Made provisions and corrections. * Practice writing more and get familiar with capitalization and punctuation. * Identify words with uppercase letters - Count the words with uppercase letters and write them down. HOMEWORK: COUNTING SHEEP: Capitalizing sentence beginnings. Using the practice writing page, copy a sentence from your favorite bedtime book. Circle the capital letter at the beginning.',
+    instruction: '将每只小绵羊身上的起始词首字母改写为大写（如 we read 变 We read），写在横线上组成完整的睡前句子！在睡前绘本抄写专区写下你最喜爱的句子，并圈出句首大写字母。',
+    ruleTips: [
+      { id: 'r1', title: '🐑 句首第一词必须大写', desc: '每一个英语句子的第一个单词的首字母必须大写（例如：we read 变 We read，then we 变 Then we）！' },
+      { id: 'r2', title: '🛏️ 熟记睡前温馨好词', desc: 'read books（看绘本）, hug good night（晚安拥抱）, soft and cozy（柔软舒服）, sleeps with me（陪我睡觉）, has turned dark（夜色深沉）, eyes close（双眼合上）。' },
+      { id: 'r3', title: '📖 睡前绘本抄写拓展', desc: '找一本最喜欢的睡前故事绘本（Bedtime book），在纸上工整抄写一句话，用彩色笔把句首第一个大写字母圈出来！' },
+      { id: 'r4', title: '🔍 寻找大写字母大挑战', desc: '数一数作业纸上所有大写字母的数量，把它们端正记录下来。' }
+    ],
+    sentences: [
+      {
+        id: 'cs1',
+        num: 1,
+        sheepWords: 'we read',
+        rawRest: 'books before bed.',
+        raw: 'we read books before bed.',
+        corrected: 'We read books before bed.',
+        translation: '我们在睡前看书。',
+        capitalWord: 'We read',
+        capitalChar: 'W',
+        rawFirstChar: 'w',
+        hasPeriod: true,
+        emoji: '📖',
+        image: readBooksBedImg,
+        subject: 'we read (睡前读书)',
+        keyWords: [
+          { en: 'we', cn: '我们' },
+          { en: 'read', cn: '阅读/读书' },
+          { en: 'books', cn: '书本/绘本' },
+          { en: 'before', cn: '在……之前' },
+          { en: 'bed', cn: '床/睡前' }
+        ],
+        scienceTip: '温馨睡前时光：在床头安静读一本温暖的绘本，能让大脑放松，进入甜甜梦乡。',
+        pencilGuide: '作业纸第1题：小羊身上是小写 "we read"，写在横线上要把首字母 "w" 改写成大写 "W" -> "We read"，后面连接 "books before bed."'
+      },
+      {
+        id: 'cs2',
+        num: 2,
+        sheepWords: 'then we',
+        rawRest: 'hug good night.',
+        raw: 'then we hug good night.',
+        corrected: 'Then we hug good night.',
+        translation: '然后我们拥抱说晚安。',
+        capitalWord: 'Then we',
+        capitalChar: 'T',
+        rawFirstChar: 't',
+        hasPeriod: true,
+        emoji: '🫂',
+        image: hugGoodNightImg,
+        subject: 'then we (晚安拥抱)',
+        keyWords: [
+          { en: 'then', cn: '然后/接着' },
+          { en: 'we', cn: '我们' },
+          { en: 'hug', cn: '拥抱' },
+          { en: 'good night', cn: '晚安' }
+        ],
+        scienceTip: '爱的拥抱：睡前和爸爸妈妈互相给一个大大的晚安拥抱，让人感到无比安心与幸福。',
+        pencilGuide: '作业纸第2题：小羊身上的 "then we" 位于句首，首字母 "t" 必须改成大写 "T" -> "Then we hug good night."'
+      },
+      {
+        id: 'cs3',
+        num: 3,
+        sheepWords: 'my bed',
+        rawRest: 'is soft and cozy.',
+        raw: 'my bed is soft and cozy.',
+        corrected: 'My bed is soft and cozy.',
+        translation: '我的小床又软又舒适。',
+        capitalWord: 'My bed',
+        capitalChar: 'M',
+        rawFirstChar: 'm',
+        hasPeriod: true,
+        emoji: '🛏️',
+        image: bedSoftCozyImg,
+        subject: 'my bed (温馨小床)',
+        keyWords: [
+          { en: 'my', cn: '我的' },
+          { en: 'bed', cn: '床' },
+          { en: 'soft', cn: '柔软的' },
+          { en: 'and', cn: '和/又……又……' },
+          { en: 'cozy', cn: '舒服温馨的' }
+        ],
+        scienceTip: '舒适小窝：soft（柔软）和 cozy（舒适）是形容温暖被窝最好的词汇。',
+        pencilGuide: '作业纸第3题：小羊身上的 "my bed" 是句首，首字母 "m" 必须大写成 "M" -> "My bed is soft and cozy."'
+      },
+      {
+        id: 'cs4',
+        num: 4,
+        sheepWords: 'my cat',
+        rawRest: 'sleeps with me.',
+        raw: 'my cat sleeps with me.',
+        corrected: 'My cat sleeps with me.',
+        translation: '我的小猫和我一起睡觉。',
+        capitalWord: 'My cat',
+        capitalChar: 'M',
+        rawFirstChar: 'm',
+        hasPeriod: true,
+        emoji: '🐱',
+        image: catSleepsBedImg,
+        subject: 'my cat (可爱小猫)',
+        keyWords: [
+          { en: 'my', cn: '我的' },
+          { en: 'cat', cn: '小猫' },
+          { en: 'sleeps', cn: '睡觉' },
+          { en: 'with', cn: '和……一起' },
+          { en: 'me', cn: '我' }
+        ],
+        scienceTip: '可爱睡伴：猫咪打呼噜的呼噜声（purring）能带来平静安详的助眠氛围。',
+        pencilGuide: '作业纸第4题：小羊身上是 "my cat"，首字母 "m" 改成大写 "M" -> "My cat sleeps with me."'
+      },
+      {
+        id: 'cs5',
+        num: 5,
+        sheepWords: 'the sky',
+        rawRest: 'has turned dark.',
+        raw: 'the sky has turned dark.',
+        corrected: 'The sky has turned dark.',
+        translation: '天空已经变暗变黑了。',
+        capitalWord: 'The sky',
+        capitalChar: 'T',
+        rawFirstChar: 't',
+        hasPeriod: true,
+        emoji: '🌌',
+        image: skyTurnedDarkImg,
+        subject: 'the sky (夜幕降临)',
+        keyWords: [
+          { en: 'the', cn: '这/那 (定冠词)' },
+          { en: 'sky', cn: '天空' },
+          { en: 'has turned', cn: '已经转变成' },
+          { en: 'dark', cn: '黑暗/天黑' }
+        ],
+        scienceTip: '昼夜规律：夜幕降临，天空中升起银色月亮和漫天繁星，该准备进入甜甜梦乡啦。',
+        pencilGuide: '作业纸第5题：小羊身上是 "the sky"，句首 "t" 必须写成大写 "T" -> "The sky has turned dark."'
+      },
+      {
+        id: 'cs6',
+        num: 6,
+        sheepWords: 'my eyes',
+        rawRest: 'close.',
+        raw: 'my eyes close.',
+        corrected: 'My eyes close.',
+        translation: '我的双眼轻轻闭上了。',
+        capitalWord: 'My eyes',
+        capitalChar: 'M',
+        rawFirstChar: 'm',
+        hasPeriod: true,
+        emoji: '😴',
+        image: eyesCloseSleepImg,
+        subject: 'my eyes (甜美入梦)',
+        keyWords: [
+          { en: 'my', cn: '我的' },
+          { en: 'eyes', cn: '双眼' },
+          { en: 'close', cn: '闭上/合上' }
+        ],
+        scienceTip: '做个好梦：双眼合上，身体得到充分休息，明天醒来精力充沛！',
+        pencilGuide: '作业纸第6题：小羊身上是 "my eyes"，首字母 "m" 大写成 "M" -> "My eyes close."'
+      }
+    ],
+    words: [
+      {
+        id: 'csw1',
+        word: 'sheep',
+        phonetic: '/ʃiːp/',
+        translation: '绵羊 / 睡前数羊',
+        emoji: '🐑',
+        image: countingSheepCover,
+        sentence: 'Counting sheep helps children fall asleep.',
+        sentenceCn: '数小绵羊能帮小朋友们安然入睡。'
+      },
+      {
+        id: 'csw2',
+        word: 'read',
+        phonetic: '/riːd/',
+        translation: '阅读 / 看绘本',
+        emoji: '📖',
+        image: readBooksBedImg,
+        sentence: 'We read books before bed.',
+        sentenceCn: '我们在睡前读书。'
+      },
+      {
+        id: 'csw3',
+        word: 'hug',
+        phonetic: '/hʌɡ/',
+        translation: '拥抱 / 晚安抱抱',
+        emoji: '🫂',
+        image: hugGoodNightImg,
+        sentence: 'Then we hug good night.',
+        sentenceCn: '然后我们拥抱说晚安。'
+      },
+      {
+        id: 'csw4',
+        word: 'cozy',
+        phonetic: '/ˈkoʊzi/',
+        translation: '温暖舒适惬意的',
+        emoji: '🛏️',
+        image: bedSoftCozyImg,
+        sentence: 'My bed is soft and cozy.',
+        sentenceCn: '我的小床又软又舒适。'
+      },
+      {
+        id: 'csw5',
+        word: 'sleep',
+        phonetic: '/sliːp/',
+        translation: '睡觉 / 甜美入梦',
+        emoji: '🐱',
+        image: catSleepsBedImg,
+        sentence: 'My cat sleeps with me.',
+        sentenceCn: '我的小猫和我一起睡觉。'
+      },
+      {
+        id: 'csw6',
+        word: 'dark',
+        phonetic: '/dɑːrk/',
+        translation: '黑暗的 / 夜幕天黑',
+        emoji: '🌌',
+        image: skyTurnedDarkImg,
+        sentence: 'The sky has turned dark.',
+        sentenceCn: '天空已经变黑了。'
+      }
+    ],
+    writingWorkshop: {
+      title: '📖 睡前绘本抄写专区 (Bedtime Book Copywork)',
+      promptCn: 'On another piece of paper, copy a sentence from your favorite bedtime book. Circle the capital letter at the beginning. (在另一张纸上，从你最喜爱的睡前绘本中抄写一个句子，用彩笔圈出句首的大写字母！)',
+      tips: [
+        '挑一本最喜爱的睡前故事书（Bedtime book）',
+        '在纸上工整抄写一个完整句子，单词间留出一个字母的空隙（finger space）',
+        '拿出一支亮色笔，把句首第一个站得高高的大写字母（Capital Letter）画个大圆圈（Circle）圈出来！'
+      ],
+      samples: [
+        {
+          id: 'wb1',
+          name: '🌙 经典晚安：《Goodnight Moon》',
+          bookTitle: 'Goodnight Moon (晚安月亮)',
+          capitalLetter: 'G',
+          lines: [
+            { en: 'Goodnight stars, goodnight air.', cn: '晚安星星，晚安空气。（圈出大写字母 G）' },
+            { en: 'Goodnight noises everywhere.', cn: '晚安到处的声音。（圈出大写字母 G）' },
+            { en: 'Sleep tight until the morning light.', cn: '安睡吧，直到晨光升起。（圈出大写字母 S）' }
+          ]
+        },
+        {
+          id: 'wb2',
+          name: '🐰 爱的表达：《Guess How Much I Love You》',
+          bookTitle: 'Guess How Much I Love You (猜猜我有多爱你)',
+          capitalLetter: 'I',
+          lines: [
+            { en: 'I love you right up to the moon.', cn: '我爱你一直到月亮那么高。（圈出大写字母 I）' },
+            { en: 'And back.', cn: '而且还再绕回来。（圈出大写字母 A）' },
+            { en: 'Big Nutbrown Hare smiled and fell asleep.', cn: '大栗色野兔微笑着睡着了。（圈出大写字母 B）' }
+          ]
+        },
+        {
+          id: 'wb3',
+          name: '🐛 神奇自然：《The Very Hungry Caterpillar》',
+          bookTitle: 'The Very Hungry Caterpillar (好饿的毛毛虫)',
+          capitalLetter: 'I',
+          lines: [
+            { en: 'In the light of the moon, a little egg lay on a leaf.', cn: '在月光下，一颗小小的卵正躺在叶子上。（圈出大写字母 I）' },
+            { en: 'One Sunday morning the warm sun came up.', cn: '一个星期天早晨，暖洋洋的太阳升起来了。（圈出大写字母 O）' },
+            { en: 'He started to look for some food.', cn: '他开始寻找好吃的食物。（圈出大写字母 H）' }
+          ]
+        }
+      ],
+      interactiveStarters: [
+        {
+          label: '🌟 睡前绘本经典句首（首字母大写并画圈）',
+          starters: ['In the night,', 'Once upon a time,', 'Goodnight moon,', 'I love you,', 'When night comes,', 'The little stars']
+        },
+        {
+          label: '🛏️ 睡前温馨短语',
+          starters: ['before bed.', 'soft and cozy.', 'sleeps peacefully.', 'has turned dark.', 'close my eyes.', 'hug mommy and daddy.']
+        }
+      ]
+    }
+  },
+
+  // 2. 语文拼音复习
+  pinyin: {
+    teacherNote: 'THURSDAY 拼音与书写复习：规范书写坐姿与大写英文字母对应关系，巩固声母拼读。',
+    letters: [
+      { id: 'p1', char: 'd', type: '声母', mnemonic: '左下半圆 d d d，马儿奔跑 🐎', soundTip: '舌尖抵住上齿龈，突然放开' },
+      { id: 'p2', char: 't', type: '声母', mnemonic: '一把伞柄 t t t，下雨撑伞 ☔', soundTip: '舌尖抵住上齿龈，强力喷气' },
+      { id: 'p3', char: 'n', type: '声母', mnemonic: '一个门洞 n n n，小哪吒 🧒', soundTip: '舌尖抵住上齿龈，鼻腔出气' },
+      { id: 'p4', char: 'l', type: '声母', mnemonic: '一根小棒 l l l，小铅笔 ✏️', soundTip: '舌尖抵住上齿龈，气流从两边流出' }
+    ],
+    blends: [
+      { id: 'bl1', initial: 'd', final: 'à', result: 'dà', word: '大写字母 / 大象 🐘', example: '大门、大写' },
+      { id: 'bl2', initial: 't', final: 'iān', result: 'tiān', word: '白天与黑夜 🌌', example: '天空、天黑' },
+      { id: 'bl3', initial: 'n', final: 'ǎi', result: 'nǎi', word: '睡前喝牛奶 🥛', example: '牛奶、奶奶' },
+      { id: 'bl4', initial: 'l', final: 'iù', result: 'liù', word: '数六只小羊 🐑', example: '数字 6 (六)' }
+    ]
+  },
+
+  // 3. 语文阅读指读
+  reading: {
+    title: '睡前童谣《数小羊》',
+    author: '经典儿童晚安童谣',
+    teacherNote: '睡前读一读温暖的《数小羊》，一只小羊跳过栅栏，做个香甜的美梦。',
+    image: countingSheepCover,
+    lines: [
+      [
+        { char: '一', pinyin: 'yī' }, { char: '只', pinyin: 'zhī' }, { char: '羊', pinyin: 'yáng' }, { char: '，', pinyin: '' },
+        { char: '跳', pinyin: 'tiào' }, { char: '过', pinyin: 'guò' }, { char: '墙', pinyin: 'qiáng' }, { char: '。', pinyin: '' }
+      ],
+      [
+        { char: '两', pinyin: 'liǎng' }, { char: '只', pinyin: 'zhī' }, { char: '羊', pinyin: 'yáng' }, { char: '，', pinyin: '' },
+        { char: '捉', pinyin: 'zhuō' }, { char: '迷', pinyin: 'mí' }, { char: '藏', pinyin: 'cáng' }, { char: '。', pinyin: '' }
+      ],
+      [
+        { char: '三', pinyin: 'sān' }, { char: '只', pinyin: 'zhī' }, { char: '羊', pinyin: 'yáng' }, { char: '，', pinyin: '' },
+        { char: '闭', pinyin: 'bì' }, { char: '眼', pinyin: 'yǎn' }, { char: '睛', pinyin: 'jing' }, { char: '。', pinyin: '' }
+      ],
+      [
+        { char: '钻', pinyin: 'zuān' }, { char: '进', pinyin: 'jìn' }, { char: '被', pinyin: 'bèi' }, { char: '窝', pinyin: 'wō' },
+        { char: '梦', pinyin: 'mèng' }, { char: '甜', pinyin: 'tián' }, { char: '香', pinyin: 'xiāng' }, { char: '。', pinyin: '' }
+      ]
+    ]
+  }
+}
+
+// 往期作业：2026年9月16日 星期三 Hop to It Some More! 🐸 (青蛙与蟾蜍)
+export const HOMEWORK_2026_09_16 = {
   id: 'today-hop-to-it',
   date: '2026年9月16日 星期三',
   childName: '',
@@ -33,7 +393,7 @@ export const DEFAULT_HOMEWORK = {
         rawFirstChar: 't',
         hasPeriod: true,
         emoji: '🐸',
-        image: 'https://images.unsplash.com/photo-1583337130417-3346a1be7dee?w=600&auto=format&fit=crop',
+        image: realTadpoleImg,
         subject: 'tadpoles',
         keyWords: [
           { en: 'tadpoles', cn: '蝌蚪' },
@@ -54,7 +414,7 @@ export const DEFAULT_HOMEWORK = {
         rawFirstChar: 'f',
         hasPeriod: true,
         emoji: '🪷',
-        image: 'https://images.unsplash.com/photo-1579202673506-ca3ce28943ef?w=600&auto=format&fit=crop',
+        image: realFrogImg,
         subject: 'frogs',
         keyWords: [
           { en: 'frogs', cn: '青蛙' },
@@ -75,7 +435,7 @@ export const DEFAULT_HOMEWORK = {
         rawFirstChar: 't',
         hasPeriod: true,
         emoji: '🌿',
-        image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&auto=format&fit=crop',
+        image: realBushesImg,
         subject: 'toads',
         keyWords: [
           { en: 'toads', cn: '蟾蜍(癞蛤蟆)' },
@@ -96,7 +456,7 @@ export const DEFAULT_HOMEWORK = {
         rawFirstChar: 'f',
         hasPeriod: true,
         emoji: '💧',
-        image: 'https://images.unsplash.com/photo-1563281577-a7be47e20db9?w=600&auto=format&fit=crop',
+        image: realWetImg,
         subject: 'frogs',
         keyWords: [
           { en: 'frogs', cn: '青蛙' },
@@ -117,7 +477,7 @@ export const DEFAULT_HOMEWORK = {
         rawFirstChar: 't',
         hasPeriod: true,
         emoji: '🪨',
-        image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&auto=format&fit=crop',
+        image: realBumpyImg,
         subject: 'toads',
         keyWords: [
           { en: 'toads', cn: '蟾蜍' },
@@ -173,7 +533,7 @@ export const DEFAULT_HOMEWORK = {
         phonetic: '/ˈtædpoʊl/',
         translation: '小蝌蚪',
         emoji: '🟢',
-        image: 'https://images.unsplash.com/photo-1583337130417-3346a1be7dee?w=600&auto=format&fit=crop',
+        image: realTadpoleImg,
         sentence: 'Tadpoles become frogs or toads.',
         sentenceCn: '蝌蚪会长成青蛙或蟾蜍。'
       },
@@ -183,7 +543,7 @@ export const DEFAULT_HOMEWORK = {
         phonetic: '/frɔːɡ/',
         translation: '青蛙',
         emoji: '🐸',
-        image: 'https://images.unsplash.com/photo-1579202673506-ca3ce28943ef?w=600&auto=format&fit=crop',
+        image: realFrogImg,
         sentence: 'Frogs live near water and love swimming.',
         sentenceCn: '青蛙生活在水边，热爱游泳。'
       },
@@ -193,7 +553,7 @@ export const DEFAULT_HOMEWORK = {
         phonetic: '/toʊd/',
         translation: '蟾蜍 (癞蛤蟆)',
         emoji: '🪨',
-        image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&auto=format&fit=crop',
+        image: realToadImg,
         sentence: 'Toads live under bushes on land.',
         sentenceCn: '蟾蜍生活在陆地的灌木丛下。'
       },
@@ -203,7 +563,7 @@ export const DEFAULT_HOMEWORK = {
         phonetic: '/wet/',
         translation: '湿润光滑的',
         emoji: '💧',
-        image: 'https://images.unsplash.com/photo-1563281577-a7be47e20db9?w=600&auto=format&fit=crop',
+        image: realWetImg,
         sentence: 'Frogs have wet and smooth skin.',
         sentenceCn: '青蛙有着湿润光滑的皮肤。'
       },
@@ -213,7 +573,7 @@ export const DEFAULT_HOMEWORK = {
         phonetic: '/ˈbʌmpi/',
         translation: '凹凸不平的 (疙瘩的)',
         emoji: '🪵',
-        image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&auto=format&fit=crop',
+        image: realBumpyImg,
         sentence: 'Toads have bumpy skin.',
         sentenceCn: '蟾蜍有着凹凸不平的粗糙皮肤。'
       },
@@ -223,7 +583,7 @@ export const DEFAULT_HOMEWORK = {
         phonetic: '/ˈbʊʃɪz/',
         translation: '灌木丛',
         emoji: '🌿',
-        image: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=600&auto=format&fit=crop',
+        image: realBushesImg,
         sentence: 'The toad is hiding under the green bushes.',
         sentenceCn: '蟾蜍正在绿色的灌木丛下躲藏。'
       }
@@ -535,9 +895,13 @@ export const HOMEWORK_2026_09_15 = {
   }
 }
 
+// 今日最新默认作业为星期四：Counting Sheep
+export const DEFAULT_HOMEWORK = HOMEWORK_COUNTING_SHEEP
+
 // 历史作业归档列表库（支持按日期翻阅与周末复习）
 export const DEFAULT_HOMEWORK_LIST = [
-  DEFAULT_HOMEWORK,
+  HOMEWORK_COUNTING_SHEEP,
+  HOMEWORK_2026_09_16,
   HOMEWORK_2026_09_15,
   {
     id: 'archive-2026-09-14',
