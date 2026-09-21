@@ -22,6 +22,12 @@ import realBakeryShopImg from '../assets/real_bakery_shop.jpg'
 import realPartyImg from '../assets/real_party.jpg'
 import realCircusImg from '../assets/real_circus.jpg'
 
+import realPrairieDogImg from '../assets/real_prairie_dog.jpg'
+import realPrairieBurrowImg from '../assets/real_prairie_burrow.jpg'
+import realRattlesnakeImg from '../assets/real_rattlesnake.jpg'
+import realFurryAnimalsImg from '../assets/real_furry_animals.jpg'
+import tinyTownCoverImg from '../assets/tiny_town_cover.jpg'
+
 export const REAL_IMAGES = {
   tadpole: realTadpoleImg,
   frog: realFrogImg,
@@ -42,12 +48,414 @@ export const REAL_IMAGES = {
   gum: realChewingGumImg,
   bakery: realBakeryShopImg,
   party: realPartyImg,
-  circus: realCircusImg
+  circus: realCircusImg,
+  prairieDog: realPrairieDogImg,
+  prairieBurrow: realPrairieBurrowImg,
+  rattlesnake: realRattlesnakeImg,
+  furryAnimals: realFurryAnimalsImg,
+  tinyTownCover: tinyTownCoverImg
 }
 
 export const CUTE_FROG_IMAGE = cuteFrogImg
 export const COUNTING_SHEEP_COVER = countingSheepCover
 export const SWEET_SENTENCES_COVER = sweetSentencesCover
+export const TINY_TOWN_COVER = tinyTownCoverImg
+
+// 星期一今日最新作业：A Tiny Town 🐿️ (密信密码破译与非虚构科普阅读)
+export const HOMEWORK_TINY_TOWN = {
+  id: 'homework-tiny-town',
+  date: '2026年9月21日 星期一',
+  childName: '',
+  theme: 'tiny-town',
+
+  // 1. 英语作业：A Tiny Town: Developing vocabulary
+  english: {
+    title: 'A Tiny Town: Developing vocabulary 🐿️',
+    topic: 'Secret Code Vocabulary & Reading (密信密码破译与地底小镇科普)',
+    teacherNote: 'SEPTEMBER 21st MONDAY: * Checked homework & Reading - Made provisions and corrections. * PRACTICED correct writing strokes of the alphabet, both uppercase and lowercase letters. * MATHS: Sorting, Odd or Even, Reading Graphs; reviewed addition and subtraction. HOMEWORK: A TINY TOWN: Review using the code to learn what some of the words in the story mean. Copy the matching letters in the blanks. Practice Reading tomorrow! Recordings & Photos will be sent in the afternoon. Thank you!',
+    instruction: '阅读科普短文《A Tiny Town》，对照底部的神奇符号密码表，破译故事中加下划线词汇的意思！将解出的英文字母工整抄写在横线上，并在明天自信流利朗读故事！',
+    
+    // 故事全文与逐句拆解
+    story: {
+      title: 'A Tiny Town',
+      titleCn: '微型地底小镇',
+      coverImage: tinyTownCoverImg,
+      burrowImage: realPrairieBurrowImg,
+      rattlesnakeImage: realRattlesnakeImg,
+      furryImage: realFurryAnimalsImg,
+      prairieDogImage: realPrairieDogImg,
+      paragraphEn: "Have you ever seen a prairie dog town? That's where prairie dogs live, but there are no buildings or houses. They live underground. They dig deep into the dirt making burrows. Along the burrows, here and there, are chambers for sleeping or storing food. One chamber is lined with grass for the babies. Sometimes prairie dogs have unwanted guests in their town, like rattlesnakes!",
+      paragraphCn: "你见过北美草原犬鼠（土拨鼠）小镇吗？那是土拨鼠生活的地方，但那里没有任何高楼或房屋。它们生活在地下深处。它们在泥土深处挖掘，建造纵横交错的地道。沿着地道，到处分布着用来睡觉或储藏粮食的小室。其中一间小室铺着柔软的青草，是专门给宝宝们睡觉的。有时，土拨鼠的小镇里还会迎来不受欢迎的客人，比如响尾蛇！",
+      sentences: [
+        {
+          id: 'st-1',
+          num: 1,
+          en: 'Have you ever seen a prairie dog town?',
+          cn: '你见过北美草原犬鼠（土拨鼠）小镇吗？',
+          highlightWords: ['prairie dog town'],
+          highlightCn: '土拨鼠小镇（地底聚居地）',
+          tip: 'Have you ever seen...? 句型表示“你曾经见过……吗？”'
+        },
+        {
+          id: 'st-2',
+          num: 2,
+          en: "That's where prairie dogs live, but there are no buildings or houses.",
+          cn: '那就是土拨鼠生活的地方，但那里没有任何建筑物或房屋。',
+          highlightWords: ['prairie dogs', 'buildings', 'houses'],
+          highlightCn: 'prairie dogs 是毛茸茸的土拨鼠，这里没有人类的水泥高楼大厦。',
+          tip: 'There are no... 表示“没有任何……”。'
+        },
+        {
+          id: 'st-3',
+          num: 3,
+          en: 'They live underground.',
+          cn: '它们全部生活在地面之下。',
+          highlightWords: ['underground'],
+          highlightCn: 'under (在…下) + ground (地面) = 在地下！',
+          tip: '地底温度冬暖夏凉，还能躲避大草原上的烈日与猛禽！'
+        },
+        {
+          id: 'st-4',
+          num: 4,
+          en: 'They dig deep into the dirt making burrows.',
+          cn: '它们向泥土深处挖掘，做成一条条地道。',
+          highlightWords: ['dig deep', 'dirt', 'burrows'],
+          highlightCn: 'burrows 就是地道隧道（TUNNELS）！',
+          tip: '土拨鼠拥有锐利的前爪，是出色的地底工程挖掘大师！'
+        },
+        {
+          id: 'st-5',
+          num: 5,
+          en: 'Along the burrows, here and there, are chambers for sleeping or storing food.',
+          cn: '沿着地道，到处分布着用来睡觉或储藏粮食的地下小室。',
+          highlightWords: ['chambers', 'sleeping', 'storing food'],
+          highlightCn: 'chambers 就是房间（ROOMS），功能分工非常明确！',
+          tip: 'here and there 是常见短语，意为“到处，各处”。'
+        },
+        {
+          id: 'st-6',
+          num: 6,
+          en: 'One chamber is lined with grass for the babies.',
+          cn: '其中一间小室铺着柔软的青草，是专门给小宝宝们的育婴室。',
+          highlightWords: ['lined with grass', 'babies'],
+          highlightCn: '草垫育婴室，温暖又干燥！',
+          tip: 'lined with grass 表示“内衬/铺满了青草”。'
+        },
+        {
+          id: 'st-7',
+          num: 7,
+          en: 'Sometimes prairie dogs have unwanted guests in their town, like rattlesnakes!',
+          cn: '有时，土拨鼠在它们的小镇里会有不受欢迎的客人，比如响尾蛇！',
+          highlightWords: ['unwanted guests', 'rattlesnakes'],
+          highlightCn: 'unwanted guests 就是捣乱害客（PESTS）！',
+          tip: '响尾蛇尾巴会发出咔哒咔哒的警告声，土拨鼠会大声叫哨提醒全家！'
+        }
+      ]
+    },
+
+    // 密码对照表（Code Key: 符号与英文字母对应关系）
+    codeKey: [
+      { letter: 'A', symbol: '☀️', name: '太阳 Sun' },
+      { letter: 'C', symbol: '♈', name: '羊角 Aries' },
+      { letter: 'E', symbol: '🌟', name: '金星 Star' },
+      { letter: 'F', symbol: '🍃', name: '绿叶 Leaf' },
+      { letter: 'I', symbol: '🌲', name: '松树 Pine' },
+      { letter: 'L', symbol: '⭐', name: '黄星 Star' },
+      { letter: 'M', symbol: '🌀', name: '旋涡 Coil' },
+      { letter: 'N', symbol: '🔺', name: '三角 Triangle' },
+      { letter: 'O', symbol: '🌺', name: '花朵 Flower' },
+      { letter: 'P', symbol: '〰️', name: '波浪 Wavy' },
+      { letter: 'R', symbol: '🌙', name: '弯月 Moon' },
+      { letter: 'S', symbol: '🌾', name: '麦穗 Wheat' },
+      { letter: 'T', symbol: '🌸', name: '樱花 Blossom' },
+      { letter: 'U', symbol: '⬇️', name: '箭头 Down' },
+      { letter: 'Y', symbol: '🌳', name: '大树 Tree' }
+    ],
+
+    // 5 道核心破译题（Worksheet 上的加下划线词汇与密码）
+    decoders: [
+      {
+        id: 'dec-1',
+        num: 1,
+        questionWord: 'town',
+        questionDisplay: '1. town',
+        storyContext: "Have you ever seen a prairie dog town?",
+        symbolsGrouped: [
+          [{ char: 'A', symbol: '☀️' }],
+          [
+            { char: 'S', symbol: '🌾' },
+            { char: 'M', symbol: '🌀' },
+            { char: 'A', symbol: '☀️' },
+            { char: 'L', symbol: '⭐' },
+            { char: 'L', symbol: '⭐' }
+          ],
+          [
+            { char: 'C', symbol: '♈' },
+            { char: 'I', symbol: '🌲' },
+            { char: 'T', symbol: '🌸' },
+            { char: 'Y', symbol: '🌳' }
+          ]
+        ],
+        decodedText: 'A SMALL CITY',
+        decodedWords: ['A', 'SMALL', 'CITY'],
+        translation: '一座微型小城市（土拨鼠地下聚居区）',
+        meaningExplanation: '土拨鼠生活在一起的地下洞穴群，就像人类的一座微型城市，居住着成百上千只土拨鼠邻居！',
+        image: tinyTownCoverImg,
+        badgeEmoji: '🏙️',
+        writingTip: '在作业纸第1题横线上依次工整写下：A   S M A L L   C I T Y。单词之间记得空开一指宽哦！'
+      },
+      {
+        id: 'dec-2',
+        num: 2,
+        questionWord: 'prairie dogs',
+        questionDisplay: '2. prairie dogs',
+        storyContext: "That's where prairie dogs live, but there are no buildings or houses.",
+        symbolsGrouped: [
+          [
+            { char: 'L', symbol: '⭐' },
+            { char: 'I', symbol: '🌲' },
+            { char: 'T', symbol: '🌸' },
+            { char: 'T', symbol: '🌸' },
+            { char: 'L', symbol: '⭐' },
+            { char: 'E', symbol: '🌟' }
+          ],
+          [
+            { char: 'F', symbol: '🍃' },
+            { char: 'U', symbol: '⬇️' },
+            { char: 'R', symbol: '🌙' },
+            { char: 'R', symbol: '🌙' },
+            { char: 'Y', symbol: '🌳' }
+          ],
+          [
+            { char: 'A', symbol: '☀️' },
+            { char: 'N', symbol: '🔺' },
+            { char: 'I', symbol: '🌲' },
+            { char: 'M', symbol: '🌀' },
+            { char: 'A', symbol: '☀️' },
+            { char: 'L', symbol: '⭐' },
+            { char: 'S', symbol: '🌾' }
+          ]
+        ],
+        decodedText: 'LITTLE FURRY ANIMALS',
+        decodedWords: ['LITTLE', 'FURRY', 'ANIMALS'],
+        translation: '毛茸茸的小动物（草原犬鼠 / 土拨鼠）',
+        meaningExplanation: '北美大草原上的可爱啮齿类动物，全身覆盖着柔软密实的浅棕色毛发，非常萌！',
+        image: realFurryAnimalsImg,
+        badgeEmoji: '🐿️',
+        writingTip: '在作业纸第2题横线上依次工整写下：L I T T L E   F U R R Y   A N I M A L S。'
+      },
+      {
+        id: 'dec-3',
+        num: 3,
+        questionWord: 'burrows',
+        questionDisplay: '3. burrows',
+        storyContext: "They dig deep into the dirt making burrows.",
+        symbolsGrouped: [
+          [
+            { char: 'T', symbol: '🌸' },
+            { char: 'U', symbol: '⬇️' },
+            { char: 'N', symbol: '🔺' },
+            { char: 'N', symbol: '🔺' },
+            { char: 'E', symbol: '🌟' },
+            { char: 'L', symbol: '⭐' },
+            { char: 'S', symbol: '🌾' }
+          ]
+        ],
+        decodedText: 'TUNNELS',
+        decodedWords: ['TUNNELS'],
+        translation: '地道，地下隧道（复数）',
+        meaningExplanation: '土拨鼠用敏捷的小爪子在泥土深处挖出的地下通道，四通八达，四面连通！',
+        image: realPrairieBurrowImg,
+        badgeEmoji: '🚇',
+        writingTip: '在作业纸第3题横线上工整写下：T U N N E L S。'
+      },
+      {
+        id: 'dec-4',
+        num: 4,
+        questionWord: 'chambers',
+        questionDisplay: '4. chambers',
+        storyContext: "Along the burrows, here and there, are chambers for sleeping or storing food.",
+        symbolsGrouped: [
+          [
+            { char: 'R', symbol: '🌙' },
+            { char: 'O', symbol: '🌺' },
+            { char: 'O', symbol: '🌺' },
+            { char: 'M', symbol: '🌀' },
+            { char: 'S', symbol: '🌾' }
+          ]
+        ],
+        decodedText: 'ROOMS',
+        decodedWords: ['ROOMS'],
+        translation: '房间，地下小室（复数）',
+        meaningExplanation: '分布在地道各处的小房间，分别有专门用来睡觉的卧室、储藏粮食的仓库和育婴房！',
+        image: realPrairieBurrowImg,
+        badgeEmoji: '🛏️',
+        writingTip: '在作业纸第4题横线上工整写下：R O O M S。'
+      },
+      {
+        id: 'dec-5',
+        num: 5,
+        questionWord: 'unwanted guests',
+        questionDisplay: '5. unwanted guests',
+        storyContext: "Sometimes prairie dogs have unwanted guests in their town, like rattlesnakes!",
+        symbolsGrouped: [
+          [
+            { char: 'P', symbol: '〰️' },
+            { char: 'E', symbol: '🌟' },
+            { char: 'S', symbol: '🌾' },
+            { char: 'T', symbol: '🌸' },
+            { char: 'S', symbol: '🌾' }
+          ]
+        ],
+        decodedText: 'PESTS',
+        decodedWords: ['PESTS'],
+        translation: '害兽 / 捣乱破坏者 / 危险的不速之客（如响尾蛇）',
+        meaningExplanation: '指那些未经邀请闯进地道搞破坏、威胁幼崽生命的危险动物（比如毒蛇、郊狼、雪貂）！',
+        image: realRattlesnakeImg,
+        badgeEmoji: '🐍',
+        writingTip: '在作业纸第5题横线上工整写下：P E S T S。'
+      }
+    ],
+
+    // 核心词汇闪卡（带真实摄影高清图与释义）
+    words: [
+      {
+        id: 'w-tt-1',
+        word: 'prairie dog',
+        phonetic: '/ˈpreri dɔːɡ/',
+        translation: '草原犬鼠 (土拨鼠)',
+        emoji: '🐿️',
+        image: realPrairieDogImg,
+        sentence: "Have you ever seen a prairie dog town?",
+        sentenceCn: "你见过北美草原犬鼠（土拨鼠）小镇吗？"
+      },
+      {
+        id: 'w-tt-2',
+        word: 'burrows',
+        phonetic: '/ˈbɜːroʊz/',
+        translation: '地道，洞穴 (TUNNELS)',
+        emoji: '🚇',
+        image: realPrairieBurrowImg,
+        sentence: "They dig deep into the dirt making burrows.",
+        sentenceCn: "它们向泥土深处挖掘，做成一条条地道。"
+      },
+      {
+        id: 'w-tt-3',
+        word: 'chambers',
+        phonetic: '/ˈtʃeɪmbərz/',
+        translation: '小室，房间 (ROOMS)',
+        emoji: '🛏️',
+        image: realPrairieBurrowImg,
+        sentence: "Along the burrows are chambers for sleeping.",
+        sentenceCn: "沿着地道分布着用来睡觉的小室。"
+      },
+      {
+        id: 'w-tt-4',
+        word: 'rattlesnakes',
+        phonetic: '/ˈrætlsneɪks/',
+        translation: '响尾蛇 (不速之客 PESTS)',
+        emoji: '🐍',
+        image: realRattlesnakeImg,
+        sentence: "Prairie dogs have unwanted guests, like rattlesnakes!",
+        sentenceCn: "土拨鼠会有不受欢迎的客人，比如响尾蛇！"
+      },
+      {
+        id: 'w-tt-5',
+        word: 'furry',
+        phonetic: '/ˈfɜːri/',
+        translation: '毛茸茸的',
+        emoji: '🧸',
+        image: realFurryAnimalsImg,
+        sentence: "Prairie dogs are little furry animals.",
+        sentenceCn: "土拨鼠是毛茸茸的小动物。"
+      },
+      {
+        id: 'w-tt-6',
+        word: 'town',
+        phonetic: '/taʊn/',
+        translation: '小镇，微型城市 (A SMALL CITY)',
+        emoji: '🏙️',
+        image: tinyTownCoverImg,
+        sentence: "A prairie dog town is a busy underground colony.",
+        sentenceCn: "土拨鼠小镇是一个繁忙热闹的地下群体王国。"
+      }
+    ],
+
+    // 老师课堂重点：26个英文字母大小写书写笔画 (Writing strokes of the alphabet)
+    alphabetStrokes: [
+      { letter: 'A', lower: 'a', strokeUpper: '1. 左斜线下 /  2. 右斜线下 \\  3. 中间横线 -', strokeLower: '1. 先画圆圈 c  2. 右侧一小竖向下', sound: '/eɪ/', tip: '太阳符号 ☀️ = A' },
+      { letter: 'C', lower: 'c', strokeUpper: '1. 从右上起笔，向左上方画大半圆弧', strokeLower: '1. 占中间一格，画小半圆弧', sound: '/siː/', tip: '羊角符号 ♈ = C' },
+      { letter: 'E', lower: 'e', strokeUpper: '1. 左侧竖直向下  2. 顶横  3. 中横稍短  4. 底横', strokeLower: '1. 中间先画一短横，再向上包圆画半圈', sound: '/iː/', tip: '金星符号 🌟 = E' },
+      { letter: 'F', lower: 'f', strokeUpper: '1. 左侧竖直向下  2. 顶部长横  3. 中部短横', strokeLower: '1. 从上端弯钩向下竖直  2. 中间横穿一短横', sound: '/ef/', tip: '绿叶符号 🍃 = F' },
+      { letter: 'I', lower: 'i', strokeUpper: '1. 中间竖直向下  2. 顶横  3. 底横', strokeLower: '1. 中格直竖  2. 上格正中点一点', sound: '/aɪ/', tip: '松树符号 🌲 = I' },
+      { letter: 'L', lower: 'l', strokeUpper: '1. 竖直向下到底  2. 向右水平折横', strokeLower: '1. 从上格顶端直直拉下一长竖', sound: '/el/', tip: '黄星符号 ⭐ = L' },
+      { letter: 'M', lower: 'm', strokeUpper: '1. 左竖向下  2. 斜下到中心  3. 斜上到顶  4. 右竖直下', strokeLower: '1. 竖直向下  2. 右拱门  3. 第二个右拱门', sound: '/em/', tip: '旋涡符号 🌀 = M' },
+      { letter: 'N', lower: 'n', strokeUpper: '1. 左竖向上  2. 斜线向右下  3. 右竖直向上', strokeLower: '1. 直竖向下  2. 右侧画一个拱门弯', sound: '/en/', tip: '三角符号 🔺 = N' },
+      { letter: 'O', lower: 'o', strokeUpper: '1. 从顶端向左逆时针画一个大圆圈封口', strokeLower: '1. 在中格逆时针画一个小正圆封口', sound: '/oʊ/', tip: '小花符号 🌺 = O' },
+      { letter: 'P', lower: 'p', strokeUpper: '1. 左竖直下  2. 在上半部向右画半圆封口', strokeLower: '1. 向下延伸到下格的长竖  2. 中格画右半圆', sound: '/piː/', tip: '波浪符号 〰️ = P' },
+      { letter: 'R', lower: 'r', strokeUpper: '1. 左竖直下  2. 上部右半圆  3. 右下撇出斜腿', strokeLower: '1. 直竖向下  2. 顶端向右上方微微挑一个小弯钩', sound: '/ɑːr/', tip: '弯月符号 🌙 = R' },
+      { letter: 'S', lower: 's', strokeUpper: '1. 从右上向左逆时针弯，中途向右折，再向左回弯成S形', strokeLower: '1. 在中格写同样形状的小S', sound: '/es/', tip: '麦穗符号 🌾 = S' },
+      { letter: 'T', lower: 't', strokeUpper: '1. 中间一长竖直下  2. 顶部平平画一长横', strokeLower: '1. 竖直向下带点小弯钩  2. 在横线稍偏上穿一短横', sound: '/tiː/', tip: '樱花符号 🌸 = T' },
+      { letter: 'U', lower: 'u', strokeUpper: '1. 从左上方向下拉，底部圆润包弯，再平直拉到右上', strokeLower: '1. 中格写U形小兜  2. 右边带一小竖落地', sound: '/juː/', tip: '箭头符号 ⬇️ = U' },
+      { letter: 'Y', lower: 'y', strokeUpper: '1. 左上短斜线  2. 右上短斜线相交  3. 竖直向下支撑', strokeLower: '1. 左短斜线  2. 右长斜线穿入下格', sound: '/waɪ/', tip: '大树符号 🌳 = Y' }
+    ],
+
+    // 老师课堂重点：数学微复习 (Sorting, Odd or Even, Reading Graphs)
+    mathsReview: {
+      topic: 'Maths: Sorting, Odd or Even & Reading Graphs 📊',
+      note: '老师课堂带领练习了：分类排序、奇数与偶数判断、读统计图表，以及加减法巩固！',
+      oddEvenCards: [
+        { num: 5, type: 'Odd (奇数)', icon: '🐿️', desc: '5 只土拨鼠排队，最后 1 只有单个没有配对，所以是奇数！' },
+        { num: 6, type: 'Even (偶数)', icon: '🌰', desc: '6 颗草籽橡果，正好两两配成 3 对，所以是偶数！' },
+        { num: 7, type: 'Odd (奇数)', icon: '🐍', desc: '7 条响尾蛇警报，不能完全两两分组，是奇数！' },
+        { num: 8, type: 'Even (偶数)', icon: '🚪', desc: '8 间地底小室，正好两两配成 4 对，是偶数！' }
+      ],
+      graphData: {
+        title: 'Prairie Dog Town Census (土拨鼠小镇数量统计图)',
+        items: [
+          { label: 'East Town (东区小镇)', count: 8, color: '#f59e0b' },
+          { label: 'West Town (西区小镇)', count: 5, color: '#10b981' },
+          { label: 'South Town (南区小镇)', count: 3, color: '#6366f1' }
+        ],
+        question: '东区有 8 只土拨鼠，西区有 5 只，请问东区比西区多几只？',
+        formula: '8 - 5 = 3 只！'
+      }
+    }
+  },
+
+  // 2. 拼音作业：声母 j, q, x
+  pinyin: {
+    teacherNote: '复习声母 j, q, x 的标准发音、占格书写及与韵母的拼读拼合（两拼与三拼连读），注意小 ü 见到 j q x 擦掉两点！',
+    letters: [
+      { id: 'p-j', char: 'j', type: '声母', mnemonic: '母鸡母鸡 j j j，一只小鸡伸长颈', soundTip: '舌面前部贴紧前硬腭，气流冲破阻碍' },
+      { id: 'p-q', char: 'q', type: '声母', mnemonic: '七只气球 q q q，右上半圆一竖弯', soundTip: '发音部位同 j，但用力向外送气' },
+      { id: 'p-x', char: 'x', type: '声母', mnemonic: '一把大叉 x x x，西瓜切开 x x x', soundTip: '舌面前部靠近硬腭，留出窄缝形成摩擦' }
+    ],
+    blends: [
+      { id: 'bl-j1', initial: 'j', final: 'ī', result: 'jī', word: '小鸡 🐥', example: '可爱的小公鸡' },
+      { id: 'bl-q1', initial: 'q', final: 'ī', result: 'qī', word: '数字七 7️⃣', example: '七个彩气球' },
+      { id: 'bl-x1', initial: 'x', final: 'iǎo', result: 'xiǎo', word: '地底小镇 🏘️', example: '微小而精美' }
+    ]
+  },
+
+  // 3. 朗读作业：科普美文《小土拨鼠的地底小镇》
+  reading: {
+    title: '科普美文《小土拨鼠的地底小镇》',
+    author: '大自然奥秘启蒙',
+    teacherNote: '明天课堂练朗读！声情并茂朗读短文，注意发音清晰，掌握土拨鼠小镇的自然知识！',
+    image: tinyTownCoverImg,
+    lines: [
+      [{ char: '地', pinyin: 'dì' }, { char: '面', pinyin: 'mian' }, { char: '之', pinyin: 'zhī' }, { char: '下', pinyin: 'xià' }, { char: '大', pinyin: 'dà' }, { char: '草', pinyin: 'cǎo' }, { char: '原', pinyin: 'yuán' }, { char: '，', pinyin: '' }],
+      [{ char: '土', pinyin: 'tǔ' }, { char: '拨', pinyin: 'bō' }, { char: '鼠', pinyin: 'shǔ' }, { char: '家', pinyin: 'jiā' }, { char: '住', pinyin: 'zhù' }, { char: '里', pinyin: 'lǐ' }, { char: '边', pinyin: 'biān' }, { char: '。', pinyin: '' }],
+      [{ char: '深', pinyin: 'shēn' }, { char: '深', pinyin: 'shēn' }, { char: '地', pinyin: 'dì' }, { char: '道', pinyin: 'dào' }, { char: '连', pinyin: 'lián' }, { char: '成', pinyin: 'chéng' }, { char: '片', pinyin: 'piàn' }, { char: '，', pinyin: '' }],
+      [{ char: '像', pinyin: 'xiàng' }, { char: '座', pinyin: 'zuò' }, { char: '小', pinyin: 'xiǎo' }, { char: '镇', pinyin: 'zhèn' }, { char: '真', pinyin: 'zhēn' }, { char: '温', pinyin: 'wēn' }, { char: '暖', pinyin: 'nuǎn' }, { char: '！', pinyin: '' }],
+      [{ char: '小', pinyin: 'xiǎo' }, { char: '室', pinyin: 'shì' }, { char: '睡', pinyin: 'shuì' }, { char: '觉', pinyin: 'jiào' }, { char: '又', pinyin: 'yòu' }, { char: '存', pinyin: 'cún' }, { char: '粮', pinyin: 'liáng' }, { char: '，', pinyin: '' }],
+      [{ char: '软', pinyin: 'ruǎn' }, { char: '草', pinyin: 'cǎo' }, { char: '铺', pinyin: 'pū' }, { char: '床', pinyin: 'chuáng' }, { char: '宝', pinyin: 'bǎo' }, { char: '宝', pinyin: 'bao' }, { char: '躺', pinyin: 'tǎng' }, { char: '。', pinyin: '' }],
+      [{ char: '发', pinyin: 'fā' }, { char: '现', pinyin: 'xiàn' }, { char: '响', pinyin: 'xiǎng' }, { char: '尾', pinyin: 'wěi' }, { char: '蛇', pinyin: 'shé' }, { char: '来', pinyin: 'lái' }, { char: '捣', pinyin: 'dǎo' }, { char: '乱', pinyin: 'luàn' }, { char: '，', pinyin: '' }],
+      [{ char: '哨', pinyin: 'shào' }, { char: '声', pinyin: 'shēng' }, { char: '一', pinyin: 'yī' }, { char: '响', pinyin: 'xiǎng' }, { char: '全', pinyin: 'quán' }, { char: '进', pinyin: 'jìn' }, { char: '洞', pinyin: 'dòng' }, { char: '！', pinyin: '' }]
+    ]
+  }
+}
 
 // 星期五今日最新作业：Sweet Sentences 🍬 (三段式造句：人物 + 动作 + 地点/时间)
 export const HOMEWORK_SWEET_SENTENCES = {
@@ -1218,11 +1626,12 @@ export const HOMEWORK_2026_09_15 = {
   }
 }
 
-// 今日最新默认作业为星期五：Sweet Sentences
-export const DEFAULT_HOMEWORK = HOMEWORK_SWEET_SENTENCES
+// 今日最新默认作业为星期一：A Tiny Town 🐿️
+export const DEFAULT_HOMEWORK = HOMEWORK_TINY_TOWN
 
 // 历史作业归档列表库（支持按日期翻阅与周末复习）
 export const DEFAULT_HOMEWORK_LIST = [
+  HOMEWORK_TINY_TOWN,
   HOMEWORK_SWEET_SENTENCES,
   HOMEWORK_COUNTING_SHEEP,
   HOMEWORK_2026_09_16,

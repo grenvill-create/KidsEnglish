@@ -43,6 +43,11 @@ export function ActionImage({ src, alt, emoji, className = '' }) {
 }
 
 export function EnglishHomework({ data, isCompleted, onCompleteTask }) {
+  // 判断当前作业类型：若为 A Tiny Town 密信密码破译与科普阅读作业
+  if (data?.theme === 'tiny-town' || (data?.decoders && data.decoders.length > 0)) {
+    return <TinyTownHomeworkView data={data} isCompleted={isCompleted} onCompleteTask={onCompleteTask} />
+  }
+
   // 判断当前作业类型：若是今日的青蛙蟾蜍句子改写作业 (Hop to It Some More)
   const isStatementsType = Boolean(data && data.sentences && data.sentences.length > 0)
 
@@ -1208,3 +1213,961 @@ function ActionWordsHomeworkView({ data, isCompleted, onCompleteTask }) {
     </div>
   )
 }
+
+/**
+ * 26字母四线三格互动书写画布 (支持鼠标拖拽与触屏手指临摹)
+ */
+function StrokeCanvas({ letter, strokeTip }) {
+  const canvasRef = React.useRef(null)
+  const [isDrawing, setIsDrawing] = React.useState(false)
+
+  const drawGuidelines = (ctx, w, h) => {
+    ctx.clearRect(0, 0, w, h)
+    // 浅米黄四线三格底色
+    ctx.fillStyle = '#fefdf9'
+    ctx.fillRect(0, 0, w, h)
+
+    // 绘制标准四线三格
+    const lines = [h * 0.18, h * 0.38, h * 0.58, h * 0.78]
+    lines.forEach((y, idx) => {
+      ctx.beginPath()
+      ctx.moveTo(12, y)
+      ctx.lineTo(w - 12, y)
+      if (idx === 1 || idx === 2) {
+        ctx.strokeStyle = '#38bdf8'
+        ctx.lineWidth = 1.5
+        ctx.setLineDash([5, 4])
+      } else {
+        ctx.strokeStyle = '#f43f5e'
+        ctx.lineWidth = 1.5
+        ctx.setLineDash([])
+      }
+      ctx.stroke()
+    })
+    ctx.setLineDash([])
+
+    // 绘制半透明浅灰临摹底字
+    ctx.font = 'bold 76px "Comic Sans MS", "Fredoka", "Arial Rounded MT Bold", sans-serif'
+    ctx.fillStyle = 'rgba(203, 213, 225, 0.55)'
+    ctx.textAlign = 'center'
+    ctx.textBaseline = 'alphabetic'
+    ctx.fillText(letter, w / 2, h * 0.58)
+  }
+
+  const clearCanvas = () => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+    const ctx = canvas.getContext('2d')
+    drawGuidelines(ctx, canvas.width, canvas.height)
+  }
+
+  React.useEffect(() => {
+    clearCanvas()
+  }, [letter])
+
+  const getCoordinates = (e) => {
+    const canvas = canvasRef.current
+    if (!canvas) return { x: 0, y: 0 }
+    const rect = canvas.getBoundingClientRect()
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX
+    const clientY = e.touches ? e.touches[0].clientY : e.clientY
+    const scaleX = canvas.width / rect.width
+    const scaleY = canvas.height / rect.height
+    return {
+      x: (clientX - rect.left) * scaleX,
+      y: (clientY - rect.top) * scaleY
+    }
+  }
+
+  const handleStart = (e) => {
+    if (e.type === 'touchstart') {
+      // 避免阻断父级正常纵向滚屏，仅在画布内精准画线
+    }
+    setIsDrawing(true)
+    const ctx = canvasRef.current?.getContext('2d')
+    if (!ctx) return
+    const { x, y } = getCoordinates(e)
+    ctx.beginPath()
+    ctx.moveTo(x, y)
+    ctx.strokeStyle = '#2563eb'
+    ctx.lineWidth = 6
+    ctx.lineCap = 'round'
+    ctx.lineJoin = 'round'
+  }
+
+  const handleMove = (e) => {
+    if (!isDrawing) return
+    const ctx = canvasRef.current?.getContext('2d')
+    if (!ctx) return
+    const { x, y } = getCoordinates(e)
+    ctx.lineTo(x, y)
+    ctx.stroke()
+  }
+
+  const handleEnd = () => {
+    setIsDrawing(false)
+  }
+
+  return (
+    <div className="stroke-canvas-container">
+      <div className="canvas-frame">
+        <canvas
+          ref={canvasRef}
+          width={360}
+          height={170}
+          className="four-line-canvas"
+          onMouseDown={handleStart}
+          onMouseMove={handleMove}
+          onMouseUp={handleEnd}
+          onMouseLeave={handleEnd}
+          onTouchStart={handleStart}
+          onTouchMove={handleMove}
+          onTouchEnd={handleEnd}
+        />
+      </div>
+      <div className="canvas-toolbar">
+        <button className="canvas-clear-btn" onClick={() => { playPop(); clearCanvas(); }}>
+          🧹 清空画布
+        </button>
+        <span className="canvas-guide-text">👆 用手指或鼠标在四线格临摹写出 <strong>"{letter}"</strong></span>
+      </div>
+      {strokeTip && (
+        <div className="canvas-stroke-tip">
+          💡 <strong>书写口诀：</strong>{strokeTip}
+        </div>
+      )}
+    </div>
+  )
+}
+
+/**
+ * 星期一今日新作业：A Tiny Town (地底微型小镇：密信密码破译 + 故事精读 + 字母笔画 + 科学闪卡 + 趣味数学)
+ */
+function TinyTownHomeworkView({ data, isCompleted, onCompleteTask }) {
+  const [activeSubTab, setActiveSubTab] = useState('decoder') // 'decoder' | 'story' | 'strokes' | 'cards' | 'maths'
+  const [currentDecIdx, setCurrentDecIdx] = useState(0)
+
+  // 解密状态记录：已解密的题目集合 { [decId]: boolean }
+  const [decodedStatus, setDecodedStatus] = useState({})
+
+  // 用户互动填充状态：记录每道题单个字符是否被点击翻开
+  const [revealedChars, setRevealedChars] = useState({})
+
+  // 词典卡片弹窗状态
+  const [selectedWordData, setSelectedWordData] = useState(null)
+
+  // 故事精读：正在朗读的句子 index
+  const [activeStorySentIdx, setActiveStorySentIdx] = useState(null)
+  const [isReadingWholeStory, setIsReadingWholeStory] = useState(false)
+
+  // 字母书写笔画状态
+  const [selectedLetterChar, setSelectedLetterChar] = useState('A')
+
+  // 数学奇偶数闯关状态
+  const [oddEvenAnswers, setOddEvenAnswers] = useState({})
+  const [showGraphAnswer, setShowGraphAnswer] = useState(false)
+
+  const decoders = data.decoders || []
+  const currentDecoder = decoders[currentDecIdx] || decoders[0]
+  const story = data.story || {}
+  const codeKey = data.codeKey || []
+  const alphabetStrokes = data.alphabetStrokes || []
+  const words = data.words || []
+  const mathsReview = data.mathsReview || {}
+
+  const isCurrentDecoded = Boolean(decodedStatus[currentDecoder?.id])
+  const totalDecodedCount = decoders.filter(d => decodedStatus[d.id]).length
+  const allQuestionsDecoded = decoders.length > 0 && totalDecodedCount === decoders.length
+
+  const handleWordClick = (rawWord) => {
+    playPop()
+    const wordInfo = lookupWord(rawWord)
+    if (wordInfo) {
+      setSelectedWordData(wordInfo)
+    }
+  }
+
+  // 切换题目
+  const handleSelectDecoder = (idx) => {
+    playPop()
+    setCurrentDecIdx(idx)
+  }
+
+  // 点击单个神秘符号卡片：翻开解密对应的英文字母
+  const handleToggleChar = (decId, charKey, letter) => {
+    playPop()
+    const key = `${decId}_${charKey}`
+    setRevealedChars(prev => ({ ...prev, [key]: true }))
+    speakEnglish(letter)
+  }
+
+  // 一键魔法解密当前题目
+  const handleMagicDecode = (decoderId) => {
+    playMagic()
+    setDecodedStatus(prev => ({ ...prev, [decoderId]: true }))
+    const targetDec = decoders.find(d => d.id === decoderId)
+    if (targetDec) {
+      setTimeout(() => {
+        playCorrect()
+        speakEnglish(targetDec.decodedText)
+      }, 350)
+    }
+  }
+
+  // 一键全部破译
+  const handleDecodeAll = () => {
+    playCheer()
+    const allMap = {}
+    decoders.forEach(d => { allMap[d.id] = true })
+    setDecodedStatus(allMap)
+  }
+
+  // 重置当前题目
+  const handleResetCurrent = (decoderId) => {
+    playPop()
+    setDecodedStatus(prev => ({ ...prev, [decoderId]: false }))
+    setRevealedChars(prev => {
+      const next = { ...prev }
+      Object.keys(next).forEach(k => {
+        if (k.startsWith(`${decoderId}_`)) delete next[k]
+      })
+      return next
+    })
+  }
+
+  // 朗读单句故事
+  const handleReadStorySentence = (idx) => {
+    stopSpeech()
+    playPop()
+    setActiveStorySentIdx(idx)
+    const sent = story.sentences?.[idx]
+    if (sent) {
+      speakEnglish(sent.en, false, () => {
+        setActiveStorySentIdx(null)
+      })
+    }
+  }
+
+  // 连贯朗读全篇故事
+  const handleReadFullStory = () => {
+    stopSpeech()
+    playMagic()
+    setIsReadingWholeStory(true)
+    let current = 0
+
+    const readNext = () => {
+      if (current >= (story.sentences?.length || 0)) {
+        setIsReadingWholeStory(false)
+        setActiveStorySentIdx(null)
+        playCorrect()
+        return
+      }
+      setActiveStorySentIdx(current)
+      const sent = story.sentences[current]
+      current++
+      speakEnglish(sent.en, false, readNext)
+    }
+
+    readNext()
+  }
+
+  const handleStopStoryReading = () => {
+    stopSpeech()
+    setIsReadingWholeStory(false)
+    setActiveStorySentIdx(null)
+  }
+
+  // 奇偶数答题判定
+  const handleAnswerOddEven = (cardIdx, chosenType) => {
+    const card = mathsReview.oddEvenCards?.[cardIdx]
+    if (!card) return
+    const isEven = card.num % 2 === 0
+    const isCorrect = (isEven && chosenType === 'even') || (!isEven && chosenType === 'odd')
+    if (isCorrect) {
+      playCorrect()
+      setOddEvenAnswers(prev => ({ ...prev, [cardIdx]: { chosen: chosenType, correct: true } }))
+    } else {
+      playTryAgain()
+      setOddEvenAnswers(prev => ({ ...prev, [cardIdx]: { chosen: chosenType, correct: false } }))
+    }
+  }
+
+  // 当前选中的字母书写对象
+  const currentAlphabetStroke = alphabetStrokes.find(item => item.letter === selectedLetterChar) || alphabetStrokes[0]
+
+  return (
+    <div className="english-view tiny-town-view animate-fade-in">
+      {/* 顶部二级导航 */}
+      <div className="sub-nav-bar">
+        <button
+          className={`sub-tab-btn ${activeSubTab === 'decoder' ? 'active' : ''}`}
+          onClick={() => { playPop(); setActiveSubTab('decoder'); }}
+        >
+          🕵️ 密信解码小侦探 ({totalDecodedCount}/{decoders.length})
+        </button>
+
+        <button
+          className={`sub-tab-btn ${activeSubTab === 'story' ? 'active' : ''}`}
+          onClick={() => { playPop(); setActiveSubTab('story'); }}
+        >
+          📖 地底小镇故事精读
+        </button>
+
+        <button
+          className={`sub-tab-btn ${activeSubTab === 'strokes' ? 'active' : ''}`}
+          onClick={() => { playPop(); setActiveSubTab('strokes'); }}
+        >
+          ✍️ 字母规范笔画书写
+        </button>
+
+        <button
+          className={`sub-tab-btn ${activeSubTab === 'cards' ? 'active' : ''}`}
+          onClick={() => { playPop(); setActiveSubTab('cards'); }}
+        >
+          🗂️ 核心科学词汇闪卡 ({words.length})
+        </button>
+
+        <button
+          className={`sub-tab-btn ${activeSubTab === 'maths' ? 'active' : ''}`}
+          onClick={() => { playPop(); setActiveSubTab('maths'); }}
+        >
+          🧮 奇偶数与小镇统计图
+        </button>
+      </div>
+
+      {/* --- 模式 1：密信解码大侦探 (Worksheet 核心题) --- */}
+      {activeSubTab === 'decoder' && currentDecoder && (
+        <div className="decoder-stage-container animate-pop">
+          {/* 老师要求与规则提醒 */}
+          <div className="rule-banner-box town-banner-box">
+            <div className="rule-banner-header">
+              <span className="banner-title-icon">🐿️</span>
+              <strong>{data.title || 'A Tiny Town: Developing vocabulary'}</strong>
+              <span className="grade-badge">Scholastic Professional Books</span>
+            </div>
+            <p className="rule-teacher-quote">
+              <strong>👩‍🏫 老师作业要求：</strong> {data.teacherNote}
+            </p>
+            <div className="rule-badges-grid">
+              <div className="rule-chip">
+                <span className="chip-icon">🔍</span>
+                <span><strong>解码秘诀：</strong>看符号找字母，拼出加下划线单词的意思！</span>
+              </div>
+              <div className="rule-chip">
+                <span className="chip-icon">✏️</span>
+                <span><strong>作业本工整抄写：</strong>大写字母占满上两格，单词间空一指宽！</span>
+              </div>
+              <div className="rule-chip">
+                <span className="chip-icon">📚</span>
+                <span><strong>明天课堂：</strong>熟练流利朗读故事，下午上传录音与照片！</span>
+              </div>
+            </div>
+          </div>
+
+          {/* 题目切换导航器 */}
+          <div className="decoder-nav-row">
+            <span className="decoder-nav-label">破译题切换：</span>
+            <div className="decoder-nav-btns">
+              {decoders.map((dec, idx) => {
+                const isDec = Boolean(decodedStatus[dec.id])
+                return (
+                  <button
+                    key={dec.id}
+                    className={`decoder-nav-btn ${idx === currentDecIdx ? 'active' : ''} ${isDec ? 'decoded' : ''}`}
+                    onClick={() => handleSelectDecoder(idx)}
+                  >
+                    <span className="nav-dec-badge">{isDec ? '⭐' : `${idx + 1}`}</span>
+                    <span className="nav-dec-word">{dec.questionWord}</span>
+                    {isDec && <span className="nav-check-icon">✓</span>}
+                  </button>
+                )
+              })}
+            </div>
+            <button className="decode-all-magic-btn" onClick={handleDecodeAll}>
+              🪄 一键全部解密大挑战
+            </button>
+          </div>
+
+          {/* 核心破译展示台 */}
+          <div className="decoder-main-card">
+            {/* 题号与原词 */}
+            <div className="decoder-card-header">
+              <div className="decoder-q-title">
+                <span className="q-num-pill">第 {currentDecoder.num} 题</span>
+                <span className="q-target-word">{currentDecoder.questionWord}</span>
+                <button
+                  className="speech-mini-btn"
+                  title="听单词发音"
+                  onClick={() => { playPop(); speakEnglish(currentDecoder.questionWord); }}
+                >
+                  🔊
+                </button>
+              </div>
+              <div className="decoder-context-quote">
+                <span className="context-label">原文出处：</span>
+                <span className="context-text">"{currentDecoder.storyContext}"</span>
+              </div>
+            </div>
+
+            {/* 神秘符号解码操作阵列 */}
+            <div className="cryptogram-board">
+              <div className="cryptogram-intro">
+                <span>对照密码表，破译出这组词在故事里的真实含义：</span>
+              </div>
+
+              <div className="cryptogram-words-flex">
+                {currentDecoder.symbolsGrouped.map((wordSymbols, wIdx) => (
+                  <div key={wIdx} className="cryptogram-word-chunk">
+                    <div className="word-chunk-letters">
+                      {wordSymbols.map((item, cIdx) => {
+                        const charKey = `${currentDecoder.id}_${wIdx}_${cIdx}`
+                        const isRevealed = isCurrentDecoded || Boolean(revealedChars[charKey])
+                        return (
+                          <div
+                            key={cIdx}
+                            className={`symbol-slot-card ${isRevealed ? 'revealed' : 'locked'}`}
+                            onClick={() => handleToggleChar(currentDecoder.id, `${wIdx}_${cIdx}`, item.char)}
+                            title="点击翻开字母"
+                          >
+                            <div className="slot-symbol">{item.symbol}</div>
+                            <div className="slot-underline">
+                              {isRevealed ? (
+                                <span className="slot-letter animate-pop">{item.char}</span>
+                              ) : (
+                                <span className="slot-placeholder">?</span>
+                              )}
+                            </div>
+                          </div>
+                        )
+                      })}
+                    </div>
+                    {wIdx < currentDecoder.symbolsGrouped.length - 1 && (
+                      <div className="word-chunk-space" title="空格（单词间空一指宽）">
+                        ␣
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+
+              {/* 解码操作按钮栏 */}
+              <div className="decoder-action-bar">
+                {!isCurrentDecoded ? (
+                  <button
+                    className="magic-reveal-btn"
+                    onClick={() => handleMagicDecode(currentDecoder.id)}
+                  >
+                    ✨ 施法：魔法一键解密当前题目
+                  </button>
+                ) : (
+                  <div className="decoded-success-pill animate-bounce">
+                    🎉 恭喜破译成功！答案已揭晓：<strong>{currentDecoder.decodedText}</strong>
+                  </div>
+                )}
+                <button
+                  className="speak-decoded-btn"
+                  onClick={() => {
+                    playPop()
+                    speakEnglish(currentDecoder.decodedText)
+                  }}
+                >
+                  🗣️ 听标准朗读答案 ({currentDecoder.decodedText})
+                </button>
+                {isCurrentDecoded && (
+                  <button
+                    className="reset-dec-btn"
+                    onClick={() => handleResetCurrent(currentDecoder.id)}
+                  >
+                    🔄 重新考考我
+                  </button>
+                )}
+              </div>
+            </div>
+
+            {/* 解密后的深度释义与真实摄影大图 */}
+            {isCurrentDecoded && (
+              <div className="decoded-result-showcase animate-pop">
+                <div className="result-header">
+                  <span className="result-badge-emoji">{currentDecoder.badgeEmoji}</span>
+                  <div className="result-titles">
+                    <div className="result-en-title">
+                      <span className="res-word-tag">{currentDecoder.questionWord}</span>
+                      <span className="res-arrow">means</span>
+                      <strong className="res-decoded-phrase">{currentDecoder.decodedText}</strong>
+                    </div>
+                    <div className="result-cn-title">{currentDecoder.translation}</div>
+                  </div>
+                </div>
+
+                <div className="result-body-grid">
+                  <div className="result-explanation-col">
+                    <div className="info-block">
+                      <span className="info-label">🌿 大自然与故事含义：</span>
+                      <p className="info-text">{currentDecoder.meaningExplanation}</p>
+                    </div>
+
+                    <div className="info-block pencil-block">
+                      <span className="info-label">✏️ 老师纸质作业抄写指南：</span>
+                      <p className="info-text pencil-guide">{currentDecoder.writingTip}</p>
+                    </div>
+
+                    <div className="info-block tip-block">
+                      <span className="info-label">💡 提示：</span>
+                      <p className="info-text">
+                        点击任意英文单词可随时查阅国际音标、发音与双语词典释义！
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="result-photo-col">
+                    <div className="photo-card-wrapper">
+                      <img
+                        src={currentDecoder.image}
+                        alt={currentDecoder.decodedText}
+                        className="nature-authentic-photo"
+                      />
+                      <div className="photo-overlay-tag">
+                        <span>📸 真实自然生态：{currentDecoder.questionWord}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* 翻到下一题按钮 */}
+                {currentDecIdx < decoders.length - 1 && (
+                  <div className="next-decoder-row">
+                    <button
+                      className="next-dec-btn"
+                      onClick={() => handleSelectDecoder(currentDecIdx + 1)}
+                    >
+                      下一题：{decoders[currentDecIdx + 1].questionWord} ➡️
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* 全部大通关庆祝勋章 */}
+            {allQuestionsDecoded && (
+              <div className="all-decoded-celebration-banner animate-bounce">
+                <div className="celeb-icon">🏆</div>
+                <div className="celeb-text">
+                  <h3>恭喜小侦探！5道地底小镇秘密密码全部破译通关！</h3>
+                  <p>你已经完全掌握了 town, prairie dogs, burrows, chambers, unwanted guests 的确切含义！</p>
+                </div>
+                <div className="celeb-medal">⭐ 满分通关勋章</div>
+              </div>
+            )}
+          </div>
+
+          {/* 密码对应表 (Code Key) 展开展示 */}
+          <div className="code-key-container">
+            <div className="code-key-header">
+              <span className="key-icon">🔑</span>
+              <strong>神奇符号密码表 (Code Key - Matching Symbols to Letters)</strong>
+              <span className="key-tip">点击任意符号卡片听字母标准读音</span>
+            </div>
+            <div className="code-key-grid">
+              {codeKey.map(item => (
+                <div
+                  key={item.letter}
+                  className="code-key-item"
+                  onClick={() => {
+                    playPop()
+                    speakEnglish(item.letter)
+                  }}
+                  title={`点击听字母 ${item.letter} 发音`}
+                >
+                  <div className="key-letter">{item.letter}</div>
+                  <div className="key-symbol">{item.symbol}</div>
+                  <div className="key-name">{item.name}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* --- 模式 2：故事精读与逐句朗读 (A Tiny Town Story) --- */}
+      {activeSubTab === 'story' && (
+        <div className="story-stage-container animate-pop">
+          {/* 顶部控制栏 */}
+          <div className="story-control-banner">
+            <div className="banner-title-box">
+              <h3>📖 科普短文朗读：《{story.title}》({story.titleCn})</h3>
+              <p>朗读老师作业要求：明天课堂练朗读！点击每句话听标准美音发音，点击单词查看详细解释。</p>
+            </div>
+            <div className="story-btns-group">
+              {!isReadingWholeStory ? (
+                <button className="read-all-story-btn" onClick={handleReadFullStory}>
+                  🎧 连贯听全篇故事
+                </button>
+              ) : (
+                <button className="stop-story-btn" onClick={handleStopStoryReading}>
+                  ⏹️ 停止朗读
+                </button>
+              )}
+            </div>
+          </div>
+
+          {/* 全文一览卡片 */}
+          <div className="full-story-text-card">
+            <div className="full-story-header">
+              <span className="story-badge">Scholastic Developing Vocabulary 原文</span>
+              <button
+                className="listen-full-btn"
+                onClick={() => { playPop(); speakEnglish(story.paragraphEn); }}
+              >
+                🔊 连贯朗读原文
+              </button>
+            </div>
+            <div className="full-story-en-text">
+              <InteractiveSentence text={story.paragraphEn} onWordClick={handleWordClick} />
+            </div>
+            <div className="full-story-cn-text">
+              {story.paragraphCn}
+            </div>
+          </div>
+
+          {/* 逐句精读拆解与生态知识卡 */}
+          <div className="story-sentences-breakdown">
+            <h4>逐句精读与核心加下划线词汇解析 (7句精讲)：</h4>
+            <div className="sentences-list">
+              {story.sentences && story.sentences.map((sent, idx) => {
+                const isActive = activeStorySentIdx === idx
+                return (
+                  <div
+                    key={sent.id}
+                    className={`story-sent-card ${isActive ? 'reading-active' : ''}`}
+                  >
+                    <div className="sent-card-header">
+                      <span className="sent-num-pill">句 {sent.num}</span>
+                      <button
+                        className="sent-audio-btn"
+                        onClick={() => handleReadStorySentence(idx)}
+                        title="朗读此句"
+                      >
+                        🔊 听本句
+                      </button>
+                      {sent.highlightWords && sent.highlightWords.length > 0 && (
+                        <div className="sent-keywords-tags">
+                          {sent.highlightWords.map((kw, kIdx) => (
+                            <span key={kIdx} className="keyword-chip" onClick={() => handleWordClick(kw)}>
+                              ⭐ 重点词：{kw}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="sent-en-content">
+                      <InteractiveSentence text={sent.en} onWordClick={handleWordClick} />
+                    </div>
+
+                    <div className="sent-cn-content">
+                      {sent.cn}
+                    </div>
+
+                    {sent.highlightCn && (
+                      <div className="sent-decode-callout">
+                        💡 <strong>密码释义关联：</strong>{sent.highlightCn}
+                      </div>
+                    )}
+
+                    {sent.tip && (
+                      <div className="sent-science-trivia">
+                        🌿 <strong>自然小百科：</strong>{sent.tip}
+                      </div>
+                    )}
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+
+          {/* 地底小镇生态纵切图展示 */}
+          <div className="burrow-infographic-card">
+            <div className="infographic-header">
+              <span className="info-icon">🏰</span>
+              <strong>地底小镇结构全景解密 (Inside a Prairie Dog Town)</strong>
+            </div>
+            <div className="infographic-image-box">
+              <img
+                src={story.burrowImage}
+                alt="Prairie Dog Burrow Cross-Section"
+                className="burrow-cross-image"
+              />
+            </div>
+            <div className="infographic-annotations">
+              <div className="anno-chip">
+                <span className="anno-title">🏠 Entrance Mound (洞口护土堆)</span>
+                <span className="anno-desc">高高隆起，防止暴雨灌入洞穴，又是观察放哨的瞭望塔！</span>
+              </div>
+              <div className="anno-chip">
+                <span className="anno-title">🚇 Tunnel System (地道连通网)</span>
+                <span className="anno-desc">深达3-5米，总长几十米，纵横交错，四通八达！</span>
+              </div>
+              <div className="anno-chip">
+                <span className="anno-title">🛏️ Sleeping Chamber (睡眠小室)</span>
+                <span className="anno-desc">干燥避风，土拨鼠全家抱团睡觉的温暖房间！</span>
+              </div>
+              <div className="anno-chip">
+                <span className="anno-title">🌾 Nursery Chamber (草垫育婴室)</span>
+                <span className="anno-desc">铺满干草，细心保护刚出生的娇嫩小宝宝！</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* --- 模式 3：字母规范笔画书写 (Alphabet Writing Strokes) --- */}
+      {activeSubTab === 'strokes' && (
+        <div className="strokes-stage-container animate-pop">
+          {/* 课堂重点提示 */}
+          <div className="rule-banner-box stroke-banner-box">
+            <div className="rule-banner-header">
+              <span className="banner-title-icon">✍️</span>
+              <strong>PRACTICED correct writing strokes of the alphabet</strong>
+            </div>
+            <p className="rule-teacher-quote">
+              <strong>👩‍🏫 老师课堂教学重点：</strong>
+              规范练习 26 个英文字母的大小写书写笔顺，特别是今天密码中出现的重点字母：A, C, E, F, I, L, M, N, O, P, R, S, T, U, Y！
+            </p>
+          </div>
+
+          {/* 字母选择网格 */}
+          <div className="alphabet-selector-card">
+            <span className="alphabet-sel-label">点击字母查看书写笔顺与互动临摹：</span>
+            <div className="alphabet-chips-grid">
+              {alphabetStrokes.map(item => {
+                const isSelected = item.letter === selectedLetterChar
+                return (
+                  <button
+                    key={item.letter}
+                    className={`alphabet-chip-btn ${isSelected ? 'selected' : ''}`}
+                    onClick={() => {
+                      playPop()
+                      setSelectedLetterChar(item.letter)
+                      speakEnglish(item.letter)
+                    }}
+                  >
+                    <span className="chip-upper">{item.letter}</span>
+                    <span className="chip-lower">{item.lower}</span>
+                    <span className="chip-sym">{item.tip.split(' ')[0]}</span>
+                  </button>
+                )
+              })}
+            </div>
+          </div>
+
+          {/* 当前选定字母的书写教学与画板 */}
+          {currentAlphabetStroke && (
+            <div className="stroke-detail-card animate-pop">
+              <div className="stroke-card-header">
+                <div className="letter-large-badge">
+                  <span className="big-upper">{currentAlphabetStroke.letter}</span>
+                  <span className="big-lower">{currentAlphabetStroke.lower}</span>
+                </div>
+                <div className="letter-audio-info">
+                  <button
+                    className="letter-audio-btn"
+                    onClick={() => { playPop(); speakEnglish(currentAlphabetStroke.letter); }}
+                  >
+                    🔊 听发音 {currentAlphabetStroke.sound}
+                  </button>
+                  <div className="code-symbol-reminder">
+                    今日密码对应符号：<strong>{currentAlphabetStroke.tip}</strong>
+                  </div>
+                </div>
+              </div>
+
+              <div className="stroke-steps-grid">
+                <div className="stroke-rule-col">
+                  <div className="rule-step-box">
+                    <span className="step-title">🔠 大写字母 {currentAlphabetStroke.letter} 笔顺：</span>
+                    <p className="step-content">{currentAlphabetStroke.strokeUpper}</p>
+                  </div>
+                  <div className="rule-step-box">
+                    <span className="step-title">🔡 小写字母 {currentAlphabetStroke.lower} 笔顺：</span>
+                    <p className="step-content">{currentAlphabetStroke.strokeLower}</p>
+                  </div>
+                </div>
+
+                <div className="stroke-canvas-col">
+                  <StrokeCanvas
+                    letter={`${currentAlphabetStroke.letter} ${currentAlphabetStroke.lower}`}
+                    strokeTip={currentAlphabetStroke.strokeUpper}
+                  />
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* --- 模式 4：核心科学词汇闪卡 (Science & Nature Cards) --- */}
+      {activeSubTab === 'cards' && (
+        <div className="cards-stage-container animate-pop">
+          <div className="cards-intro-banner">
+            <span className="intro-icon">🗂️</span>
+            <div>
+              <h3>A Tiny Town 核心科学高频词汇 ({words.length} 张真实大图闪卡)</h3>
+              <p>全部采用真实高清自然生态摄影，点击听慢速发音，点击例句中的单词即时查词典！</p>
+            </div>
+          </div>
+
+          <div className="cards-deck-grid">
+            {words.map(w => (
+              <div key={w.id} className="science-flashcard animate-pop">
+                <div className="flashcard-image-box">
+                  <img src={w.image} alt={w.word} className="flashcard-photo" />
+                  <span className="flashcard-emoji-badge">{w.emoji}</span>
+                </div>
+                <div className="flashcard-body">
+                  <div className="flashcard-word-row">
+                    <strong className="fc-word">{w.word}</strong>
+                    <button
+                      className="fc-audio-btn"
+                      onClick={() => { playPop(); speakEnglish(w.word); }}
+                      title="朗读单词"
+                    >
+                      🔊
+                    </button>
+                  </div>
+                  <div className="fc-phonetic">{w.phonetic}</div>
+                  <div className="fc-translation">{w.translation}</div>
+                  <div className="fc-sentence-box">
+                    <div className="fc-sent-en">
+                      <InteractiveSentence text={w.sentence} onWordClick={handleWordClick} />
+                    </div>
+                    <div className="fc-sent-cn">{w.sentenceCn}</div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* --- 模式 5：数学微复习 (Maths: Odd/Even & Graphs) --- */}
+      {activeSubTab === 'maths' && (
+        <div className="maths-stage-container animate-pop">
+          <div className="rule-banner-box maths-banner-box">
+            <div className="rule-banner-header">
+              <span className="banner-title-icon">📊</span>
+              <strong>{mathsReview.topic}</strong>
+            </div>
+            <p className="rule-teacher-quote">
+              <strong>👩‍🏫 老师课堂内容：</strong>{mathsReview.note}
+            </p>
+          </div>
+
+          {/* 1. 奇偶数判断小游戏 (Odd or Even) */}
+          <div className="odd-even-section">
+            <h4>🎯 奇数还是偶数？(Odd or Even Quiz)：</h4>
+            <div className="odd-even-cards-grid">
+              {mathsReview.oddEvenCards?.map((c, idx) => {
+                const ans = oddEvenAnswers[idx]
+                return (
+                  <div key={idx} className="odd-even-quiz-card">
+                    <div className="card-top-info">
+                      <span className="num-circle">{c.num}</span>
+                      <span className="item-icons">{Array(c.num).fill(c.icon).join(' ')}</span>
+                    </div>
+
+                    <div className="odd-even-choice-btns">
+                      <button
+                        className={`choice-pill ${ans?.chosen === 'odd' ? (ans.correct ? 'correct' : 'wrong') : ''}`}
+                        onClick={() => handleAnswerOddEven(idx, 'odd')}
+                      >
+                        Odd (奇数)
+                      </button>
+                      <button
+                        className={`choice-pill ${ans?.chosen === 'even' ? (ans.correct ? 'correct' : 'wrong') : ''}`}
+                        onClick={() => handleAnswerOddEven(idx, 'even')}
+                      >
+                        Even (偶数)
+                      </button>
+                    </div>
+
+                    {ans && (
+                      <div className={`answer-feedback-banner ${ans.correct ? 'is-correct' : 'is-wrong'} animate-pop`}>
+                        {ans.correct ? `🎉 太棒啦！${c.num} 是 ${c.type}！` : '💡 再想一想，能不能两两完全成对配完？'}
+                        <div className="answer-desc">{c.desc}</div>
+                      </div>
+                    )}
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+
+          {/* 2. 读统计图表与加减法 (Reading Graphs) */}
+          {mathsReview.graphData && (
+            <div className="graph-review-section">
+              <h4>📊 看统计图做加减法：{mathsReview.graphData.title}</h4>
+              <div className="graph-bars-wrapper">
+                {mathsReview.graphData.items.map((bar, bIdx) => (
+                  <div key={bIdx} className="graph-bar-row">
+                    <span className="bar-label">{bar.label}</span>
+                    <div className="bar-track">
+                      <div
+                        className="bar-fill"
+                        style={{
+                          width: `${(bar.count / 10) * 100}%`,
+                          backgroundColor: bar.color
+                        }}
+                      >
+                        <span className="bar-count-tag">{bar.count} 只 🐿️</span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="graph-question-card">
+                <div className="g-question-text">
+                  ❓ <strong>思考题：</strong>{mathsReview.graphData.question}
+                </div>
+                {!showGraphAnswer ? (
+                  <button
+                    className="reveal-graph-ans-btn"
+                    onClick={() => { playMagic(); setShowGraphAnswer(true); }}
+                  >
+                    💡 点击揭晓答案与算式
+                  </button>
+                ) : (
+                  <div className="graph-ans-reveal animate-bounce">
+                    🎉 <strong>正确列式：</strong> {mathsReview.graphData.formula}
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* 底部打卡大按钮 */}
+      <div className="homework-bottom-bar">
+        <button
+          className={`finish-homework-btn ${isCompleted ? 'already-done' : ''}`}
+          onClick={() => {
+            playCheer()
+            onCompleteTask('english')
+          }}
+        >
+          {isCompleted ? '✅ A Tiny Town 作业已全部通关（再次庆祝）' : '🎉 我会破译与朗读了！打卡领贴纸'}
+        </button>
+      </div>
+
+      {/* 点击单词弹出发音、音标与释义卡片 */}
+      {selectedWordData && (
+        <WordDetailModal
+          wordData={selectedWordData}
+          onClose={() => setSelectedWordData(null)}
+        />
+      )}
+    </div>
+  )
+}
+

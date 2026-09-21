@@ -39,7 +39,13 @@ function sanitizeHomeworkList(list) {
     'gum': REAL_IMAGES.gum,
     'bakery': REAL_IMAGES.bakery,
     'party': REAL_IMAGES.party,
-    'circus': REAL_IMAGES.circus
+    'circus': REAL_IMAGES.circus,
+    'prairie dog': REAL_IMAGES.prairieDog,
+    'burrows': REAL_IMAGES.prairieBurrow,
+    'chambers': REAL_IMAGES.prairieBurrow,
+    'rattlesnakes': REAL_IMAGES.rattlesnake,
+    'furry': REAL_IMAGES.furryAnimals,
+    'town': REAL_IMAGES.tinyTownCover
   }
 
   const REAL_SENTENCE_MAP = {
