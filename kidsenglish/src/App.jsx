@@ -45,7 +45,19 @@ function sanitizeHomeworkList(list) {
     'chambers': REAL_IMAGES.prairieBurrow,
     'rattlesnakes': REAL_IMAGES.rattlesnake,
     'furry': REAL_IMAGES.furryAnimals,
-    'town': REAL_IMAGES.tinyTownCover
+    'town': REAL_IMAGES.tinyTownCover,
+    'grandmother': REAL_IMAGES.grammysCover,
+    'suitcase': REAL_IMAGES.openSuitcase,
+    'toothbrush': REAL_IMAGES.brushPaste,
+    'toothpaste': REAL_IMAGES.brushPaste,
+    'hairbrush': REAL_IMAGES.brushPaste,
+    'swimsuit': REAL_IMAGES.swimSunglass,
+    'storybooks': REAL_IMAGES.storyPillow,
+    'sunglasses': REAL_IMAGES.swimSunglass,
+    'pajamas': REAL_IMAGES.openSuitcase,
+    'pillow': REAL_IMAGES.storyPillow,
+    'shirt': REAL_IMAGES.openSuitcase,
+    'shorts': REAL_IMAGES.openSuitcase
   }
 
   const REAL_SENTENCE_MAP = {

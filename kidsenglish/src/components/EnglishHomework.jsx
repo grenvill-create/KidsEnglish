@@ -43,6 +43,11 @@ export function ActionImage({ src, alt, emoji, className = '' }) {
 }
 
 export function EnglishHomework({ data, isCompleted, onCompleteTask }) {
+  // 判断当前作业类型：若为 Going to Grammy's 复合词拆解与过夜行李作业
+  if (data?.theme === 'going-to-grammys' || (data?.compoundWords && data.compoundWords.length > 0)) {
+    return <GrammysHomeworkView data={data} isCompleted={isCompleted} onCompleteTask={onCompleteTask} />
+  }
+
   // 判断当前作业类型：若为 A Tiny Town 密信密码破译与科普阅读作业
   if (data?.theme === 'tiny-town' || (data?.decoders && data.decoders.length > 0)) {
     return <TinyTownHomeworkView data={data} isCompleted={isCompleted} onCompleteTask={onCompleteTask} />
@@ -2170,4 +2175,989 @@ function TinyTownHomeworkView({ data, isCompleted, onCompleteTask }) {
     </div>
   )
 }
+
+/**
+ * 星期二今日最新作业组件：Going to Grammy's 🧳
+ * 包含：
+ * 1. 行李打包涂色大挑战 (Color Kelly's Packed Items vs Distractors)
+ * 2. 8个神奇复合词工坊 (8 Compound Words Workshop)
+ * 3. 行李清单写作指导 (On the back of this page - Packing List)
+ * 4. 原文故事精读跟读 (Reading for details)
+ * 5. 核心实景图卡 (Flashcards)
+ * 6. 趣味数学微复习 (Maths: Sorting, Odd/Even, Graphs)
+ * 7. 字母规范笔画书写 (Alphabet Strokes: G, S, T, H, P)
+ */
+function GrammysHomeworkView({ data, isCompleted, onCompleteTask }) {
+  const [activeSubTab, setActiveSubTab] = useState('packing') // 'packing' | 'compound' | 'writing' | 'story' | 'cards' | 'maths' | 'strokes'
+
+  // 1. 行李打包涂色状态：已涂色装箱的物品 { [itemId]: boolean }
+  const [packedMap, setPackedMap] = useState({})
+  const [distractorNotice, setDistractorNotice] = useState(null)
+
+  // 2. 复合词连连看配对状态
+  const [selectedWord1, setSelectedWord1] = useState(null)
+  const [matchedCompounds, setMatchedCompounds] = useState([])
+
+  // 3. 行李清单写作状态
+  const [checkedListItems, setCheckedListItems] = useState({})
+  const [customItems, setCustomItems] = useState([])
+  const [newCustomInput, setNewCustomInput] = useState('')
+  const [copiedNotification, setCopiedNotification] = useState(false)
+
+  // 4. 故事精读朗读状态
+  const [activeStorySentIdx, setActiveStorySentIdx] = useState(null)
+  const [isReadingWholeStory, setIsReadingWholeStory] = useState(false)
+
+  // 5. 词典卡片弹窗
+  const [selectedWordData, setSelectedWordData] = useState(null)
+
+  // 6. 数学奇偶数测试状态
+  const [oddEvenAnswers, setOddEvenAnswers] = useState({})
+  const [showGraphAnswer, setShowGraphAnswer] = useState(false)
+
+  // 7. 字母书写笔画状态
+  const [selectedLetterChar, setSelectedLetterChar] = useState('G')
+
+  const story = data.story || {}
+  const compoundWords = data.compoundWords || []
+  const packingItems = data.packingItems || []
+  const writingListTask = data.writingListTask || {}
+  const words = data.words || []
+  const alphabetStrokes = data.alphabetStrokes || []
+  const mathsReview = data.mathsReview || {}
+
+  // 统计已装箱的真正需要携带的物品数量
+  const packedMustItems = packingItems.filter(item => item.isPacked)
+  const packedCount = packedMustItems.filter(item => packedMap[item.id]).length
+  const allPackedDone = packedMustItems.length > 0 && packedCount === packedMustItems.length
+
+  const handleWordClick = (rawWord) => {
+    playPop()
+    const wordInfo = lookupWord(rawWord)
+    if (wordInfo) {
+      setSelectedWordData(wordInfo)
+    }
+  }
+
+  // 点击物品：判断是装箱物品还是干扰物
+  const handleItemClick = (item) => {
+    speakEnglish(item.name)
+    if (item.isPacked) {
+      playPop()
+      setDistractorNotice(null)
+      const nextState = !packedMap[item.id]
+      setPackedMap(prev => ({ ...prev, [item.id]: nextState }))
+      if (nextState) {
+        playCorrect()
+      }
+    } else {
+      // 点击了干扰项（不该装进箱子的东西）
+      playTryAgain()
+      setDistractorNotice(item)
+    }
+  }
+
+  // 一键魔法全打包涂色
+  const handleMagicPackAll = () => {
+    playMagic()
+    const all = {}
+    packedMustItems.forEach(item => {
+      all[item.id] = true
+    })
+    setPackedMap(all)
+    setDistractorNotice(null)
+    setTimeout(() => {
+      playCheer()
+      speakEnglish('All ready to go! Great job packing the suitcase!')
+    }, 400)
+  }
+
+  // 清空手提箱
+  const handleResetSuitcase = () => {
+    playPop()
+    setPackedMap({})
+    setDistractorNotice(null)
+  }
+
+  // 复合词配对游戏：点击左侧词1
+  const handleSelectWord1 = (w1) => {
+    playPop()
+    speakEnglish(w1)
+    setSelectedWord1(w1)
+  }
+
+  // 点击右侧词2，进行合成
+  const handleSelectWord2 = (w2) => {
+    if (!selectedWord1) {
+      speakEnglish(w2)
+      return
+    }
+    const compoundMatch = compoundWords.find(cw => cw.word1.toLowerCase() === selectedWord1.toLowerCase() && cw.word2.toLowerCase() === w2.toLowerCase())
+    if (compoundMatch) {
+      playCorrect()
+      speakEnglish(compoundMatch.compound)
+      if (!matchedCompounds.includes(compoundMatch.compound)) {
+        setMatchedCompounds(prev => [...prev, compoundMatch.compound])
+      }
+      setSelectedWord1(null)
+    } else {
+      playTryAgain()
+      speakEnglish(w2)
+      setSelectedWord1(null)
+    }
+  }
+
+  // 行李清单勾选切换
+  const handleToggleCheckItem = (itemEn) => {
+    playPop()
+    setCheckedListItems(prev => ({ ...prev, [itemEn]: !prev[itemEn] }))
+  }
+
+  // 添加自定义行李项目
+  const handleAddCustomItem = (e) => {
+    e.preventDefault()
+    if (!newCustomInput.trim()) return
+    playCorrect()
+    setCustomItems(prev => [...prev, newCustomInput.trim()])
+    setNewCustomInput('')
+  }
+
+  // 复制清单文本
+  const handleCopyList = () => {
+    playPop()
+    const defaultLines = (writingListTask.samplePaperWriting || []).join('\n')
+    const customLines = customItems.map((ci, idx) => `${(writingListTask.samplePaperWriting?.length || 0) + idx + 1}. ${ci}`).join('\n')
+    const fullText = defaultLines + (customLines ? '\n' + customLines : '')
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(fullText).then(() => {
+        setCopiedNotification(true)
+        setTimeout(() => setCopiedNotification(false), 2500)
+      })
+    }
+  }
+
+  // 朗读整篇故事
+  const handleReadFullStory = () => {
+    if (isReadingWholeStory) {
+      stopSpeech()
+      setIsReadingWholeStory(false)
+      setActiveStorySentIdx(null)
+      return
+    }
+    playPop()
+    setIsReadingWholeStory(true)
+    const sentences = story.sentences || []
+    let currentIdx = 0
+
+    const readNext = () => {
+      if (currentIdx >= sentences.length) {
+        setIsReadingWholeStory(false)
+        setActiveStorySentIdx(null)
+        playCheer()
+        return
+      }
+      setActiveStorySentIdx(currentIdx)
+      speakEnglish(sentences[currentIdx].en, () => {
+        currentIdx++
+        setTimeout(readNext, 450)
+      })
+    }
+    readNext()
+  }
+
+  // 单句朗读
+  const handleReadSentence = (sent, idx) => {
+    stopSpeech()
+    setIsReadingWholeStory(false)
+    setActiveStorySentIdx(idx)
+    playPop()
+    speakEnglish(sent.en, () => {
+      setActiveStorySentIdx(null)
+    })
+  }
+
+  return (
+    <div className="grammys-homework-container">
+      {/* 顶部作业卡片横幅 */}
+      <div className="grammys-hero-banner">
+        <div className="grammys-hero-text">
+          <div className="grammys-date-badge">
+            <span>📅 {data.date || '2026年9月22日 星期二'}</span>
+            <span className="grammys-tag">Scholastic Reading for details 🧳</span>
+          </div>
+          <h2 className="grammys-hero-title">
+            Going to Grammy's 👵🧳
+          </h2>
+          <p className="grammys-hero-desc">
+            外婆家过夜大冒险：找出故事中的 <strong>8 个神奇复合词</strong>，给凯莉的手提箱<strong>打包涂色</strong>，并在纸张背面写好<strong>过夜行李清单</strong>！
+          </p>
+        </div>
+        <div className="grammys-hero-photo-wrap">
+          <img src={story.coverImage} alt="Going to Grammys" className="grammys-hero-photo" />
+          <div className="grammys-photo-caption">凯莉提着小手提箱来到外婆家门前</div>
+        </div>
+      </div>
+
+      {/* 老师随堂笔记与要求 */}
+      {data.teacherNote && (
+        <div className="grammys-teacher-note">
+          <div className="teacher-note-header">
+            <span className="teacher-icon">👩‍🏫</span>
+            <strong>今日课堂与作业重点 (Teacher's Note)</strong>
+          </div>
+          <div className="teacher-note-content">
+            {data.teacherNote}
+          </div>
+        </div>
+      )}
+
+      {/* 导航子选项卡 */}
+      <div className="grammys-subtabs-nav">
+        <button
+          className={`grammys-nav-tab ${activeSubTab === 'packing' ? 'active' : ''}`}
+          onClick={() => { playPop(); setActiveSubTab('packing'); }}
+        >
+          <span className="tab-icon">🧳</span>
+          <span className="tab-text">行李打包涂色</span>
+          <span className="tab-mini-badge">{packedCount}/{packedMustItems.length}</span>
+        </button>
+
+        <button
+          className={`grammys-nav-tab ${activeSubTab === 'compound' ? 'active' : ''}`}
+          onClick={() => { playPop(); setActiveSubTab('compound'); }}
+        >
+          <span className="tab-icon">🧩</span>
+          <span className="tab-text">8个神奇复合词</span>
+          <span className="tab-mini-badge">8词</span>
+        </button>
+
+        <button
+          className={`grammys-nav-tab ${activeSubTab === 'writing' ? 'active' : ''}`}
+          onClick={() => { playPop(); setActiveSubTab('writing'); }}
+        >
+          <span className="tab-icon">📝</span>
+          <span className="tab-text">背面行李清单写作</span>
+          <span className="tab-mini-badge">指导</span>
+        </button>
+
+        <button
+          className={`grammys-nav-tab ${activeSubTab === 'story' ? 'active' : ''}`}
+          onClick={() => { playPop(); setActiveSubTab('story'); }}
+        >
+          <span className="tab-icon">📖</span>
+          <span className="tab-text">原文故事精读</span>
+        </button>
+
+        <button
+          className={`grammys-nav-tab ${activeSubTab === 'cards' ? 'active' : ''}`}
+          onClick={() => { playPop(); setActiveSubTab('cards'); }}
+        >
+          <span className="tab-icon">🗂️</span>
+          <span className="tab-text">核心实景图卡</span>
+        </button>
+
+        <button
+          className={`grammys-nav-tab ${activeSubTab === 'maths' ? 'active' : ''}`}
+          onClick={() => { playPop(); setActiveSubTab('maths'); }}
+        >
+          <span className="tab-icon">🧮</span>
+          <span className="tab-text">趣味数学复习</span>
+        </button>
+
+        <button
+          className={`grammys-nav-tab ${activeSubTab === 'strokes' ? 'active' : ''}`}
+          onClick={() => { playPop(); setActiveSubTab('strokes'); }}
+        >
+          <span className="tab-icon">✍️</span>
+          <span className="tab-text">规范字母笔画</span>
+        </button>
+      </div>
+
+      {/* ================= 子选项卡 1：行李打包涂色大挑战 ================= */}
+      {activeSubTab === 'packing' && (
+        <div className="grammys-tab-pane animate-fade-in">
+          <div className="packing-task-header">
+            <div className="task-title-group">
+              <span className="task-number-pill">Task 1</span>
+              <h3>1. Color the things that Kelly packed in her suitcase.</h3>
+              <p className="task-subtitle">给凯莉装进手提箱的物品涂上美丽色彩！（点击卡片给物品涂色并打包，小心避开凯莉没带的干扰物哦！）</p>
+            </div>
+
+            <div className="packing-quick-actions">
+              <button className="magic-pack-btn" onClick={handleMagicPackAll}>
+                🪄 一键全打包涂色
+              </button>
+              <button className="reset-pack-btn" onClick={handleResetSuitcase}>
+                🔄 重置清空
+              </button>
+            </div>
+          </div>
+
+          {/* 打包进度条 */}
+          <div className="packing-progress-bar-card">
+            <div className="progress-info-row">
+              <span className="progress-label">
+                🧳 凯莉的手提箱打包进度：<strong>{packedCount} / {packedMustItems.length}</strong> 件
+              </span>
+              {allPackedDone && (
+                <span className="all-packed-tag animate-bounce">
+                  🎉 太棒了！全部行李已整理装箱完毕！Now Kelly is ready to go!
+                </span>
+              )}
+            </div>
+            <div className="packing-track">
+              <div
+                className="packing-fill"
+                style={{ width: `${(packedCount / packedMustItems.length) * 100}%` }}
+              />
+            </div>
+          </div>
+
+          {/* 模拟现实打开的手提箱视觉展示区域 */}
+          <div className="open-suitcase-showcase">
+            <div className="suitcase-cover-photo-wrap">
+              <img src={story.suitcaseImage} alt="Open Suitcase Packed" className="suitcase-real-img" />
+              <div className="suitcase-inner-badge">✨ Kelly's Open Suitcase</div>
+            </div>
+            <div className="suitcase-packed-tray">
+              <div className="tray-title">📦 手提箱内部已装载清单：</div>
+              <div className="tray-items-grid">
+                {packedMustItems.map(item => {
+                  const isItemIn = Boolean(packedMap[item.id])
+                  return (
+                    <div
+                      key={item.id}
+                      className={`tray-slot ${isItemIn ? 'slot-filled' : 'slot-empty'}`}
+                      onClick={() => handleItemClick(item)}
+                    >
+                      <span className="slot-emoji">{item.emoji}</span>
+                      <span className="slot-name">{item.name}</span>
+                      <span className="slot-cn">{item.cn}</span>
+                      {isItemIn ? (
+                        <span className="slot-status-tag done">✅ 已装箱</span>
+                      ) : (
+                        <span className="slot-status-tag pending">待涂色装箱</span>
+                      )}
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+          </div>
+
+          {/* 干扰项警示弹窗条 */}
+          {distractorNotice && (
+            <div className="distractor-alert-banner animate-shake">
+              <div className="alert-content">
+                <span className="alert-icon">⚠️</span>
+                <div className="alert-text">
+                  <strong>{distractorNotice.emoji} {distractorNotice.name} ({distractorNotice.cn}) 不是凯莉打包的物品！</strong>
+                  <p>{distractorNotice.reason}</p>
+                </div>
+              </div>
+              <button className="close-alert-btn" onClick={() => setDistractorNotice(null)}>✕</button>
+            </div>
+          )}
+
+          {/* 作业纸上的所有备选物品网格 (包含10件要带的和6件干扰项) */}
+          <div className="items-choice-section">
+            <h4 className="section-title">
+              🎨 点击下方物品卡片进行涂色与装箱（对照故事原文细节）：
+            </h4>
+            <div className="all-items-grid">
+              {packingItems.map(item => {
+                const isPackedItem = item.isPacked
+                const isCurrentPacked = Boolean(packedMap[item.id])
+
+                return (
+                  <div
+                    key={item.id}
+                    className={`item-choice-card ${isCurrentPacked ? 'item-colored' : ''} ${!isPackedItem ? 'is-distractor' : ''}`}
+                    onClick={() => handleItemClick(item)}
+                  >
+                    <div className="item-card-top">
+                      <span className="item-emoji">{item.emoji}</span>
+                      {isPackedItem ? (
+                        <span className={`color-status-badge ${isCurrentPacked ? 'colored' : 'uncolored'}`}>
+                          {isCurrentPacked ? '🎨 已涂色装箱' : '⚪ 未涂色'}
+                        </span>
+                      ) : (
+                        <span className="distractor-badge">❌ 干扰项</span>
+                      )}
+                    </div>
+
+                    <div className="item-names">
+                      <span className="item-en">{item.name}</span>
+                      <span className="item-cn">{item.cn}</span>
+                    </div>
+
+                    <div className="item-footer">
+                      <span className="item-hint">
+                        {isPackedItem ? item.reason : '未在故事中携带'}
+                      </span>
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ================= 子选项卡 2：8个神奇复合词工坊 ================= */}
+      {activeSubTab === 'compound' && (
+        <div className="grammys-tab-pane animate-fade-in">
+          <div className="compound-intro-banner">
+            <div className="compound-intro-text">
+              <span className="task-number-pill">Task 2</span>
+              <h3>2. A compound word is a big word made up of two little words.</h3>
+              <p className="compound-rule">
+                <strong>复合词定义：</strong>两个独立的小单词手拉手组合在一起，就诞生了一个全新含义的大单词！<br />
+                例如：<span className="formula-highlight">cow (奶牛) + boy (男孩) = cowboy (牛仔) 🤠</span>
+              </p>
+              <p className="compound-prompt">
+                在故事《Going to Grammy's》中，请找出以下 <strong>8 个复合词</strong> 并将它们圈出来！
+              </p>
+            </div>
+          </div>
+
+          {/* 8个复合词展示卡片网格 */}
+          <div className="compounds-formula-grid">
+            {compoundWords.map((cw, idx) => {
+              return (
+                <div key={cw.id} className="compound-card">
+                  <div className="compound-card-header" style={{ borderColor: cw.colorTheme }}>
+                    <div className="compound-index">#{idx + 1}</div>
+                    <div className="compound-title-group">
+                      <span className="compound-main-word" onClick={() => { playPop(); speakEnglish(cw.compound); }}>
+                        {cw.compound} 🔊
+                      </span>
+                      <span className="compound-phonetic">{cw.phonetic}</span>
+                      <span className="compound-meaning">{cw.meaning}</span>
+                    </div>
+                    <span className="compound-emoji">{cw.emoji}</span>
+                  </div>
+
+                  {/* 核心拆解公式 */}
+                  <div className="compound-equation">
+                    <button
+                      className="equation-part part-1"
+                      onClick={() => { playPop(); speakEnglish(cw.word1); }}
+                    >
+                      <span className="part-word">{cw.word1}</span>
+                      <span className="part-sound">🔊</span>
+                    </button>
+
+                    <span className="math-operator">➕</span>
+
+                    <button
+                      className="equation-part part-2"
+                      onClick={() => { playPop(); speakEnglish(cw.word2); }}
+                    >
+                      <span className="part-word">{cw.word2}</span>
+                      <span className="part-sound">🔊</span>
+                    </button>
+
+                    <span className="math-operator">🟰</span>
+
+                    <button
+                      className="equation-part part-result"
+                      onClick={() => { playCorrect(); speakEnglish(cw.compound); }}
+                    >
+                      <span className="part-word">{cw.compound}</span>
+                      <span className="part-sound">✨</span>
+                    </button>
+                  </div>
+
+                  {/* 摄影图与解析 */}
+                  <div className="compound-body">
+                    {cw.image && (
+                      <div className="compound-photo-wrap">
+                        <img src={cw.image} alt={cw.compound} className="compound-photo" />
+                      </div>
+                    )}
+                    <div className="compound-desc">
+                      <p className="explanation-text">💡 <strong>构词小秘密：</strong>{cw.explanation}</p>
+                      <p className="example-text" onClick={() => speakEnglish(cw.exampleSentence)}>
+                        📖 <strong>课文例句：</strong>"{cw.exampleSentence}" 🔊
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+
+          {/* 互动小游戏：复合词拼拼乐 (Match to build compound words) */}
+          <div className="compound-match-game">
+            <h4 className="game-title">🎮 复合词拼拼乐挑战：点击左边词，再点击右边词，拼出复合词！</h4>
+            <div className="game-columns">
+              <div className="game-col">
+                <span className="col-heading">👈 左边小单词 (Word 1)</span>
+                <div className="words-stack">
+                  {compoundWords.map(cw => (
+                    <button
+                      key={`left-${cw.id}`}
+                      className={`word-bubble ${selectedWord1 === cw.word1 ? 'selected' : ''}`}
+                      onClick={() => handleSelectWord1(cw.word1)}
+                    >
+                      {cw.word1}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="game-col">
+                <span className="col-heading">👉 右边小单词 (Word 2)</span>
+                <div className="words-stack">
+                  {[...compoundWords].sort((a, b) => a.word2.localeCompare(b.word2)).map(cw => (
+                    <button
+                      key={`right-${cw.id}`}
+                      className="word-bubble"
+                      onClick={() => handleSelectWord2(cw.word2)}
+                    >
+                      {cw.word2}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {matchedCompounds.length > 0 && (
+              <div className="matched-tray">
+                <span className="matched-title">🌟 你已成功拼成的复合词：</span>
+                <div className="matched-chips">
+                  {matchedCompounds.map(mc => (
+                    <span key={mc} className="matched-chip animate-pop" onClick={() => speakEnglish(mc)}>
+                      🧩 {mc} 🔊
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* ================= 子选项卡 3：作业纸背面行李清单写作指导 ================= */}
+      {activeSubTab === 'writing' && (
+        <div className="grammys-tab-pane animate-fade-in">
+          <div className="writing-prompt-banner">
+            <div className="writing-prompt-content">
+              <span className="task-number-pill">Task 3: Back of Page</span>
+              <h3>On the back of this page, make a list of things you would pack if you were going to spend the night at your grandmother's house.</h3>
+              <p className="writing-cn-prompt">
+                💡 <strong>作业指引：</strong>翻到这张作业纸的背面，用英文工整列出：如果你去外婆/奶奶家过夜，你会把哪些物品装进行李箱呢？
+              </p>
+            </div>
+          </div>
+
+          <div className="writing-sections-layout">
+            {/* 左侧：分类行李清单灵感挑选器 */}
+            <div className="writing-categories-column">
+              <h4 className="column-title">🎒 行李清单灵感库（点击可发音，并勾选你想要的物品）：</h4>
+
+              {(writingListTask.checklistCategories || []).map((cat, cIdx) => (
+                <div key={cIdx} className="category-group-card">
+                  <div className="category-header">
+                    <strong>{cat.category}</strong>
+                  </div>
+                  <div className="category-items-list">
+                    {cat.items.map((it, iIdx) => {
+                      const isChecked = Boolean(checkedListItems[it.en])
+                      return (
+                        <div
+                          key={iIdx}
+                          className={`checklist-item-row ${isChecked ? 'checked' : ''}`}
+                          onClick={() => handleToggleCheckItem(it.en)}
+                        >
+                          <input
+                            type="checkbox"
+                            checked={isChecked}
+                            onChange={() => {}}
+                            className="checklist-checkbox"
+                          />
+                          <div className="item-text-wrap">
+                            <span className="item-en-name">{it.en}</span>
+                            <span className="item-cn-name">{it.cn}</span>
+                          </div>
+                          <span className="item-tip-badge">{it.tip}</span>
+                          <button
+                            className="listen-item-btn"
+                            onClick={(e) => { e.stopPropagation(); speakEnglish(it.en); }}
+                          >
+                            🔊
+                          </button>
+                        </div>
+                      )
+                    })}
+                  </div>
+                </div>
+              ))}
+
+              {/* 自定义添加想带的物品 */}
+              <form className="custom-item-form" onSubmit={handleAddCustomItem}>
+                <label className="form-label">✨ 添加你自己特别想带的物品：</label>
+                <div className="input-group">
+                  <input
+                    type="text"
+                    placeholder="例如：my favorite blanket, drawing markers..."
+                    value={newCustomInput}
+                    onChange={(e) => setNewCustomInput(e.target.value)}
+                    className="custom-input"
+                  />
+                  <button type="submit" className="add-btn">➕ 添加</button>
+                </div>
+              </form>
+            </div>
+
+            {/* 右侧：英文作业纸背面标准书写范例 (四线三格模拟) */}
+            <div className="writing-handwriting-preview">
+              <div className="preview-top-bar">
+                <h4 className="preview-title">📝 作业纸背面书写示范 (Model Copy)</h4>
+                <div className="preview-actions">
+                  <button className="action-btn copy-btn" onClick={handleCopyList}>
+                    📋 {copiedNotification ? '已复制到剪贴板！' : '复制清单文本'}
+                  </button>
+                  <button
+                    className="action-btn speak-all-btn"
+                    onClick={() => {
+                      playPop()
+                      const allText = (writingListTask.samplePaperWriting || []).join('. ')
+                      speakEnglish(allText)
+                    }}
+                  >
+                    🔊 朗读整份清单
+                  </button>
+                </div>
+              </div>
+
+              <div className="notebook-paper-container">
+                <div className="notebook-header-line">
+                  <span className="paper-title">My Packing List for Grandma's House</span>
+                </div>
+
+                <div className="notebook-lines-content">
+                  {(writingListTask.samplePaperWriting || []).map((line, lIdx) => (
+                    <div key={lIdx} className="notebook-line-row" onClick={() => speakEnglish(line)}>
+                      <span className="line-text">{line}</span>
+                      <span className="line-sound-icon">🔊</span>
+                    </div>
+                  ))}
+
+                  {customItems.map((ci, cIdx) => (
+                    <div key={`custom-${cIdx}`} className="notebook-line-row custom-line" onClick={() => speakEnglish(ci)}>
+                      <span className="line-text">{(writingListTask.samplePaperWriting?.length || 0) + cIdx + 1}. {ci}</span>
+                      <span className="line-sound-icon">🔊</span>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="notebook-handwriting-tip">
+                  💡 <strong>书写建议：</strong>在作业纸背面写字时，注意大写字母顶格写满两格，逗号和句点要清晰规范，字距适中！
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ================= 子选项卡 4：原文故事精读跟读 ================= */}
+      {activeSubTab === 'story' && (
+        <div className="grammys-tab-pane animate-fade-in">
+          <div className="story-control-bar">
+            <div className="story-title-info">
+              <h3>{story.title} 📖</h3>
+              <span className="story-subtitle">{story.titleCn}</span>
+            </div>
+            <button
+              className={`full-story-audio-btn ${isReadingWholeStory ? 'reading' : ''}`}
+              onClick={handleReadFullStory}
+            >
+              {isReadingWholeStory ? '⏹️ 停止朗读' : '🔊 全文连贯朗读'}
+            </button>
+          </div>
+
+          <div className="story-sentences-list">
+            {(story.sentences || []).map((sent, idx) => {
+              const isCurrentReading = activeStorySentIdx === idx
+              return (
+                <div
+                  key={sent.id}
+                  className={`story-sent-card ${isCurrentReading ? 'active-sentence' : ''}`}
+                >
+                  <div className="sent-card-header">
+                    <span className="sentence-num-badge">Sentence {sent.num}</span>
+                    {sent.compoundWord && (
+                      <span className="sentence-compound-tag">
+                        🧩 包含复合词：<strong>{sent.compoundWord}</strong>
+                      </span>
+                    )}
+                    <button
+                      className="sent-play-btn"
+                      onClick={() => handleReadSentence(sent, idx)}
+                    >
+                      {isCurrentReading ? '🔊 朗读中...' : '🔊 听这句'}
+                    </button>
+                  </div>
+
+                  {/* 英文句子，单词支持点词查词典 */}
+                  <div className="sent-en-text">
+                    <InteractiveSentence
+                      sentence={sent.en}
+                      highlightWords={sent.highlightWords || []}
+                      onWordClick={handleWordClick}
+                    />
+                  </div>
+
+                  {/* 中文翻译 */}
+                  <div className="sent-cn-text">
+                    {sent.cn}
+                  </div>
+
+                  {/* 讲解小贴士 */}
+                  {sent.tip && (
+                    <div className="sent-tip-box">
+                      💡 {sent.tip}
+                    </div>
+                  )}
+                </div>
+              )
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* ================= 子选项卡 5：核心实景图卡 ================= */}
+      {activeSubTab === 'cards' && (
+        <div className="grammys-tab-pane animate-fade-in">
+          <div className="cards-header-bar">
+            <h3>🗂️ 核心实景图卡 (Real Photography Flashcards)</h3>
+            <p>100% 真实摄影无卡通插画，点击卡片发音并查看音标、词源与真实生活场景！</p>
+          </div>
+
+          <div className="grammys-cards-grid">
+            {words.map(w => (
+              <div
+                key={w.id}
+                className="grammys-flashcard"
+                onClick={() => { playPop(); speakEnglish(w.word); }}
+              >
+                <div className="card-photo-wrapper">
+                  <img src={w.image} alt={w.word} className="card-photo" loading="lazy" />
+                  <span className="card-emoji-badge">{w.emoji}</span>
+                </div>
+
+                <div className="card-details">
+                  <div className="card-word-row">
+                    <span className="card-word">{w.word}</span>
+                    <span className="card-sound-icon">🔊</span>
+                  </div>
+                  <div className="card-phonetic">{w.phonetic}</div>
+                  <div className="card-trans">{w.translation}</div>
+                  <div className="card-sentence" onClick={(e) => { e.stopPropagation(); speakEnglish(w.sentence); }}>
+                    "{w.sentence}"
+                  </div>
+                  <div className="card-sentence-cn">{w.sentenceCn}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* ================= 子选项卡 6：趣味数学复习 ================= */}
+      {activeSubTab === 'maths' && (
+        <div className="grammys-tab-pane animate-fade-in">
+          <div className="maths-intro-card">
+            <span className="maths-topic-badge">📊 {mathsReview.topic}</span>
+            <p className="maths-note-text">{mathsReview.note}</p>
+          </div>
+
+          {/* 奇数与偶数挑战 (Odd or Even) */}
+          <div className="odd-even-section">
+            <h4 className="section-title">🔢 奇数 (Odd) 还是 偶数 (Even)？点击进行判断！</h4>
+            <div className="odd-even-cards-grid">
+              {(mathsReview.oddEvenCards || []).map((card, idx) => {
+                const userChoice = oddEvenAnswers[idx]
+                const isCorrect = userChoice === (card.type.includes('Even') ? 'even' : 'odd')
+
+                return (
+                  <div key={idx} className="odd-even-quiz-card">
+                    <div className="card-num-circle">
+                      <span className="num-val">{card.num}</span>
+                      <span className="num-icon">{card.icon}</span>
+                    </div>
+
+                    <div className="card-desc-text">
+                      {card.desc}
+                    </div>
+
+                    <div className="quiz-choice-buttons">
+                      <button
+                        className={`quiz-btn ${userChoice === 'odd' ? (isCorrect ? 'btn-correct' : 'btn-wrong') : ''}`}
+                        onClick={() => {
+                          playPop()
+                          setOddEvenAnswers(prev => ({ ...prev, [idx]: 'odd' }))
+                          if (card.type.includes('Odd')) playCorrect()
+                          else playTryAgain()
+                        }}
+                      >
+                        Odd (奇数)
+                      </button>
+                      <button
+                        className={`quiz-btn ${userChoice === 'even' ? (isCorrect ? 'btn-correct' : 'btn-wrong') : ''}`}
+                        onClick={() => {
+                          playPop()
+                          setOddEvenAnswers(prev => ({ ...prev, [idx]: 'even' }))
+                          if (card.type.includes('Even')) playCorrect()
+                          else playTryAgain()
+                        }}
+                      >
+                        Even (偶数)
+                      </button>
+                    </div>
+
+                    {userChoice && (
+                      <div className={`answer-feedback-text ${isCorrect ? 'feedback-good' : 'feedback-try'}`}>
+                        {isCorrect ? `🎉 正确！${card.num} 是 ${card.type}！` : `💡 再想一想，${card.num} 属于 ${card.type} 呢！`}
+                      </div>
+                    )}
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+
+          {/* 读统计图做加减法 (Reading Graphs) */}
+          {mathsReview.graphData && (
+            <div className="graph-review-section">
+              <h4 className="section-title">📊 读统计图表 (Reading Graphs)：{mathsReview.graphData.title}</h4>
+              <div className="graph-bars-wrapper">
+                {mathsReview.graphData.items.map((bar, bIdx) => (
+                  <div key={bIdx} className="graph-bar-row">
+                    <span className="bar-label">{bar.label}</span>
+                    <div className="bar-track">
+                      <div
+                        className="bar-fill"
+                        style={{
+                          width: `${(bar.count / 5) * 100}%`,
+                          backgroundColor: bar.color
+                        }}
+                      >
+                        <span className="bar-count-tag">{bar.count} 件</span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="graph-question-card">
+                <div className="g-question-text">
+                  ❓ <strong>思考题：</strong>{mathsReview.graphData.question}
+                </div>
+                {!showGraphAnswer ? (
+                  <button
+                    className="reveal-graph-ans-btn"
+                    onClick={() => { playMagic(); setShowGraphAnswer(true); }}
+                  >
+                    💡 点击揭晓答案与加减算式
+                  </button>
+                ) : (
+                  <div className="graph-ans-reveal animate-bounce">
+                    🎉 <strong>正确列式与解析：</strong> {mathsReview.graphData.formula}
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* ================= 子选项卡 7：规范字母笔画书写 ================= */}
+      {activeSubTab === 'strokes' && (
+        <div className="grammys-tab-pane animate-fade-in">
+          <div className="strokes-header-bar">
+            <h3>✍️ 规范字母笔画书写 (Alphabet Writing Strokes)</h3>
+            <p>掌握大写与小写字母在四线三格里的笔顺规则，写出最漂亮的英文字母！</p>
+          </div>
+
+          {/* 字母切换选择器 */}
+          <div className="letter-selector-row">
+            {alphabetStrokes.map(item => (
+              <button
+                key={item.letter}
+                className={`letter-choice-btn ${selectedLetterChar === item.letter ? 'active' : ''}`}
+                onClick={() => {
+                  playPop()
+                  speakEnglish(item.letter)
+                  setSelectedLetterChar(item.letter)
+                }}
+              >
+                {item.letter} {item.lower}
+              </button>
+            ))}
+          </div>
+
+          {/* 选中字母的书写详解 */}
+          {(() => {
+            const currentItem = alphabetStrokes.find(i => i.letter === selectedLetterChar) || alphabetStrokes[0]
+            if (!currentItem) return null
+
+            return (
+              <div className="stroke-detail-card">
+                <div className="stroke-card-header">
+                  <div className="big-letters-display">
+                    <span className="letter-upper">{currentItem.letter}</span>
+                    <span className="letter-lower">{currentItem.lower}</span>
+                  </div>
+                  <div className="letter-meta-info">
+                    <div className="letter-sound-tag" onClick={() => speakEnglish(currentItem.letter)}>
+                      发音：<strong>{currentItem.sound}</strong> 🔊
+                    </div>
+                    <div className="letter-tip-tag">💡 {currentItem.tip}</div>
+                  </div>
+                </div>
+
+                <div className="stroke-rules-grid">
+                  <div className="stroke-box upper-box">
+                    <h5>🔠 大写字母 {currentItem.letter} 笔画步骤：</h5>
+                    <p className="stroke-steps">{currentItem.strokeUpper}</p>
+                  </div>
+
+                  <div className="stroke-box lower-box">
+                    <h5>🔡 小写字母 {currentItem.lower} 笔画步骤：</h5>
+                    <p className="stroke-steps">{currentItem.strokeLower}</p>
+                  </div>
+                </div>
+              </div>
+            )
+          })()}
+        </div>
+      )}
+
+      {/* 底部打卡大按钮 */}
+      <div className="homework-bottom-bar">
+        <button
+          className={`finish-homework-btn ${isCompleted ? 'already-done' : ''}`}
+          onClick={() => {
+            playCheer()
+            onCompleteTask('english')
+          }}
+        >
+          {isCompleted ? '✅ Going to Grammy’s 作业已通关打卡（再次庆祝）' : '🎉 我会找复合词与打包行李了！打卡领贴纸'}
+        </button>
+      </div>
+
+      {/* 点击单词弹出发音、音标与释义卡片 */}
+      {selectedWordData && (
+        <WordDetailModal
+          wordData={selectedWordData}
+          onClose={() => setSelectedWordData(null)}
+        />
+      )}
+    </div>
+  )
+}
+
 

@@ -28,6 +28,12 @@ import realRattlesnakeImg from '../assets/real_rattlesnake.jpg'
 import realFurryAnimalsImg from '../assets/real_furry_animals.jpg'
 import tinyTownCoverImg from '../assets/tiny_town_cover.jpg'
 
+import realGrammysCoverImg from '../assets/real_grammys_cover.jpg'
+import realOpenSuitcaseImg from '../assets/real_open_suitcase.jpg'
+import realBrushPasteImg from '../assets/real_brush_paste.jpg'
+import realSwimSunglassImg from '../assets/real_swim_sunglass.jpg'
+import realStoryPillowImg from '../assets/real_story_pillow.jpg'
+
 export const REAL_IMAGES = {
   tadpole: realTadpoleImg,
   frog: realFrogImg,
@@ -53,13 +59,375 @@ export const REAL_IMAGES = {
   prairieBurrow: realPrairieBurrowImg,
   rattlesnake: realRattlesnakeImg,
   furryAnimals: realFurryAnimalsImg,
-  tinyTownCover: tinyTownCoverImg
+  tinyTownCover: tinyTownCoverImg,
+  grammysCover: realGrammysCoverImg,
+  openSuitcase: realOpenSuitcaseImg,
+  brushPaste: realBrushPasteImg,
+  swimSunglass: realSwimSunglassImg,
+  storyPillow: realStoryPillowImg
 }
 
 export const CUTE_FROG_IMAGE = cuteFrogImg
 export const COUNTING_SHEEP_COVER = countingSheepCover
 export const SWEET_SENTENCES_COVER = sweetSentencesCover
 export const TINY_TOWN_COVER = tinyTownCoverImg
+export const GRAMMYS_COVER = realGrammysCoverImg
+
+// 星期二今日最新作业：Going to Grammy's 🧳 (复合词拆解、行李收拾与过夜清单)
+export const HOMEWORK_GOING_TO_GRAMMYS = {
+  id: 'homework-going-to-grammys',
+  date: '2026年9月22日 星期二',
+  childName: '',
+  theme: 'going-to-grammys',
+
+  // 1. 英语作业：Going to Grammy's: Reading for details
+  english: {
+    title: "Going to Grammy's: Reading for details 🧳",
+    topic: 'Compound Words & Overnight Packing List (复合词发现与过夜行李清单)',
+    teacherNote: "SEPTEMBER 22nd TUESDAY: * Checked homework & Reading - Made provisions and corrections. * PRACTICED correct writing strokes of the alphabet, both uppercase and lowercase letters. * MATHS: Sorting, Odd or Even, and Reading Graphs, reviewed addition and subtraction. HOMEWORK: GOING TO GRANNY’S: On the back of this page, make a list of things you would pack if you were going to spend the night at your grandmother's house.",
+    instruction: '仔细阅读小故事《Going to Grammy’s》，完成三大任务：1. 给凯莉装进手提箱的物品涂色（排除未携带的干扰物） 2. 圈出故事中的 8 个神奇复合词（两个小词拼成的大词，如 cow + boy = cowboy） 3. 在作业纸背面工整列出你去奶奶家过夜要准备的行李清单！',
+
+    // 故事全文与逐句拆解
+    story: {
+      title: "Going to Grammy's",
+      titleCn: '去外婆（奶奶）家过夜',
+      coverImage: realGrammysCoverImg,
+      suitcaseImage: realOpenSuitcaseImg,
+      brushImage: realBrushPasteImg,
+      swimImage: realSwimSunglassImg,
+      pillowImage: realStoryPillowImg,
+      paragraphEn: 'Kelly is going to spend the night with her grandmother. She will need to take her pajamas, a shirt, and some shorts. Into the suitcase go her toothbrush, toothpaste, and hairbrush. Grammy told her to bring a swimsuit in case it was warm enough to swim. Mom said to pack her favorite pillow and storybooks. Dad said, "Don\'t forget to take Grammy\'s sunglasses that she left here last week." Now Kelly is ready to go!',
+      paragraphCn: '凯莉打算去外婆（奶奶）家过夜。她需要带上她的睡衣、一件衬衫和几条短裤。牙刷、牙膏和发刷都整齐地装进了手提箱。外婆告诉她带上一件泳衣，万一天气暖和可以去游泳。妈妈说要带上她最心爱的枕头和故事书。爸爸说：“别忘了带上外婆上周落在我们家的太阳镜。”现在，凯莉准备好出发啦！',
+      sentences: [
+        {
+          id: 'g-s1',
+          num: 1,
+          en: 'Kelly is going to spend the night with her grandmother.',
+          cn: '凯莉打算去外婆（奶奶）家过夜。',
+          compoundWord: 'grandmother',
+          compoundBreakdown: 'grand + mother',
+          highlightWords: ['grandmother', 'spend the night'],
+          tip: 'grandmother 是复合词：grand (长辈/尊贵) + mother (母亲) = 祖母/外婆！'
+        },
+        {
+          id: 'g-s2',
+          num: 2,
+          en: 'She will need to take her pajamas, a shirt, and some shorts.',
+          cn: '她需要带上她的睡衣、一件衬衫和几条短裤。',
+          compoundWord: null,
+          highlightWords: ['pajamas', 'shirt', 'shorts'],
+          tip: '过夜要准备舒适换洗衣物：pajamas (睡衣), shirt (衬衫), shorts (短裤)。'
+        },
+        {
+          id: 'g-s3',
+          num: 3,
+          en: 'Into the suitcase go her toothbrush, toothpaste, and hairbrush.',
+          cn: '牙刷、牙膏和发刷都装进了手提箱里。',
+          compoundWord: 'suitcase, toothbrush, toothpaste, hairbrush',
+          compoundBreakdown: 'suit + case, tooth + brush, tooth + paste, hair + brush',
+          highlightWords: ['suitcase', 'toothbrush', 'toothpaste', 'hairbrush'],
+          tip: '这一句里一口气出现了 4 个复合词！都是个人洗漱与收纳好帮手！'
+        },
+        {
+          id: 'g-s4',
+          num: 4,
+          en: 'Grammy told her to bring a swimsuit in case it was warm enough to swim.',
+          cn: '外婆告诉她带上一件泳衣，万一天气暖和可以去游泳。',
+          compoundWord: 'swimsuit',
+          compoundBreakdown: 'swim + suit',
+          highlightWords: ['Grammy', 'swimsuit', 'in case'],
+          tip: 'swimsuit 也是复合词：swim (游泳) + suit (服装) = 泳衣！'
+        },
+        {
+          id: 'g-s5',
+          num: 5,
+          en: 'Mom said to pack her favorite pillow and storybooks.',
+          cn: '妈妈说要带上她最心爱的枕头和故事书。',
+          compoundWord: 'storybooks',
+          compoundBreakdown: 'story + books',
+          highlightWords: ['pillow', 'storybooks'],
+          tip: 'storybooks 复合词：story (故事) + books (书本) = 故事书！带着熟悉的枕头睡觉更香。'
+        },
+        {
+          id: 'g-s6',
+          num: 6,
+          en: 'Dad said, "Don\'t forget to take Grammy\'s sunglasses that she left here last week."',
+          cn: '爸爸说：“别忘了带上外婆上周落在我们家的太阳镜。”',
+          compoundWord: 'sunglasses',
+          compoundBreakdown: 'sun + glasses',
+          highlightWords: ['sunglasses', 'forget'],
+          tip: 'sunglasses 复合词：sun (太阳) + glasses (眼镜) = 太阳镜/墨镜！'
+        },
+        {
+          id: 'g-s7',
+          num: 7,
+          en: 'Now Kelly is ready to go!',
+          cn: '现在，凯莉万事俱备，准备出发啦！',
+          compoundWord: null,
+          highlightWords: ['ready to go'],
+          tip: 'ready to go 表示“准备好出发啦！”'
+        }
+      ]
+    },
+
+    // 核心任务 2：故事中的 8 个神奇复合词 (8 Compound Words)
+    compoundWords: [
+      {
+        id: 'cw-1',
+        compound: 'grandmother',
+        word1: 'grand',
+        word2: 'mother',
+        phonetic: '/ˈɡrænmʌðər/',
+        meaning: '外婆 / 奶奶 / 祖母',
+        explanation: 'grand (崇高/尊贵的长辈) + mother (母亲) = 妈妈的妈妈或爸爸的妈妈！',
+        exampleSentence: 'Kelly is going to spend the night with her grandmother.',
+        image: realGrammysCoverImg,
+        emoji: '👵',
+        colorTheme: '#f59e0b'
+      },
+      {
+        id: 'cw-2',
+        compound: 'suitcase',
+        word1: 'suit',
+        word2: 'case',
+        phonetic: '/ˈsuːtkeɪs/',
+        meaning: '旅行手提箱 / 行李箱',
+        explanation: 'suit (成套衣服) + case (坚固箱子) = 外出旅行装衣服的大箱子！',
+        exampleSentence: 'Into the suitcase go her toothbrush, toothpaste, and hairbrush.',
+        image: realOpenSuitcaseImg,
+        emoji: '🧳',
+        colorTheme: '#ec4899'
+      },
+      {
+        id: 'cw-3',
+        compound: 'toothbrush',
+        word1: 'tooth',
+        word2: 'brush',
+        phonetic: '/ˈtuːθbrʌʃ/',
+        meaning: '牙刷',
+        explanation: 'tooth (牙齿) + brush (刷子) = 早晚清洁牙齿的小牙刷！',
+        exampleSentence: 'She packed a yellow toothbrush in her bag.',
+        image: realBrushPasteImg,
+        emoji: '🪥',
+        colorTheme: '#3b82f6'
+      },
+      {
+        id: 'cw-4',
+        compound: 'toothpaste',
+        word1: 'tooth',
+        word2: 'paste',
+        phonetic: '/ˈtuːθpeɪst/',
+        meaning: '牙膏',
+        explanation: 'tooth (牙齿) + paste (糊状物/膏) = 挤在牙刷上刷牙用的牙膏！',
+        exampleSentence: 'Squeeze a little toothpaste onto the toothbrush.',
+        image: realBrushPasteImg,
+        emoji: '🦷',
+        colorTheme: '#06b6d4'
+      },
+      {
+        id: 'cw-5',
+        compound: 'hairbrush',
+        word1: 'hair',
+        word2: 'brush',
+        phonetic: '/ˈherbrʌʃ/',
+        meaning: '发刷 / 梳子',
+        explanation: 'hair (头发) + brush (毛刷) = 梳理柔顺头发的美发刷！',
+        exampleSentence: 'Kelly smoothed her curls with a wooden hairbrush.',
+        image: realBrushPasteImg,
+        emoji: '💇',
+        colorTheme: '#8b5cf6'
+      },
+      {
+        id: 'cw-6',
+        compound: 'swimsuit',
+        word1: 'swim',
+        word2: 'suit',
+        phonetic: '/ˈswɪmsuːt/',
+        meaning: '泳衣 / 游泳装',
+        explanation: 'swim (游泳) + suit (服装) = 去游泳池或海边穿的泳衣！',
+        exampleSentence: 'Grammy told her to bring a colorful swimsuit.',
+        image: realSwimSunglassImg,
+        emoji: '🩱',
+        colorTheme: '#10b981'
+      },
+      {
+        id: 'cw-7',
+        compound: 'storybooks',
+        word1: 'story',
+        word2: 'books',
+        phonetic: '/ˈstɔːribʊks/',
+        meaning: '故事书（复数）',
+        explanation: 'story (童话故事) + books (书本) = 睡前外婆讲故事的绘本书！',
+        exampleSentence: 'Mom said to pack her favorite pillow and storybooks.',
+        image: realStoryPillowImg,
+        emoji: '📚',
+        colorTheme: '#f97316'
+      },
+      {
+        id: 'cw-8',
+        compound: 'sunglasses',
+        word1: 'sun',
+        word2: 'glasses',
+        phonetic: '/ˈsʌnɡlæsɪz/',
+        meaning: '太阳镜 / 墨镜',
+        explanation: 'sun (太阳光) + glasses (眼镜) = 保护眼睛免受强光刺眼的墨镜！',
+        exampleSentence: "Don't forget to take Grammy's red sunglasses.",
+        image: realSwimSunglassImg,
+        emoji: '🕶️',
+        colorTheme: '#ef4444'
+      }
+    ],
+
+    // 核心任务 1：行李箱物品涂色与打包大挑战 (Color the things Kelly packed in her suitcase)
+    packingItems: [
+      { id: 'pk-1', name: 'pajamas', cn: '睡衣', emoji: '👗', isPacked: true, reason: '原文提到："take her pajamas"', image: realOpenSuitcaseImg },
+      { id: 'pk-2', name: 'shirt', cn: '衬衫/T恤', emoji: '👕', isPacked: true, reason: '原文提到："a shirt"', image: realOpenSuitcaseImg },
+      { id: 'pk-3', name: 'shorts', cn: '短裤', emoji: '🩳', isPacked: true, reason: '原文提到："and some shorts"', image: realOpenSuitcaseImg },
+      { id: 'pk-4', name: 'toothbrush', cn: '牙刷', emoji: '🪥', isPacked: true, reason: '原文提到："go her toothbrush"', image: realBrushPasteImg },
+      { id: 'pk-5', name: 'toothpaste', cn: '牙膏', emoji: '🦷', isPacked: true, reason: '原文提到："toothpaste"', image: realBrushPasteImg },
+      { id: 'pk-6', name: 'hairbrush', cn: '发刷/梳子', emoji: '💇', isPacked: true, reason: '原文提到："and hairbrush"', image: realBrushPasteImg },
+      { id: 'pk-7', name: 'swimsuit', cn: '泳装', emoji: '🩱', isPacked: true, reason: '原文提到："bring a swimsuit in case it was warm"', image: realSwimSunglassImg },
+      { id: 'pk-8', name: 'pillow', cn: '枕头', emoji: '🛏️', isPacked: true, reason: '原文提到："pack her favorite pillow"', image: realStoryPillowImg },
+      { id: 'pk-9', name: 'storybooks', cn: '故事书', emoji: '📚', isPacked: true, reason: '原文提到："and storybooks"', image: realStoryPillowImg },
+      { id: 'pk-10', name: 'sunglasses', cn: '太阳镜', emoji: '🕶️', isPacked: true, reason: '原文提到："take Grammy\'s sunglasses"', image: realSwimSunglassImg },
+      // 干扰项（作业图纸中有画出，但故事中明确没带的物品）
+      { id: 'dist-1', name: 'teddy bear', cn: '玩具小熊', emoji: '🧸', isPacked: false, reason: '❌ 故事里没提到带泰迪熊，凯莉带了故事书和枕头！' },
+      { id: 'dist-2', name: 'hammer', cn: '铁锤', emoji: '🔨', isPacked: false, reason: '❌ 去外婆家做客不需要带修工锤子！' },
+      { id: 'dist-3', name: 'alarm clock', cn: '闹钟', emoji: '⏰', isPacked: false, reason: '❌ 故事中没有装闹钟。' },
+      { id: 'dist-4', name: 'fork', cn: '餐叉', emoji: '🍴', isPacked: false, reason: '❌ 外婆家有丰盛餐具，不用自己装叉子！' },
+      { id: 'dist-5', name: 'guitar', cn: '吉他', emoji: '🎸', isPacked: false, reason: '❌ 凯莉没有背吉他去外婆家。' },
+      { id: 'dist-6', name: 'burger', cn: '汉堡包', emoji: '🍔', isPacked: false, reason: '❌ 外婆会做美味晚餐，箱子里没有汉堡！' }
+    ],
+
+    // 核心任务 3：作业纸背面写作指导 (On the back of this page, make a list of things you would pack...)
+    writingListTask: {
+      title: "My Packing List for Grandma's House (外婆家过夜行李清单写作)",
+      promptEn: "On the back of this page, make a list of things you would pack if you were going to spend the night at your grandmother's house.",
+      promptCn: "在作业纸的背面，写一份你自己去外婆/奶奶家过夜要准备打包的行李清单！",
+      checklistCategories: [
+        {
+          category: '👔 Clothes (衣物类)',
+          items: [
+            { en: 'pajamas', cn: '舒适睡衣', tip: '晚上睡觉穿' },
+            { en: 'socks', cn: '两双干净袜子', tip: '换洗备用' },
+            { en: 'a T-shirt', cn: '短袖T恤', tip: '白天玩耍穿' },
+            { en: 'slippers', cn: '小拖鞋', tip: '室内走动舒服' }
+          ]
+        },
+        {
+          category: '🪥 Toiletries (洗漱用品类)',
+          items: [
+            { en: 'a toothbrush', cn: '儿童牙刷', tip: '早晚保持口腔卫生' },
+            { en: 'toothpaste', cn: '草莓味牙膏', tip: '清洁牙齿香香的' },
+            { en: 'a small towel', cn: '洗脸小毛巾', tip: '擦脸擦手' },
+            { en: 'hairbrush', cn: '顺发梳', tip: '早晨梳理头发' }
+          ]
+        },
+        {
+          category: '🧸 Bedtime & Fun (睡前与陪伴类)',
+          items: [
+            { en: 'a bedtime storybook', cn: '一本睡前故事书', tip: '请外婆讲睡前故事' },
+            { en: 'my favorite pillow', cn: '我最爱的小软枕', tip: '熟悉的香味睡得香' },
+            { en: 'a plush bunny', cn: '毛绒小兔玩偶', tip: '抱抱入睡不孤单' },
+            { en: 'crayons & paper', cn: '蜡笔与画画纸', tip: '和外婆一起画画' }
+          ]
+        },
+        {
+          category: '🎁 A Special Gift (给奶奶的暖心惊喜)',
+          items: [
+            { en: 'a handmade drawing for Grammy', cn: '亲手画给奶奶的贺卡', tip: '奶奶收到一定笑开花！' }
+          ]
+        }
+      ],
+      samplePaperWriting: [
+        '1. My soft pajamas',
+        '2. A toothbrush and toothpaste',
+        '3. My favorite storybook',
+        '4. A cozy pillow',
+        '5. Two pairs of clean socks',
+        '6. A surprise drawing for Grandma'
+      ]
+    },
+
+    // 闪卡
+    words: [
+      { id: 'w-gr-1', word: 'grandmother', phonetic: '/ˈɡrænmʌðər/', translation: '外婆 / 奶奶 (grand + mother)', emoji: '👵', image: realGrammysCoverImg, sentence: 'Kelly is going to spend the night with her grandmother.', sentenceCn: '凯莉打算去外婆家过夜。' },
+      { id: 'w-gr-2', word: 'suitcase', phonetic: '/ˈsuːtkeɪs/', translation: '手提箱 (suit + case)', emoji: '🧳', image: realOpenSuitcaseImg, sentence: 'Into the suitcase go her toothbrush and toothpaste.', sentenceCn: '牙刷和牙膏装进了手提箱。' },
+      { id: 'w-gr-3', word: 'toothbrush', phonetic: '/ˈtuːθbrʌʃ/', translation: '牙刷 (tooth + brush)', emoji: '🪥', image: realBrushPasteImg, sentence: 'Brush your teeth with a soft toothbrush.', sentenceCn: '用软毛牙刷刷牙。' },
+      { id: 'w-gr-4', word: 'toothpaste', phonetic: '/ˈtuːθpeɪst/', translation: '牙膏 (tooth + paste)', emoji: '🦷', image: realBrushPasteImg, sentence: 'Put some toothpaste on the brush.', sentenceCn: '在牙刷上涂一些牙膏。' },
+      { id: 'w-gr-5', word: 'hairbrush', phonetic: '/ˈherbrʌʃ/', translation: '发刷/梳子 (hair + brush)', emoji: '💇', image: realBrushPasteImg, sentence: 'She smoothed her hair with a hairbrush.', sentenceCn: '她用发刷梳理头发。' },
+      { id: 'w-gr-6', word: 'swimsuit', phonetic: '/ˈswɪmsuːt/', translation: '泳衣 (swim + suit)', emoji: '🩱', image: realSwimSunglassImg, sentence: 'Bring a swimsuit in case it is warm enough to swim.', sentenceCn: '带上泳衣，万一天气暖和可以游泳。' },
+      { id: 'w-gr-7', word: 'storybooks', phonetic: '/ˈstɔːribʊks/', translation: '故事书 (story + books)', emoji: '📚', image: realStoryPillowImg, sentence: 'Mom said to pack her favorite storybooks.', sentenceCn: '妈妈说要装上她最喜爱的故事书。' },
+      { id: 'w-gr-8', word: 'sunglasses', phonetic: '/ˈsʌnɡlæsɪz/', translation: '太阳镜 (sun + glasses)', emoji: '🕶️', image: realSwimSunglassImg, sentence: "Don't forget to take Grammy's sunglasses.", sentenceCn: '别忘了带上奶奶的太阳镜。' }
+    ],
+
+    // 字母规范笔画书写 (PRACTICED writing strokes of the alphabet)
+    alphabetStrokes: [
+      { letter: 'G', lower: 'g', strokeUpper: '1. 从右上起笔逆时针画大圆弧  2. 底部向上收起  3. 往左平折一短横', strokeLower: '1. 中格先写椭圆 c  2. 右边带下拐长弯钩穿入下格', sound: '/dʒiː/', tip: 'Grammy & Grandmother 的首字母 G' },
+      { letter: 'S', lower: 's', strokeUpper: '1. 从右上向左逆时针弯，中途向右折，再向左回弯成S形', strokeLower: '1. 在中格写同样圆润的小 s', sound: '/es/', tip: 'Suitcase & Sunglasses 的首字母 S' },
+      { letter: 'T', lower: 't', strokeUpper: '1. 中间竖直向下落地  2. 顶部平平画一长横', strokeLower: '1. 竖直向下带点小弯钩  2. 在横线偏上穿一短横', sound: '/tiː/', tip: 'Toothbrush & Toothpaste 的首字母 T' },
+      { letter: 'H', lower: 'h', strokeUpper: '1. 左竖直下  2. 右竖直下  3. 中间横平连结', strokeLower: '1. 从上格顶端直直拉下一长竖  2. 右边画一个拱门弯落地', sound: '/eɪtʃ/', tip: 'Hairbrush 的首字母 H' },
+      { letter: 'P', lower: 'p', strokeUpper: '1. 左竖直下  2. 在上半部向右画半圆封口', strokeLower: '1. 直直穿入下格的长竖  2. 在中格画右半圆封口', sound: '/piː/', tip: 'Pajamas & Pillow 的首字母 P' }
+    ],
+
+    // 数学微复习 (Maths: Sorting, Odd/Even, Reading Graphs)
+    mathsReview: {
+      topic: 'Maths: Packing Sorting, Odd or Even & Graphs 📊',
+      note: '老师课堂带领练习了：分类排序（装进箱子 vs 不装进箱子）、奇数偶数判断、读统计图表，以及加减法巩固！',
+      oddEvenCards: [
+        { num: 10, type: 'Even (偶数)', icon: '🧳', desc: '凯莉箱子里装了 10 件物品，正好两两配成 5 对，所以是 Even 偶数！' },
+        { num: 7, type: 'Odd (奇数)', icon: '📖', desc: '故事里有 7 个句子，无法完全两两成对，所以是 Odd 奇数！' },
+        { num: 8, type: 'Even (偶数)', icon: '🧩', desc: '找到了 8 个复合词，正好两两配成 4 对，是 Even 偶数！' },
+        { num: 3, type: 'Odd (奇数)', icon: '🪥', desc: '洗漱用品有牙刷、牙膏、发刷共 3 样，最后剩下 1 样单个，是 Odd 奇数！' }
+      ],
+      graphData: {
+        title: 'Kelly’s Suitcase Items by Category (行李箱物品分类统计图)',
+        items: [
+          { label: 'Clothes (衣物: 睡衣/衬衫/短裤/泳衣)', count: 4, color: '#f59e0b' },
+          { label: 'Toiletries (洗漱: 牙刷/牙膏/梳子)', count: 3, color: '#10b981' },
+          { label: 'Comfort & Sun (睡前与防晒: 枕头/书/墨镜)', count: 3, color: '#6366f1' }
+        ],
+        question: '衣物类有 4 件，洗漱类有 3 件，请问衣物类比洗漱类多几件？全部行李共有几件？',
+        formula: '4 - 3 = 1 件；4 + 3 + 3 = 10 件！'
+      }
+    }
+  },
+
+  // 2. 拼音作业：声母 zh, ch, sh, r
+  pinyin: {
+    teacherNote: '复习翘舌音声母 zh, ch, sh, r 的发音要领（舌尖翘起接触或接近硬腭前部），注意与平舌音 z, c, s 的对比区别！',
+    letters: [
+      { id: 'p-zh', char: 'zh', type: '声母', mnemonic: '织毛衣 zh zh zh，妈妈织毛衣', soundTip: '舌尖翘起，抵住硬腭前部' },
+      { id: 'p-ch', char: 'ch', type: '声母', mnemonic: '吃苹果 ch ch ch，大口吃西瓜', soundTip: '发音部位同 zh，但气流较强' },
+      { id: 'p-sh', char: 'sh', type: '声母', mnemonic: '一棵小树 sh sh sh，狮子大张嘴', soundTip: '舌尖翘起接近硬腭，形成摩擦' },
+      { id: 'p-r', char: 'r', type: '声母', mnemonic: '一轮红日 r r r，小苗出土', soundTip: '发音同 sh，但声带颤动' }
+    ],
+    blends: [
+      { id: 'bl-zh1', initial: 'zh', final: 'ù', result: 'zhù', word: '住外婆家 🏡', example: '去外婆家住一晚' },
+      { id: 'bl-ch1', initial: 'ch', final: 'ū', result: 'chū', word: '出发 🎒', example: '准备好出发啦' },
+      { id: 'bl-sh1', initial: 'sh', final: 'ū', result: 'shū', word: '故事书 📚', example: '精彩的故事书' },
+      { id: 'bl-r1', initial: 'r', final: 'è', result: 'rè', word: '天气暖和 ☀️', example: '天气温热去游泳' }
+    ]
+  },
+
+  // 3. 伴读作业：美文《去外婆家过夜》
+  reading: {
+    title: '温馨美文《去外婆家过夜》',
+    author: '温馨亲子绘本',
+    teacherNote: '有感情地朗读短文，体会和长辈在一起的温暖幸福时光！',
+    image: realGrammysCoverImg,
+    lines: [
+      [{ char: '背', pinyin: 'bēi' }, { char: '起', pinyin: 'qǐ' }, { char: '小', pinyin: 'xiǎo' }, { char: '书', pinyin: 'shū' }, { char: '包', pinyin: 'bāo' }, { char: '，', pinyin: '' }],
+      [{ char: '提', pinyin: 'tí' }, { char: '着', pinyin: 'zhe' }, { char: '行', pinyin: 'xíng' }, { char: '李', pinyin: 'lǐ' }, { char: '箱', pinyin: 'xiāng' }, { char: '。', pinyin: '' }],
+      [{ char: '今', pinyin: 'jīn' }, { char: '天', pinyin: 'tiān' }, { char: '去', pinyin: 'qù' }, { char: '外', pinyin: 'wài' }, { char: '婆', pinyin: 'pó' }, { char: '家', pinyin: 'jiā' }, { char: '，', pinyin: '' }],
+      [{ char: '开', pinyin: 'kāi' }, { char: '心', pinyin: 'xīn' }, { char: '住', pinyin: 'zhù' }, { char: '一', pinyin: 'yī' }, { char: '晚', pinyin: 'wǎn' }, { char: '。', pinyin: '' }],
+      [{ char: '带', pinyin: 'dài' }, { char: '上', pinyin: 'shàng' }, { char: '小', pinyin: 'xiǎo' }, { char: '睡', pinyin: 'shuì' }, { char: '衣', pinyin: 'yī' }, { char: '，', pinyin: '' }],
+      [{ char: '牙', pinyin: 'yá' }, { char: '刷', pinyin: 'shuā' }, { char: '和', pinyin: 'hé' }, { char: '牙', pinyin: 'yá' }, { char: '膏', pinyin: 'gāo' }, { char: '。', pinyin: '' }],
+      [{ char: '外', pinyin: 'wài' }, { char: '婆', pinyin: 'pó' }, { char: '笑', pinyin: 'xiào' }, { char: '迎', pinyin: 'yíng' }, { char: '门', pinyin: 'mén' }, { char: '，', pinyin: '' }],
+      [{ char: '讲', pinyin: 'jiǎng' }, { char: '故', pinyin: 'gù' }, { char: '事', pinyin: 'shì' }, { char: '真', pinyin: 'zhēn' }, { char: '温', pinyin: 'wēn' }, { char: '馨', pinyin: 'xīn' }, { char: '！', pinyin: '' }]
+    ]
+  }
+}
 
 // 星期一今日最新作业：A Tiny Town 🐿️ (密信密码破译与非虚构科普阅读)
 export const HOMEWORK_TINY_TOWN = {
@@ -1626,11 +1994,12 @@ export const HOMEWORK_2026_09_15 = {
   }
 }
 
-// 今日最新默认作业为星期一：A Tiny Town 🐿️
-export const DEFAULT_HOMEWORK = HOMEWORK_TINY_TOWN
+// 今日最新默认作业为星期二：Going to Grammy's 🧳 (复合词拆解、行李收拾与过夜清单)
+export const DEFAULT_HOMEWORK = HOMEWORK_GOING_TO_GRAMMYS
 
 // 历史作业归档列表库（支持按日期翻阅与周末复习）
 export const DEFAULT_HOMEWORK_LIST = [
+  HOMEWORK_GOING_TO_GRAMMYS,
   HOMEWORK_TINY_TOWN,
   HOMEWORK_SWEET_SENTENCES,
   HOMEWORK_COUNTING_SHEEP,

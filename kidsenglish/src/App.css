@@ -6903,3 +6903,1597 @@ input:checked + .slider-round:before {
     font-size: 18px;
   }
 }
+
+/* ==========================================================================
+   Going to Grammy's 🧳 (Tuesday Sept 22) 作业专属样式
+   ========================================================================== */
+
+.grammys-homework-container {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 8px 4px 40px;
+}
+
+/* 顶部作业英雄横幅 */
+.grammys-hero-banner {
+  background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 40%, #ffe4e6 100%);
+  border: 2px solid #fde68a;
+  border-radius: 20px;
+  padding: 22px 24px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  box-shadow: 0 10px 25px -5px rgba(245, 158, 11, 0.15);
+}
+
+.grammys-hero-text {
+  flex: 1;
+}
+
+.grammys-date-badge {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #92400e;
+  margin-bottom: 8px;
+}
+
+.grammys-tag {
+  background: #f59e0b;
+  color: #ffffff;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+}
+
+.grammys-hero-title {
+  font-size: 28px;
+  font-weight: 800;
+  color: #78350f;
+  margin: 0 0 10px;
+  letter-spacing: -0.5px;
+}
+
+.grammys-hero-desc {
+  font-size: 15px;
+  line-height: 1.6;
+  color: #451a03;
+  margin: 0;
+}
+
+.grammys-hero-photo-wrap {
+  position: relative;
+  flex-shrink: 0;
+  width: 220px;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  border: 3px solid #ffffff;
+}
+
+.grammys-hero-photo {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  display: block;
+}
+
+.grammys-photo-caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.65);
+  color: #ffffff;
+  font-size: 11px;
+  text-align: center;
+  padding: 4px 6px;
+}
+
+/* 随堂教师笔记 */
+.grammys-teacher-note {
+  background: #fdf6ec;
+  border-left: 5px solid #d97706;
+  border-radius: 14px;
+  padding: 14px 18px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(217, 119, 6, 0.08);
+}
+
+.teacher-note-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #b45309;
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+
+.teacher-note-content {
+  font-size: 13.5px;
+  color: #78350f;
+  line-height: 1.55;
+  word-break: break-word;
+}
+
+/* 导航子选项卡 */
+.grammys-subtabs-nav {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 4px 2px 14px;
+  margin-bottom: 18px;
+  scrollbar-width: none;
+}
+
+.grammys-subtabs-nav::-webkit-scrollbar {
+  display: none;
+}
+
+.grammys-nav-tab {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 16px;
+  background: #ffffff;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 30px;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #475569;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.04);
+}
+
+.grammys-nav-tab:hover {
+  border-color: #cbd5e1;
+  transform: translateY(-1px);
+}
+
+.grammys-nav-tab.active {
+  background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%);
+  border-color: #ea580c;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(234, 88, 12, 0.3);
+}
+
+.tab-mini-badge {
+  background: rgba(0, 0, 0, 0.08);
+  padding: 2px 7px;
+  border-radius: 12px;
+  font-size: 11px;
+}
+
+.grammys-nav-tab.active .tab-mini-badge {
+  background: rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+}
+
+/* ================= 任务 1：行李打包涂色 ================= */
+.packing-task-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.task-number-pill {
+  display: inline-block;
+  background: #f97316;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 800;
+  padding: 3px 10px;
+  border-radius: 20px;
+  margin-bottom: 6px;
+}
+
+.task-title-group h3 {
+  font-size: 20px;
+  font-weight: 800;
+  color: #1e293b;
+  margin: 0 0 4px;
+}
+
+.task-subtitle {
+  font-size: 13.5px;
+  color: #64748b;
+  margin: 0;
+}
+
+.packing-quick-actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.magic-pack-btn {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: #ffffff;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(16, 185, 129, 0.3);
+}
+
+.reset-pack-btn {
+  background: #f1f5f9;
+  color: #64748b;
+  border: 1px solid #cbd5e1;
+  padding: 8px 12px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* 进度条卡片 */
+.packing-progress-bar-card {
+  background: #ffffff;
+  border: 1.5px solid #fed7aa;
+  border-radius: 16px;
+  padding: 14px 18px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 10px rgba(251, 146, 60, 0.08);
+}
+
+.progress-info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.progress-label {
+  font-size: 14.5px;
+  color: #7c2d12;
+}
+
+.all-packed-tag {
+  background: #ecfdf5;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.packing-track {
+  width: 100%;
+  height: 12px;
+  background: #f1f5f9;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.packing-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #f59e0b 0%, #10b981 100%);
+  border-radius: 20px;
+  transition: width 0.4s ease;
+}
+
+/* 手提箱打开展示 */
+.open-suitcase-showcase {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 18px;
+  background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%);
+  border: 2px solid #fdba74;
+  border-radius: 20px;
+  padding: 18px;
+  margin-bottom: 24px;
+  box-shadow: 0 8px 24px rgba(249, 115, 22, 0.12);
+}
+
+.suitcase-cover-photo-wrap {
+  position: relative;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 3px solid #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.suitcase-real-img {
+  width: 100%;
+  height: 100%;
+  min-height: 170px;
+  object-fit: cover;
+  display: block;
+}
+
+.suitcase-inner-badge {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  background: rgba(0, 0, 0, 0.65);
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 10px;
+}
+
+.suitcase-packed-tray {
+  display: flex;
+  flex-direction: column;
+}
+
+.tray-title {
+  font-size: 14px;
+  font-weight: 800;
+  color: #9a3412;
+  margin-bottom: 10px;
+}
+
+.tray-items-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 10px;
+  flex: 1;
+}
+
+.tray-slot {
+  border-radius: 12px;
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+}
+
+.tray-slot.slot-empty {
+  background: rgba(255, 255, 255, 0.6);
+  border: 1.5px dashed #cbd5e1;
+  color: #94a3b8;
+}
+
+.tray-slot.slot-filled {
+  background: #ffffff;
+  border: 2px solid #10b981;
+  box-shadow: 0 4px 10px rgba(16, 185, 129, 0.18);
+  color: #1e293b;
+  transform: translateY(-2px);
+}
+
+.slot-emoji {
+  font-size: 24px;
+  margin-bottom: 2px;
+}
+
+.slot-name {
+  font-size: 12.5px;
+  font-weight: 700;
+}
+
+.slot-cn {
+  font-size: 11px;
+  color: #64748b;
+  margin-bottom: 4px;
+}
+
+.slot-status-tag {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 10px;
+}
+
+.slot-status-tag.done {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.slot-status-tag.pending {
+  background: #f1f5f9;
+  color: #94a3b8;
+}
+
+/* 干扰项警报条 */
+.distractor-alert-banner {
+  background: #fee2e2;
+  border: 1.5px solid #f87171;
+  border-radius: 14px;
+  padding: 12px 16px;
+  margin-bottom: 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.alert-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.alert-icon {
+  font-size: 26px;
+  flex-shrink: 0;
+}
+
+.alert-text strong {
+  color: #991b1b;
+  font-size: 14px;
+}
+
+.alert-text p {
+  color: #b91c1c;
+  font-size: 13px;
+  margin: 3px 0 0;
+}
+
+.close-alert-btn {
+  background: none;
+  border: none;
+  font-size: 18px;
+  color: #991b1b;
+  cursor: pointer;
+  padding: 4px;
+}
+
+/* 涂色物品选项网格 */
+.items-choice-section {
+  margin-top: 10px;
+}
+
+.items-choice-section .section-title {
+  font-size: 16px;
+  font-weight: 800;
+  color: #334155;
+  margin-bottom: 14px;
+}
+
+.all-items-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(135px, 1fr));
+  gap: 12px;
+}
+
+.item-choice-card {
+  background: #ffffff;
+  border: 2px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 12px 10px;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  user-select: none;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+.item-choice-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+}
+
+.item-choice-card.item-colored {
+  border-color: #f59e0b;
+  background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+  box-shadow: 0 6px 16px rgba(245, 158, 11, 0.2);
+}
+
+.item-choice-card.is-distractor:hover {
+  border-color: #fca5a5;
+  background: #fff5f5;
+}
+
+.item-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.item-emoji {
+  font-size: 26px;
+}
+
+.color-status-badge {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 10px;
+}
+
+.color-status-badge.colored {
+  background: #f59e0b;
+  color: #ffffff;
+}
+
+.color-status-badge.uncolored {
+  background: #f1f5f9;
+  color: #64748b;
+}
+
+.distractor-badge {
+  background: #fee2e2;
+  color: #dc2626;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 10px;
+}
+
+.item-names {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 6px;
+}
+
+.item-en {
+  font-size: 14px;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.item-cn {
+  font-size: 12px;
+  color: #64748b;
+}
+
+.item-footer {
+  margin-top: auto;
+  border-top: 1px dashed #e2e8f0;
+  padding-top: 6px;
+}
+
+.item-hint {
+  font-size: 10.5px;
+  color: #94a3b8;
+  line-height: 1.3;
+  display: block;
+}
+
+/* ================= 任务 2：8 个神奇复合词工坊 ================= */
+.compound-intro-banner {
+  background: linear-gradient(135deg, #ede9fe 0%, #fdf4ff 100%);
+  border: 2px solid #ddd6fe;
+  border-radius: 18px;
+  padding: 18px 22px;
+  margin-bottom: 22px;
+}
+
+.compound-rule {
+  font-size: 14.5px;
+  color: #4c1d95;
+  line-height: 1.6;
+  margin: 6px 0;
+}
+
+.formula-highlight {
+  display: inline-block;
+  background: #ffffff;
+  border: 1.5px solid #c4b5fd;
+  border-radius: 8px;
+  padding: 2px 8px;
+  font-weight: 700;
+  color: #6d28d9;
+}
+
+.compound-prompt {
+  font-size: 13.5px;
+  color: #7c3aed;
+  margin: 6px 0 0;
+}
+
+.compounds-formula-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+  gap: 16px;
+  margin-bottom: 30px;
+}
+
+.compound-card {
+  background: #ffffff;
+  border: 2px solid #e2e8f0;
+  border-radius: 18px;
+  padding: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+}
+
+.compound-card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 2px solid #f1f5f9;
+  padding-bottom: 10px;
+  margin-bottom: 12px;
+}
+
+.compound-index {
+  background: #f1f5f9;
+  color: #475569;
+  font-size: 12px;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: 8px;
+}
+
+.compound-title-group {
+  flex: 1;
+}
+
+.compound-main-word {
+  font-size: 18px;
+  font-weight: 800;
+  color: #0f172a;
+  cursor: pointer;
+  margin-right: 8px;
+}
+
+.compound-main-word:hover {
+  color: #f59e0b;
+}
+
+.compound-phonetic {
+  font-size: 12px;
+  color: #64748b;
+  margin-right: 8px;
+}
+
+.compound-meaning {
+  font-size: 13px;
+  color: #b45309;
+  font-weight: 700;
+}
+
+.compound-emoji {
+  font-size: 28px;
+}
+
+/* 核心公式行 */
+.compound-equation {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: #f8fafc;
+  border-radius: 14px;
+  padding: 10px;
+  margin-bottom: 12px;
+}
+
+.equation-part {
+  background: #ffffff;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 10px;
+  padding: 6px 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 14px;
+  font-weight: 700;
+  transition: all 0.2s;
+}
+
+.equation-part:hover {
+  border-color: #f59e0b;
+  transform: translateY(-2px);
+}
+
+.equation-part.part-result {
+  background: linear-gradient(135deg, #fef3c7 0%, #fed7aa 100%);
+  border-color: #f59e0b;
+  color: #78350f;
+  font-weight: 800;
+}
+
+.math-operator {
+  font-size: 16px;
+  color: #94a3b8;
+  font-weight: 900;
+}
+
+.compound-body {
+  display: flex;
+  gap: 12px;
+  margin-top: auto;
+}
+
+.compound-photo-wrap {
+  width: 90px;
+  height: 90px;
+  flex-shrink: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1.5px solid #e2e8f0;
+}
+
+.compound-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.compound-desc {
+  flex: 1;
+  font-size: 12.5px;
+  line-height: 1.5;
+}
+
+.explanation-text {
+  color: #334155;
+  margin: 0 0 6px;
+}
+
+.example-text {
+  color: #64748b;
+  background: #f1f5f9;
+  padding: 4px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin: 0;
+}
+
+.example-text:hover {
+  background: #e2e8f0;
+}
+
+/* 复合词连连看挑战 */
+.compound-match-game {
+  background: #f8fafc;
+  border: 2px solid #e2e8f0;
+  border-radius: 20px;
+  padding: 20px;
+}
+
+.game-title {
+  font-size: 16px;
+  font-weight: 800;
+  color: #1e293b;
+  margin: 0 0 16px;
+}
+
+.game-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.col-heading {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #64748b;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.words-stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.word-bubble {
+  background: #ffffff;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #334155;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.word-bubble:hover {
+  border-color: #3b82f6;
+  background: #eff6ff;
+}
+
+.word-bubble.selected {
+  background: #3b82f6;
+  border-color: #2563eb;
+  color: #ffffff;
+  box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3);
+}
+
+.matched-tray {
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1.5px dashed #cbd5e1;
+}
+
+.matched-title {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #15803d;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.matched-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.matched-chip {
+  background: #dcfce7;
+  color: #166534;
+  border: 1.5px solid #86efac;
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* ================= 任务 3：作业纸背面行李清单写作 ================= */
+.writing-prompt-banner {
+  background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+  border: 2px solid #bfdbfe;
+  border-radius: 18px;
+  padding: 18px 22px;
+  margin-bottom: 20px;
+}
+
+.writing-prompt-content h3 {
+  font-size: 17px;
+  color: #1e3a8a;
+  margin: 0 0 8px;
+  line-height: 1.4;
+}
+
+.writing-cn-prompt {
+  font-size: 13.5px;
+  color: #1d4ed8;
+  margin: 0;
+}
+
+.writing-sections-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.writing-categories-column .column-title {
+  font-size: 15px;
+  font-weight: 800;
+  color: #334155;
+  margin: 0 0 12px;
+}
+
+.category-group-card {
+  background: #ffffff;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 12px 14px;
+  margin-bottom: 12px;
+}
+
+.category-header {
+  font-size: 13.5px;
+  color: #475569;
+  margin-bottom: 8px;
+}
+
+.checklist-item-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.checklist-item-row:hover {
+  background: #f8fafc;
+}
+
+.checklist-item-row.checked {
+  background: #f0fdf4;
+}
+
+.checklist-checkbox {
+  width: 17px;
+  height: 17px;
+  accent-color: #10b981;
+  cursor: pointer;
+}
+
+.item-text-wrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.item-en-name {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.item-cn-name {
+  font-size: 11px;
+  color: #64748b;
+}
+
+.item-tip-badge {
+  font-size: 11px;
+  color: #94a3b8;
+}
+
+.listen-item-btn {
+  background: none;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 2px;
+}
+
+.custom-item-form {
+  background: #f8fafc;
+  border: 1px dashed #cbd5e1;
+  border-radius: 12px;
+  padding: 10px 12px;
+  margin-top: 10px;
+}
+
+.form-label {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #475569;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.input-group {
+  display: flex;
+  gap: 8px;
+}
+
+.custom-input {
+  flex: 1;
+  padding: 6px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 13px;
+}
+
+.add-btn {
+  background: #3b82f6;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* 英语作业纸背面示范卡片 */
+.writing-handwriting-preview {
+  background: #ffffff;
+  border: 2px solid #fed7aa;
+  border-radius: 18px;
+  padding: 18px;
+  box-shadow: 0 4px 16px rgba(249, 115, 22, 0.08);
+  display: flex;
+  flex-direction: column;
+}
+
+.preview-top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.preview-title {
+  font-size: 15px;
+  font-weight: 800;
+  color: #9a3412;
+  margin: 0;
+}
+
+.preview-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.action-btn {
+  background: #fff7ed;
+  border: 1px solid #fdba74;
+  color: #c2410c;
+  padding: 5px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.notebook-paper-container {
+  background: #fffef9;
+  border: 1.5px solid #e2e8f0;
+  border-left: 5px solid #f87171;
+  border-radius: 12px;
+  padding: 18px 16px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.02);
+}
+
+.notebook-header-line {
+  border-bottom: 2px solid #60a5fa;
+  padding-bottom: 8px;
+  margin-bottom: 14px;
+  text-align: center;
+}
+
+.paper-title {
+  font-family: 'Segoe UI', cursive, sans-serif;
+  font-size: 17px;
+  font-weight: 800;
+  color: #1e3a8a;
+  text-decoration: underline;
+}
+
+.notebook-lines-content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1;
+}
+
+.notebook-line-row {
+  border-bottom: 1.5px solid #93c5fd;
+  padding-bottom: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.notebook-line-row:hover {
+  background: #f0fdf4;
+}
+
+.line-text {
+  font-family: 'Georgia', serif;
+  font-size: 15.5px;
+  color: #1e293b;
+  letter-spacing: 0.2px;
+}
+
+.line-sound-icon {
+  font-size: 13px;
+  color: #94a3b8;
+}
+
+.notebook-line-row.custom-line .line-text {
+  color: #2563eb;
+  font-style: italic;
+}
+
+.notebook-handwriting-tip {
+  margin-top: 16px;
+  font-size: 11.5px;
+  color: #94a3b8;
+  line-height: 1.4;
+  border-top: 1px dashed #e2e8f0;
+  padding-top: 8px;
+}
+
+/* ================= 任务 4：原文故事精读 ================= */
+.story-control-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.story-title-info h3 {
+  font-size: 22px;
+  font-weight: 800;
+  color: #1e293b;
+  margin: 0 0 4px;
+}
+
+.story-subtitle {
+  font-size: 13.5px;
+  color: #64748b;
+}
+
+.full-story-audio-btn {
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 12px;
+  padding: 10px 18px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25);
+}
+
+.full-story-audio-btn.reading {
+  background: #ef4444;
+}
+
+.story-sentences-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.story-sent-card {
+  background: #ffffff;
+  border: 2px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 16px 18px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+  transition: all 0.25s;
+}
+
+.story-sent-card.active-sentence {
+  border-color: #f59e0b;
+  background: #fffbeb;
+  box-shadow: 0 6px 18px rgba(245, 158, 11, 0.2);
+}
+
+.sent-card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.sentence-num-badge {
+  background: #f1f5f9;
+  color: #475569;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: 8px;
+}
+
+.sentence-compound-tag {
+  background: #ede9fe;
+  color: #6d28d9;
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 8px;
+}
+
+.sent-play-btn {
+  margin-left: auto;
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 4px 10px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.sent-en-text {
+  font-size: 17px;
+  font-weight: 600;
+  color: #0f172a;
+  line-height: 1.5;
+  margin-bottom: 6px;
+}
+
+.sent-cn-text {
+  font-size: 14px;
+  color: #475569;
+  line-height: 1.4;
+  margin-bottom: 6px;
+}
+
+.sent-tip-box {
+  background: #f8fafc;
+  border-left: 3px solid #f59e0b;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  color: #78350f;
+}
+
+/* ================= 任务 5：核心实景图卡 ================= */
+.cards-header-bar {
+  margin-bottom: 18px;
+}
+
+.cards-header-bar h3 {
+  font-size: 20px;
+  font-weight: 800;
+  color: #1e293b;
+  margin: 0 0 4px;
+}
+
+.cards-header-bar p {
+  font-size: 13.5px;
+  color: #64748b;
+  margin: 0;
+}
+
+.grammys-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.grammys-flashcard {
+  background: #ffffff;
+  border: 2px solid #e2e8f0;
+  border-radius: 18px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.25s;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.grammys-flashcard:hover {
+  transform: translateY(-4px);
+  border-color: #f59e0b;
+  box-shadow: 0 10px 20px rgba(245, 158, 11, 0.15);
+}
+
+.card-photo-wrapper {
+  position: relative;
+  height: 140px;
+  overflow: hidden;
+}
+
+.card-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card-emoji-badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 18px;
+}
+
+.card-details {
+  padding: 12px 14px;
+}
+
+.card-word-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2px;
+}
+
+.card-word {
+  font-size: 17px;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.card-sound-icon {
+  font-size: 14px;
+  color: #f59e0b;
+}
+
+.card-phonetic {
+  font-size: 12px;
+  color: #64748b;
+  margin-bottom: 4px;
+}
+
+.card-trans {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #b45309;
+  margin-bottom: 6px;
+}
+
+.card-sentence {
+  font-size: 12px;
+  color: #334155;
+  background: #f8fafc;
+  padding: 4px 6px;
+  border-radius: 6px;
+  margin-bottom: 2px;
+  line-height: 1.35;
+}
+
+.card-sentence-cn {
+  font-size: 11px;
+  color: #94a3b8;
+}
+
+/* ================= 任务 6：趣味数学复习 ================= */
+.maths-intro-card {
+  background: #ecfdf5;
+  border: 1.5px solid #a7f3d0;
+  border-radius: 16px;
+  padding: 14px 18px;
+  margin-bottom: 20px;
+}
+
+.maths-topic-badge {
+  display: inline-block;
+  font-size: 15px;
+  font-weight: 800;
+  color: #065f46;
+  margin-bottom: 6px;
+}
+
+.maths-note-text {
+  font-size: 13.5px;
+  color: #047857;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.odd-even-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.odd-even-quiz-card {
+  background: #ffffff;
+  border: 2px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 14px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+}
+
+.card-num-circle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.num-val {
+  background: #f59e0b;
+  color: #ffffff;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.num-icon {
+  font-size: 24px;
+}
+
+.card-desc-text {
+  font-size: 12.5px;
+  color: #475569;
+  line-height: 1.4;
+  margin-bottom: 10px;
+}
+
+.quiz-choice-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.quiz-btn {
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  padding: 6px;
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.quiz-btn.btn-correct {
+  background: #dcfce7;
+  border-color: #22c55e;
+  color: #15803d;
+}
+
+.quiz-btn.btn-wrong {
+  background: #fee2e2;
+  border-color: #ef4444;
+  color: #b91c1c;
+}
+
+.answer-feedback-text {
+  font-size: 11.5px;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+
+.answer-feedback-text.feedback-good {
+  background: #ecfdf5;
+  color: #065f46;
+}
+
+.answer-feedback-text.feedback-try {
+  background: #fef2f2;
+  color: #991b1b;
+}
+
+/* ================= 任务 7：规范字母笔画 ================= */
+.strokes-header-bar {
+  margin-bottom: 18px;
+}
+
+.strokes-header-bar h3 {
+  font-size: 20px;
+  font-weight: 800;
+  color: #1e293b;
+  margin: 0 0 4px;
+}
+
+.strokes-header-bar p {
+  font-size: 13.5px;
+  color: #64748b;
+  margin: 0;
+}
+
+.letter-selector-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+
+.letter-choice-btn {
+  background: #ffffff;
+  border: 2px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 8px 18px;
+  font-size: 18px;
+  font-weight: 800;
+  color: #334155;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.letter-choice-btn.active {
+  background: #f59e0b;
+  border-color: #d97706;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+}
+
+.stroke-detail-card {
+  background: #ffffff;
+  border: 2px solid #fed7aa;
+  border-radius: 18px;
+  padding: 20px;
+  box-shadow: 0 4px 14px rgba(249, 115, 22, 0.08);
+}
+
+.stroke-card-header {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  border-bottom: 1.5px solid #fed7aa;
+  padding-bottom: 14px;
+  margin-bottom: 16px;
+}
+
+.big-letters-display {
+  display: flex;
+  gap: 10px;
+  font-family: 'Courier New', monospace;
+  font-size: 48px;
+  font-weight: 900;
+  color: #9a3412;
+  background: #fff7ed;
+  padding: 8px 20px;
+  border-radius: 16px;
+  border: 2px dashed #fdba74;
+}
+
+.letter-meta-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.letter-sound-tag {
+  font-size: 15px;
+  color: #c2410c;
+  cursor: pointer;
+}
+
+.letter-tip-tag {
+  font-size: 13px;
+  color: #78350f;
+}
+
+.stroke-rules-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.stroke-box {
+  background: #f8fafc;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 14px;
+}
+
+.stroke-box h5 {
+  font-size: 14px;
+  font-weight: 800;
+  color: #1e293b;
+  margin: 0 0 8px;
+}
+
+.stroke-steps {
+  font-size: 13.5px;
+  color: #475569;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* 响应式断点 */
+@media (max-width: 768px) {
+  .grammys-hero-banner {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .grammys-hero-photo-wrap {
+    width: 100%;
+  }
+
+  .open-suitcase-showcase {
+    grid-template-columns: 1fr;
+  }
+
+  .compounds-formula-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .writing-sections-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .game-columns {
+    grid-template-columns: 1fr;
+  }
+
+  .stroke-rules-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
