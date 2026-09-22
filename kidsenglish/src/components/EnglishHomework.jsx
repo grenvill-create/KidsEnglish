@@ -2878,7 +2878,29 @@ function GrammysHomeworkView({ data, isCompleted, onCompleteTask }) {
             </button>
           </div>
 
+          {/* 全文一览卡片 */}
+          <div className="full-story-text-card">
+            <div className="full-story-header">
+              <span className="story-badge">Scholastic Reading for details 原文全文</span>
+              <button
+                className="listen-full-btn"
+                onClick={() => { playPop(); speakEnglish(story.paragraphEn); }}
+              >
+                🔊 连贯朗读整段
+              </button>
+            </div>
+            <div className="full-story-en-text">
+              <InteractiveSentence text={story.paragraphEn} onWordClick={handleWordClick} />
+            </div>
+            <div className="full-story-cn-text">
+              {story.paragraphCn}
+            </div>
+          </div>
+
           <div className="story-sentences-list">
+            <h4 style={{ margin: '16px 0 10px', color: '#1e293b', fontWeight: 800 }}>
+              📝 逐句精读与复合词跟读 (共 {(story.sentences || []).length} 句)：
+            </h4>
             {(story.sentences || []).map((sent, idx) => {
               const isCurrentReading = activeStorySentIdx === idx
               return (
@@ -2904,8 +2926,7 @@ function GrammysHomeworkView({ data, isCompleted, onCompleteTask }) {
                   {/* 英文句子，单词支持点词查词典 */}
                   <div className="sent-en-text">
                     <InteractiveSentence
-                      sentence={sent.en}
-                      highlightWords={sent.highlightWords || []}
+                      text={sent.en}
                       onWordClick={handleWordClick}
                     />
                   </div>
