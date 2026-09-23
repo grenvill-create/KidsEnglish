@@ -2391,15 +2391,6 @@ function GrammysHomeworkView({ data, isCompleted, onCompleteTask }) {
           <p className="grammys-hero-desc">
             外婆家过夜大冒险：找出故事中的 <strong>8 个神奇复合词</strong>，给凯莉的手提箱<strong>打包涂色</strong>，并在纸张背面写好<strong>过夜行李清单</strong>！
           </p>
-          <div className="grammys-action-links" style={{ marginTop: '12px' }}>
-            <a
-              href="./Going_to_Grammys_Homework.docx"
-              download="Going_to_Grammys_20260922.docx"
-              className="download-word-link-btn"
-            >
-              📥 下载 Word 版今日作业学习手册 (.docx)
-            </a>
-          </div>
         </div>
         <div className="grammys-hero-photo-wrap">
           <img src={story.coverImage} alt="Going to Grammys" className="grammys-hero-photo" />
@@ -2879,21 +2870,12 @@ function GrammysHomeworkView({ data, isCompleted, onCompleteTask }) {
               <h3>{story.title} 📖</h3>
               <span className="story-subtitle">{story.titleCn}</span>
             </div>
-            <div className="story-control-actions" style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-              <a
-                href="./Going_to_Grammys_Homework.docx"
-                download="Going_to_Grammys_20260922.docx"
-                className="story-download-word-btn"
-              >
-                📥 下载 Word 原文
-              </a>
-              <button
-                className={`full-story-audio-btn ${isReadingWholeStory ? 'reading' : ''}`}
-                onClick={handleReadFullStory}
-              >
-                {isReadingWholeStory ? '⏹️ 停止朗读' : '🔊 全文连贯朗读'}
-              </button>
-            </div>
+            <button
+              className={`full-story-audio-btn ${isReadingWholeStory ? 'reading' : ''}`}
+              onClick={handleReadFullStory}
+            >
+              {isReadingWholeStory ? '⏹️ 停止朗读' : '🔊 全文连贯朗读'}
+            </button>
           </div>
 
           {/* 全文一览卡片 */}
