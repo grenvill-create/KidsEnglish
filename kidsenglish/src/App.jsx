@@ -57,7 +57,14 @@ function sanitizeHomeworkList(list) {
     'pajamas': REAL_IMAGES.openSuitcase,
     'pillow': REAL_IMAGES.storyPillow,
     'shirt': REAL_IMAGES.openSuitcase,
-    'shorts': REAL_IMAGES.openSuitcase
+    'shorts': REAL_IMAGES.openSuitcase,
+    'phone': REAL_IMAGES.phoneRinging,
+    'coach': REAL_IMAGES.dadCoach,
+    'hamster': REAL_IMAGES.cuteHamster,
+    'bus': REAL_IMAGES.schoolBus,
+    'teacher': REAL_IMAGES.teacherHome,
+    'visit': REAL_IMAGES.twoBoysVisit,
+    'snakes': REAL_IMAGES.snakesCover
   }
 
   const REAL_SENTENCE_MAP = {

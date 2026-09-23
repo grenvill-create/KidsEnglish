@@ -34,6 +34,14 @@ import realBrushPasteImg from '../assets/real_brush_paste.jpg'
 import realSwimSunglassImg from '../assets/real_swim_sunglass.jpg'
 import realStoryPillowImg from '../assets/real_story_pillow.jpg'
 
+import realSnakesCoverImg from '../assets/real_snakes_cover.jpg'
+import realPhoneRingingImg from '../assets/real_phone_ringing.jpg'
+import realDadCoachImg from '../assets/real_dad_coach.jpg'
+import realCuteHamsterImg from '../assets/real_cute_hamster.jpg'
+import realSchoolBusImg from '../assets/real_school_bus.jpg'
+import realTeacherHomeImg from '../assets/real_teacher_home.jpg'
+import realTwoBoysVisitImg from '../assets/real_two_boys_visit.jpg'
+
 export const REAL_IMAGES = {
   tadpole: realTadpoleImg,
   frog: realFrogImg,
@@ -64,7 +72,14 @@ export const REAL_IMAGES = {
   openSuitcase: realOpenSuitcaseImg,
   brushPaste: realBrushPasteImg,
   swimSunglass: realSwimSunglassImg,
-  storyPillow: realStoryPillowImg
+  storyPillow: realStoryPillowImg,
+  snakesCover: realSnakesCoverImg,
+  phoneRinging: realPhoneRingingImg,
+  dadCoach: realDadCoachImg,
+  cuteHamster: realCuteHamsterImg,
+  schoolBus: realSchoolBusImg,
+  teacherHome: realTeacherHomeImg,
+  twoBoysVisit: realTwoBoysVisitImg
 }
 
 export const CUTE_FROG_IMAGE = cuteFrogImg
@@ -72,6 +87,318 @@ export const COUNTING_SHEEP_COVER = countingSheepCover
 export const SWEET_SENTENCES_COVER = sweetSentencesCover
 export const TINY_TOWN_COVER = tinyTownCoverImg
 export const GRAMMYS_COVER = realGrammysCoverImg
+export const SNAKES_ALIVE_COVER = realSnakesCoverImg
+
+// 星期三今日最新作业：Snakes Alive! 🐍 (句子构成：命名部分与动作部分，改写主语创新句)
+export const HOMEWORK_SNAKES_ALIVE = {
+  id: 'homework-snakes-alive',
+  date: '2026年9月23日 星期三',
+  childName: '',
+  theme: 'snakes-alive',
+
+  // 1. 英语作业：Snakes Alive! Parts of a sentence: Naming part
+  english: {
+    theme: 'snakes-alive',
+    title: 'Snakes Alive! Parts of a sentence 🐍',
+    topic: 'Naming Part vs Action Part (主语命名部分与动词动作部分)',
+    teacherNote: 'SEPTEMBER 23rd WEDNESDAY: * Checked homework & Reading - Made provisions and corrections. * Reviewed Compound Words * Reviewed the compound words in the homework. * WRITING: Practiced uppercase and lowercase letters of the alphabet. Correct writing strokes and follow practice lines. * Oxford Reading Tree HOMEWORK: SNAKES ALIVE! ON another piece of paper, write one of the sentences using a different naming part.',
+    instruction: '仔细观察每一对贪吃蛇组成的完整句子，找出告诉我们句子关于“谁 (Who)”或“什么 (What)”的【命名部分 (Naming Part)】并为小蛇涂上颜色！在另一张纸上，挑选一句换上全新的主语写出漂亮新句子！',
+
+    // 核心语法规则定义卡片
+    rule: {
+      title: 'Parts of a sentence: Naming part',
+      definition: 'A sentence has a naming part. It tells who or what the sentence is about.',
+      definitionCn: '一个完整的句子都有一个【命名部分】（即主语）。它告诉我们这个句子是在讲“谁 (Who)”或者“什么东西 (What)”！',
+      actionPartDefinition: '与之对应的是【动作部分】（Action part / 谓语），它告诉我们主语在做什么动作、发生了什么事。',
+      formula: '【Naming part (Who / What)】 ➕ 【Action part (Did What / Is What)】 🟰 完整句子'
+    },
+
+    // 6 对小蛇句子与互动涂色识别
+    snakePairs: [
+      {
+        id: 'sp-1',
+        num: 1,
+        fullSentence: 'The phone is ringing.',
+        fullSentenceCn: '电话正在响铃。',
+        image: realPhoneRingingImg,
+        leftSnake: {
+          text: 'The phone',
+          role: 'Naming part',
+          isNaming: true,
+          type: 'What (物品)',
+          cn: '电话 / 手机'
+        },
+        rightSnake: {
+          text: 'is ringing.',
+          role: 'Action part',
+          isNaming: false,
+          type: 'Action (动作/状态)',
+          cn: '正在响铃'
+        },
+        explanation: '这句讲的是什么东西 (What) 在发出声音？是 "The phone"！所以左边写着 "The phone" 的小蛇是 Naming part！',
+        differentNamingOptions: [
+          { revised: 'The doorbell is ringing.', change: 'The phone ➔ The doorbell (门铃响了)', tip: '换成门铃' },
+          { revised: 'My alarm clock is ringing.', change: 'The phone ➔ My alarm clock (我的闹钟在响)', tip: '换成早晨闹钟' },
+          { revised: "Mom's phone is ringing.", change: "The phone ➔ Mom's phone (妈妈的手机响了)", tip: '换成妈妈的手机' }
+        ]
+      },
+      {
+        id: 'sp-2',
+        num: 2,
+        fullSentence: 'My dad is the coach.',
+        fullSentenceCn: '我爸爸是球队教练。',
+        image: realDadCoachImg,
+        leftSnake: {
+          text: 'My dad',
+          role: 'Naming part',
+          isNaming: true,
+          type: 'Who (人物)',
+          cn: '我爸爸'
+        },
+        rightSnake: {
+          text: 'is the coach.',
+          role: 'Action part',
+          isNaming: false,
+          type: 'Action / State (身份状态)',
+          cn: '是球队教练'
+        },
+        explanation: '这句讲的是谁 (Who)？是 "My dad"！所以左边写着 "My dad" 的小蛇是 Naming part！',
+        differentNamingOptions: [
+          { revised: 'My uncle is the coach.', change: 'My dad ➔ My uncle (我叔叔是教练)', tip: '换成家庭其他长辈' },
+          { revised: 'Mr. Green is the coach.', change: 'My dad ➔ Mr. Green (格林先生是教练)', tip: '换成体育老师/专职教练' },
+          { revised: 'Mom is the coach.', change: 'My dad ➔ Mom (妈妈是教练)', tip: '换成全能好妈妈' }
+        ]
+      },
+      {
+        id: 'sp-3',
+        num: 3,
+        fullSentence: "Jon's hamster ran away.",
+        fullSentenceCn: '乔恩的仓鼠跑走了。',
+        image: realCuteHamsterImg,
+        leftSnake: {
+          text: "Jon's hamster",
+          role: 'Naming part',
+          isNaming: true,
+          type: 'Who / Animal (小动物主语)',
+          cn: '乔恩的小仓鼠'
+        },
+        rightSnake: {
+          text: 'ran away.',
+          role: 'Action part',
+          isNaming: false,
+          type: 'Action (动作)',
+          cn: '溜跑了'
+        },
+        explanation: '是谁 (Who/Animal) 跑掉了？是 "Jon\'s hamster"！左边小蛇是句子的主角 Naming part！',
+        differentNamingOptions: [
+          { revised: 'The little puppy ran away.', change: "Jon's hamster ➔ The little puppy (小狗跑远了)", tip: '换成活泼的小狗' },
+          { revised: 'My pet rabbit ran away.', change: "Jon's hamster ➔ My pet rabbit (我的宠物兔子跑跑了)", tip: '换成小兔子' },
+          { revised: 'A naughty squirrel ran away.', change: "Jon's hamster ➔ A naughty squirrel (淘气的小松鼠溜了)", tip: '换成小松鼠' }
+        ]
+      },
+      {
+        id: 'sp-4',
+        num: 4,
+        fullSentence: 'Our bus was late.',
+        fullSentenceCn: '我们的校车晚点了。',
+        image: realSchoolBusImg,
+        leftSnake: {
+          text: 'Our bus',
+          role: 'Naming part',
+          isNaming: true,
+          type: 'What (交通工具)',
+          cn: '我们的校车/大巴'
+        },
+        rightSnake: {
+          text: 'was late.',
+          role: 'Action part',
+          isNaming: false,
+          type: 'State (状态)',
+          cn: '迟到了 / 晚点了'
+        },
+        explanation: '什么东西 (What) 迟到了？是 "Our bus"！左边小蛇就是该涂色的 Naming part！',
+        differentNamingOptions: [
+          { revised: 'The morning train was late.', change: 'Our bus ➔ The morning train (早班火车晚点了)', tip: '换成早班火车' },
+          { revised: 'The yellow taxi was late.', change: 'Our bus ➔ The yellow taxi (黄色出租车来晚了)', tip: '换成出租车' },
+          { revised: 'The school flight was late.', change: 'Our bus ➔ The airplane (飞机延误了)', tip: '换成飞机' }
+        ]
+      },
+      {
+        id: 'sp-5',
+        num: 5,
+        fullSentence: 'The teacher left his home.',
+        fullSentenceCn: '老师离开了他的家。',
+        image: realTeacherHomeImg,
+        leftSnake: {
+          text: 'The teacher',
+          role: 'Naming part',
+          isNaming: true,
+          type: 'Who (职业人物)',
+          cn: '老师'
+        },
+        rightSnake: {
+          text: 'left his home.',
+          role: 'Action part',
+          isNaming: false,
+          type: 'Action (动作)',
+          cn: '离开了他的家'
+        },
+        explanation: '是谁 (Who) 出门离开了家？是 "The teacher"！所以左边的小蛇是 Naming part！',
+        differentNamingOptions: [
+          { revised: 'The kind doctor left his home.', change: 'The teacher ➔ The kind doctor (善良的医生离开家)', tip: '换成医生' },
+          { revised: 'My grandpa left his home.', change: 'The teacher ➔ My grandpa (爷爷出门散步)', tip: '换成爷爷' },
+          { revised: 'The brave firefighter left his home.', change: 'The teacher ➔ The brave firefighter (消防员出发)', tip: '换成勇敢消防员' }
+        ]
+      },
+      {
+        id: 'sp-6',
+        num: 6,
+        fullSentence: 'Greg and Pete visit us.',
+        fullSentenceCn: '格雷格和皮特来拜访我们。',
+        image: realTwoBoysVisitImg,
+        leftSnake: {
+          text: 'Greg and Pete',
+          role: 'Naming part',
+          isNaming: true,
+          type: 'Who (复数并列人物)',
+          cn: '格雷格和皮特'
+        },
+        rightSnake: {
+          text: 'visit us.',
+          role: 'Action part',
+          isNaming: false,
+          type: 'Action (动作)',
+          cn: '来拜访看望我们'
+        },
+        explanation: '是谁 (Who) 来探望我们？是两个人 "Greg and Pete"！复数主语同样是 Naming part！',
+        differentNamingOptions: [
+          { revised: 'My cousins visit us.', change: 'Greg and Pete ➔ My cousins (堂兄妹来访)', tip: '换成亲戚表兄妹' },
+          { revised: 'Uncle Tom and Aunt Mary visit us.', change: 'Greg and Pete ➔ Uncle Tom and Aunt Mary', tip: '换成叔叔阿姨' },
+          { revised: 'Lily and Lucy visit us.', change: 'Greg and Pete ➔ Lily and Lucy (莉莉和露西来玩)', tip: '换成两个女孩好朋友' }
+        ]
+      }
+    ],
+
+    // 灯泡挑战：在另一张纸上替换 Naming Part 创造新句子
+    lightbulbTask: {
+      title: 'Lightbulb Challenge 💡: Write with a Different Naming Part',
+      promptEn: 'On another piece of paper, write one of the sentences using a different naming part.',
+      promptCn: '在另一张纸上，从上面 6 句话中任选一句，替换掉原来的命名部分（主语），造出一个全新的句子！',
+      instructions: [
+        '第一步：选择你想改写的原句（例如："The phone is ringing."）',
+        '第二步：保留后半截动作部分（"is ringing."）不动',
+        '第三步：发挥想象力，给它换一个新的主角！（例如："The doorbell is ringing." 或 "My alarm clock is ringing."）',
+        '第四步：在四线三格作业纸上工整抄写，首字母大写，末尾加句号！'
+      ],
+      sampleCards: [
+        {
+          original: '1. The phone is ringing.',
+          newSentence: 'The doorbell is ringing.',
+          namingChange: 'The phone ➔ The doorbell (门铃)',
+          tip: '门铃也在叮咚响'
+        },
+        {
+          original: '2. My dad is the coach.',
+          newSentence: 'My uncle is the coach.',
+          namingChange: 'My dad ➔ My uncle (我叔叔)',
+          tip: '叔叔当球队教练'
+        },
+        {
+          original: "3. Jon's hamster ran away.",
+          newSentence: 'The little puppy ran away.',
+          namingChange: "Jon's hamster ➔ The little puppy (小狗)",
+          tip: '换成可爱小狗'
+        },
+        {
+          original: '4. Our bus was late.',
+          newSentence: 'The yellow train was late.',
+          namingChange: 'Our bus ➔ The yellow train (黄色火车)',
+          tip: '火车今天晚点了'
+        },
+        {
+          original: '5. The teacher left his home.',
+          newSentence: 'The friendly doctor left his home.',
+          namingChange: 'The teacher ➔ The friendly doctor (友好的医生)',
+          tip: '医生清晨出发去医院'
+        },
+        {
+          original: '6. Greg and Pete visit us.',
+          newSentence: 'My lovely cousins visit us.',
+          namingChange: 'Greg and Pete ➔ My lovely cousins (我的可爱表亲)',
+          tip: '亲朋好友来做客'
+        }
+      ]
+    },
+
+    // 老师课堂复习：复合词大温故 (Reviewed Compound Words)
+    compoundReview: {
+      title: '课堂复习巩固：昨天学过的 8 个神奇复合词 (Reviewed Compound Words) 🧩',
+      note: '老师课堂带领大家深入复习了复合词（两个小词合并成一个大词），快来看看你都记住了吗：',
+      words: [
+        { word: 'grandmother', formula: 'grand + mother', cn: '外婆 / 奶奶' },
+        { word: 'suitcase', formula: 'suit + case', cn: '旅行手提箱' },
+        { word: 'toothbrush', formula: 'tooth + brush', cn: '牙刷' },
+        { word: 'toothpaste', formula: 'tooth + paste', cn: '牙膏' },
+        { word: 'hairbrush', formula: 'hair + brush', cn: '发刷/梳子' },
+        { word: 'swimsuit', formula: 'swim + suit', cn: '泳衣' },
+        { word: 'storybooks', formula: 'story + books', cn: '故事书' },
+        { word: 'sunglasses', formula: 'sun + glasses', cn: '太阳镜' }
+      ]
+    },
+
+    // 核心词汇实景闪卡
+    words: [
+      { id: 'w-sn-1', word: 'phone', phonetic: '/foʊn/', translation: '电话 / 手机', emoji: '📱', image: realPhoneRingingImg, sentence: 'The phone is ringing.', sentenceCn: '电话正在响铃。' },
+      { id: 'w-sn-2', word: 'coach', phonetic: '/koʊtʃ/', translation: '教练', emoji: '⚽', image: realDadCoachImg, sentence: 'My dad is the coach.', sentenceCn: '我爸爸是球队教练。' },
+      { id: 'w-sn-3', word: 'hamster', phonetic: '/ˈhæmstər/', translation: '仓鼠', emoji: '🐹', image: realCuteHamsterImg, sentence: "Jon's hamster ran away.", sentenceCn: '乔恩的小仓鼠跑掉了。' },
+      { id: 'w-sn-4', word: 'bus', phonetic: '/bʌs/', translation: '校车 / 公交车', emoji: '🚌', image: realSchoolBusImg, sentence: 'Our bus was late.', sentenceCn: '我们的校车晚点了。' },
+      { id: 'w-sn-5', word: 'teacher', phonetic: '/ˈtiːtʃər/', translation: '老师', emoji: '👨‍🏫', image: realTeacherHomeImg, sentence: 'The teacher left his home.', sentenceCn: '老师离开了家。' },
+      { id: 'w-sn-6', word: 'visit', phonetic: '/ˈvɪzɪt/', translation: '拜访 / 做客', emoji: '👋', image: realTwoBoysVisitImg, sentence: 'Greg and Pete visit us.', sentenceCn: '格雷格和皮特来拜访我们。' }
+    ],
+
+    // 字母规范笔画书写 (WRITING: Practiced uppercase and lowercase letters of the alphabet)
+    alphabetStrokes: [
+      { letter: 'S', lower: 's', strokeUpper: '1. 从右上向左逆时针弯，中途向右折，再向左回弯成S形', strokeLower: '1. 在中格写同样圆润的小 s', sound: '/es/', tip: 'Snakes 的首字母 S' },
+      { letter: 'N', lower: 'n', strokeUpper: '1. 从上到下拉一长竖  2. 斜向右下到底  3. 直直向上拉起竖', strokeLower: '1. 中格拉短竖  2. 拱门弯右边落地', sound: '/en/', tip: 'Naming 的首字母 N' },
+      { letter: 'P', lower: 'p', strokeUpper: '1. 左竖直下  2. 在上半部向右画半圆封口', strokeLower: '1. 直直穿入下格的长竖  2. 在中格画右半圆封口', sound: '/piː/', tip: 'Phone & Pete 的首字母 P' },
+      { letter: 'D', lower: 'd', strokeUpper: '1. 左竖直下落地  2. 从顶向右画一个大半圆封到底', strokeLower: '1. 中格先画左半圆 c  2. 从上格顶端直直拉长竖贴住圆落地', sound: '/diː/', tip: 'Dad 的首字母 D' },
+      { letter: 'H', lower: 'h', strokeUpper: '1. 左竖直下  2. 右竖直下  3. 中间横平连结', strokeLower: '1. 从上格顶端直直拉下一长竖  2. 右边画一个拱门弯落地', sound: '/eɪtʃ/', tip: 'Hamster 的首字母 H' }
+    ]
+  },
+
+  // 2. 拼音作业：声母与整体认读音节复习
+  pinyin: {
+    teacherNote: '练习声母 zh, ch, sh, r 与韵母拼读，掌握两拼音节与三拼音节的顺畅认读！',
+    letters: [
+      { id: 'p-zh', char: 'zh', type: '声母', mnemonic: '织毛衣 zh zh zh，妈妈织毛衣', soundTip: '舌尖翘起，抵住硬腭前部' },
+      { id: 'p-ch', char: 'ch', type: '声母', mnemonic: '吃苹果 ch ch ch，大口吃西瓜', soundTip: '发音部位同 zh，但气流较强' },
+      { id: 'p-sh', char: 'sh', type: '声母', mnemonic: '一棵小树 sh sh sh，狮子大张嘴', soundTip: '舌尖翘起接近硬腭，形成摩擦' },
+      { id: 'p-r', char: 'r', type: '声母', mnemonic: '一轮红日 r r r，小苗出土', soundTip: '发音同 sh，但声带颤动' }
+    ],
+    blends: [
+      { id: 'bl-sh-e', initial: 'sh', final: 'é', result: 'shé', word: '小青蛇 🐍', example: 'Snakes Alive 小蛇' },
+      { id: 'bl-zh-u', initial: 'zh', final: 'ǔ', result: 'zhǔ', word: '主语（命名部分） 🏷️', example: '句子主角主语' },
+      { id: 'bl-ch-e', initial: 'ch', final: 'ē', result: 'chē', word: '校车 🚌', example: '黄色小校车' },
+      { id: 'bl-r-en', initial: 'r', final: 'én', result: 'rén', word: '人物 (Who) 👨', example: '讲的是哪个人物' }
+    ]
+  },
+
+  // 3. 伴读绘本：牛津阅读树与节奏儿歌《神奇小蛇》
+  reading: {
+    title: '英语绘本韵律儿歌《小蛇找朋友》',
+    author: '牛津双语阅读绘本',
+    teacherNote: 'Oxford Reading Tree: 跟着小蛇游动节拍朗读，感知主语和动作在句子中的奇妙组合！',
+    image: realSnakesCoverImg,
+    lines: [
+      [{ char: '绿', pinyin: 'lǜ' }, { char: '绿', pinyin: 'lǜ' }, { char: '小', pinyin: 'xiǎo' }, { char: '蛇', pinyin: 'shé' }, { char: '，', pinyin: '' }, { char: '草', pinyin: 'cǎo' }, { char: '里', pinyin: 'lǐ' }, { char: '游', pinyin: 'yóu' }, { char: '。', pinyin: '' }],
+      [{ char: '说', pinyin: 'shuō' }, { char: '出', pinyin: 'chū' }, { char: '名', pinyin: 'míng' }, { char: '字', pinyin: 'zì' }, { char: '，', pinyin: '' }, { char: '立', pinyin: 'lì' }, { char: '大', pinyin: 'dà' }, { char: '功', pinyin: 'gōng' }, { char: '。', pinyin: '' }],
+      [{ char: '电', pinyin: 'diàn' }, { char: '话', pinyin: 'huà' }, { char: '响', pinyin: 'xiǎng' }, { char: '了', pinyin: 'le' }, { char: '，', pinyin: '' }, { char: '仓', pinyin: 'cāng' }, { char: '鼠', pinyin: 'shǔ' }, { char: '跑', pinyin: 'pǎo' }, { char: '。', pinyin: '' }],
+      [{ char: '爸', pinyin: 'bà' }, { char: '爸', pinyin: 'ba' }, { char: '当', pinyin: 'dāng' }, { char: '教', pinyin: 'jiào' }, { char: '练', pinyin: 'liàn' }, { char: '，', pinyin: '' }, { char: '本', pinyin: 'běn' }, { char: '领', pinyin: 'lǐng' }, { char: '高', pinyin: 'gāo' }, { char: '！', pinyin: '' }],
+      [{ char: '主', pinyin: 'zhǔ' }, { char: '语', pinyin: 'yǔ' }, { char: '在', pinyin: 'zài' }, { char: '前', pinyin: 'qián' }, { char: '，', pinyin: '' }, { char: '动', pinyin: 'dòng' }, { char: '作', pinyin: 'zuò' }, { char: '跟', pinyin: 'gēn' }, { char: '。', pinyin: '' }],
+      [{ char: '完', pinyin: 'wán' }, { char: '整', pinyin: 'zhěng' }, { char: '句', pinyin: 'jù' }, { char: '子', pinyin: 'zi' }, { char: '，', pinyin: '' }, { char: '记', pinyin: 'jì' }, { char: '心', pinyin: 'xīn' }, { char: '间', pinyin: 'jiān' }, { char: '！', pinyin: '' }]
+    ]
+  }
+}
 
 // 星期二今日最新作业：Going to Grammy's 🧳 (复合词拆解、行李收拾与过夜清单)
 export const HOMEWORK_GOING_TO_GRAMMYS = {
@@ -1994,11 +2321,12 @@ export const HOMEWORK_2026_09_15 = {
   }
 }
 
-// 今日最新默认作业为星期二：Going to Grammy's 🧳 (复合词拆解、行李收拾与过夜清单)
-export const DEFAULT_HOMEWORK = HOMEWORK_GOING_TO_GRAMMYS
+// 今日最新默认作业为星期三：Snakes Alive! 🐍 (句子组成部分：主语/命名部分与换主语造句大挑战)
+export const DEFAULT_HOMEWORK = HOMEWORK_SNAKES_ALIVE
 
 // 历史作业归档列表库（支持按日期翻阅与周末复习）
 export const DEFAULT_HOMEWORK_LIST = [
+  HOMEWORK_SNAKES_ALIVE,
   HOMEWORK_GOING_TO_GRAMMYS,
   HOMEWORK_TINY_TOWN,
   HOMEWORK_SWEET_SENTENCES,

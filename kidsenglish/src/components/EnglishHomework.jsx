@@ -43,6 +43,11 @@ export function ActionImage({ src, alt, emoji, className = '' }) {
 }
 
 export function EnglishHomework({ data, isCompleted, onCompleteTask }) {
+  // 判断当前作业类型：若为 Snakes Alive 句子主语命名部分与换主语造句作业
+  if (data?.theme === 'snakes-alive' || (data?.snakePairs && data.snakePairs.length > 0)) {
+    return <SnakesAliveHomeworkView data={data} isCompleted={isCompleted} onCompleteTask={onCompleteTask} />
+  }
+
   // 判断当前作业类型：若为 Going to Grammy's 复合词拆解与过夜行李作业
   if (data?.theme === 'going-to-grammys' || (data?.compoundWords && data.compoundWords.length > 0)) {
     return <GrammysHomeworkView data={data} isCompleted={isCompleted} onCompleteTask={onCompleteTask} />
@@ -3167,6 +3172,697 @@ function GrammysHomeworkView({ data, isCompleted, onCompleteTask }) {
           }}
         >
           {isCompleted ? '✅ Going to Grammy’s 作业已通关打卡（再次庆祝）' : '🎉 我会找复合词与打包行李了！打卡领贴纸'}
+        </button>
+      </div>
+
+      {/* 点击单词弹出发音、音标与释义卡片 */}
+      {selectedWordData && (
+        <WordDetailModal
+          wordData={selectedWordData}
+          onClose={() => setSelectedWordData(null)}
+        />
+      )}
+    </div>
+  )
+}
+
+/**
+ * 星期三今日最新作业组件：Snakes Alive! 🐍
+ * 句子主语命名部分 (Naming Part) 与动词动作部分 (Action Part)
+ * 换主语造新句灯泡挑战 (Lightbulb Challenge) + 课堂复习 8 个复合词 + 规范字母笔画
+ */
+function SnakesAliveHomeworkView({ data, isCompleted, onCompleteTask }) {
+  const [activeSubTab, setActiveSubTab] = useState('snakes') // 'snakes' | 'lightbulb' | 'compound' | 'cards' | 'strokes'
+
+  // 1. 小蛇涂色状态：已涂色正确的主语小蛇 { [pairId]: boolean }
+  const [coloredSnakes, setColoredSnakes] = useState({})
+  // 错误点击提示状态（点到 Action part 小蛇时的提示）
+  const [actionHint, setActionHint] = useState(null)
+
+  // 2. 灯泡挑战造新句状态
+  const [selectedPairIndex, setSelectedPairIndex] = useState(0)
+  const [customSubjectInput, setCustomSubjectInput] = useState('')
+  const [activePresetIndex, setActivePresetIndex] = useState(0)
+  const [copiedNotification, setCopiedNotification] = useState(false)
+
+  // 3. 规范笔画字母选择
+  const [selectedLetterChar, setSelectedLetterChar] = useState('S')
+
+  // 4. 单词卡片详情弹窗
+  const [selectedWordData, setSelectedWordData] = useState(null)
+
+  // 数据解构
+  const rule = data.rule || {}
+  const snakePairs = data.snakePairs || []
+  const lightbulbTask = data.lightbulbTask || {}
+  const compoundReview = data.compoundReview || {}
+  const words = data.words || []
+  const alphabetStrokes = data.alphabetStrokes || []
+  const teacherNote = data.teacherNote || ''
+  const instruction = data.instruction || ''
+
+  // 计算小蛇涂色进度
+  const coloredCount = snakePairs.filter(p => coloredSnakes[p.id]).length
+  const allSnakesColored = snakePairs.length > 0 && coloredCount === snakePairs.length
+
+  // 点击单词
+  const handleWordClick = (rawWord) => {
+    playPop()
+    const wordInfo = lookupWord(rawWord)
+    if (wordInfo) {
+      setSelectedWordData(wordInfo)
+    }
+  }
+
+  // 点击左边小蛇（Naming part - 主语）
+  const handleNamingSnakeClick = (pair) => {
+    speakEnglish(pair.leftSnake.text)
+    const nextState = !coloredSnakes[pair.id]
+    setColoredSnakes(prev => ({ ...prev, [pair.id]: nextState }))
+    setActionHint(null)
+    if (nextState) {
+      playCorrect()
+      setTimeout(() => {
+        speakEnglish(pair.fullSentence)
+      }, 650)
+    } else {
+      playPop()
+    }
+  }
+
+  // 点击右边小蛇（Action part - 动作谓语）
+  const handleActionSnakeClick = (pair) => {
+    playPop()
+    speakEnglish(pair.rightSnake.text)
+    setActionHint({
+      pairId: pair.id,
+      text: pair.rightSnake.text,
+      msg: `💡 "${pair.rightSnake.text}" 是动词动作部分 (Action part)！它告诉我们发生了什么事，不是告诉我们“谁”或“什么”哦！请点击左边的小蛇 "${pair.leftSnake.text}" 来给主语小蛇涂色！`
+    })
+  }
+
+  // 一键魔法全涂色
+  const handleMagicColorAll = () => {
+    playMagic()
+    const all = {}
+    snakePairs.forEach(p => {
+      all[p.id] = true
+    })
+    setColoredSnakes(all)
+    setActionHint(null)
+    setTimeout(() => {
+      playCheer()
+      speakEnglish('Snakes Alive! Awesome job finding all the naming parts!')
+    }, 400)
+  }
+
+  // 重置涂色
+  const handleResetColors = () => {
+    playPop()
+    setColoredSnakes({})
+    setActionHint(null)
+  }
+
+  // 复制改写后的句子
+  const handleCopySentence = (textToCopy) => {
+    playPop()
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(textToCopy).then(() => {
+        setCopiedNotification(true)
+        setTimeout(() => setCopiedNotification(false), 2500)
+      })
+    }
+  }
+
+  // 当前选中的改写句子对象
+  const currentPair = snakePairs[selectedPairIndex] || snakePairs[0]
+  const currentPreset = currentPair?.differentNamingOptions?.[activePresetIndex]
+  const generatedSentence = customSubjectInput.trim()
+    ? `${customSubjectInput.trim()} ${currentPair?.rightSnake?.text || ''}`
+    : (currentPreset?.revised || currentPair?.fullSentence || '')
+
+  return (
+    <div className="snakes-alive-container">
+      {/* 顶部作业标题与说明 */}
+      <div className="homework-header-card snakes-header-glow">
+        <div className="snakes-header-badge">
+          <span>🐍 9月23日 星期三 · 核心语法专项</span>
+          <span className="badge-tag">Parts of a sentence: Naming part</span>
+        </div>
+        <h2 className="homework-main-title">{data.title || 'Snakes Alive! Parts of a sentence 🐍'}</h2>
+        <p className="homework-subtitle-text">{data.topic || 'Naming Part vs Action Part (主语命名部分与动词动作部分)'}</p>
+
+        {/* 老师当日备忘与作业要求 */}
+        {teacherNote && (
+          <div className="teacher-note-banner">
+            <span className="teacher-icon">👩‍🏫</span>
+            <div className="teacher-note-content">
+              <strong>老师课堂记录与今日作业：</strong>
+              <p>{teacherNote}</p>
+            </div>
+          </div>
+        )}
+
+        {/* 核心语法规则定义卡片 */}
+        {rule.definition && (
+          <div className="snakes-grammar-rule-box">
+            <div className="rule-box-header">
+              <span className="rule-icon">📚</span>
+              <h4>{rule.title || 'Parts of a sentence: Naming part'}</h4>
+            </div>
+            <div className="rule-definition-en" onClick={() => speakEnglish(rule.definition)}>
+              "{rule.definition}" 🔊
+            </div>
+            <div className="rule-definition-cn">
+              {rule.definitionCn}
+            </div>
+            <div className="rule-action-cn">
+              💡 {rule.actionPartDefinition}
+            </div>
+            <div className="rule-formula-tag">
+              {rule.formula}
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* 选项卡导航栏 */}
+      <div className="snakes-subtabs-nav">
+        <button
+          className={`subtab-btn ${activeSubTab === 'snakes' ? 'active' : ''}`}
+          onClick={() => { playPop(); setActiveSubTab('snakes'); }}
+        >
+          🐍 小蛇涂色大挑战 ({coloredCount}/{snakePairs.length})
+        </button>
+        <button
+          className={`subtab-btn ${activeSubTab === 'lightbulb' ? 'active' : ''}`}
+          onClick={() => { playPop(); setActiveSubTab('lightbulb'); }}
+        >
+          💡 换主语造新句 (Lightbulb)
+        </button>
+        <button
+          className={`subtab-btn ${activeSubTab === 'compound' ? 'active' : ''}`}
+          onClick={() => { playPop(); setActiveSubTab('compound'); }}
+        >
+          🧩 复合词大温故 (8 Words)
+        </button>
+        <button
+          className={`subtab-btn ${activeSubTab === 'cards' ? 'active' : ''}`}
+          onClick={() => { playPop(); setActiveSubTab('cards'); }}
+        >
+          🗂️ 核心实景图卡 ({words.length})
+        </button>
+        <button
+          className={`subtab-btn ${activeSubTab === 'strokes' ? 'active' : ''}`}
+          onClick={() => { playPop(); setActiveSubTab('strokes'); }}
+        >
+          ✍️ 字母规范笔画 ({alphabetStrokes.length})
+        </button>
+      </div>
+
+      {/* ================= 子选项卡 1：小蛇涂色大挑战 ================= */}
+      {activeSubTab === 'snakes' && (
+        <div className="snakes-tab-pane animate-fade-in">
+          {/* 指引横幅与统计 */}
+          <div className="snakes-task-intro-bar">
+            <div className="intro-text-col">
+              <h3>🎨 Color the snake that tells the naming part in each sentence!</h3>
+              <p>仔细阅读每一句话，点击代表【命名部分 (Naming Part / 主语)】的小蛇涂上鲜亮绿色！</p>
+            </div>
+            <div className="snakes-action-buttons">
+              <button className="magic-color-btn" onClick={handleMagicColorAll}>
+                ✨ 一键魔法全涂色
+              </button>
+              <button className="reset-color-btn" onClick={handleResetColors}>
+                🔄 重置涂色
+              </button>
+            </div>
+          </div>
+
+          {/* 进度显示条 */}
+          <div className="snakes-progress-card">
+            <div className="progress-info-row">
+              <span className="progress-label">
+                {allSnakesColored
+                  ? '🎉 太棒了！已找全全部 6 个句子的命名小蛇！'
+                  : `🌟 涂色进度：已完成 ${coloredCount} / ${snakePairs.length} 句`}
+              </span>
+              <span className="progress-pct">{Math.round((coloredCount / (snakePairs.length || 1)) * 100)}%</span>
+            </div>
+            <div className="progress-bar-track">
+              <div
+                className="progress-bar-fill snakes-fill-glow"
+                style={{ width: `${(coloredCount / (snakePairs.length || 1)) * 100}%` }}
+              />
+            </div>
+          </div>
+
+          {/* 6 对小蛇句子卡片网格 */}
+          <div className="snakes-sentence-pairs-list">
+            {snakePairs.map((pair, index) => {
+              const isLeftColored = !!coloredSnakes[pair.id]
+              const hasHint = actionHint && actionHint.pairId === pair.id
+
+              return (
+                <div key={pair.id} className={`snake-pair-card ${isLeftColored ? 'pair-completed' : ''}`}>
+                  {/* 头部：句号、完整句、朗读与实景缩略图 */}
+                  <div className="snake-card-top-bar">
+                    <div className="sentence-num-badge">#{pair.num}</div>
+                    <div className="full-sentence-preview" onClick={() => speakEnglish(pair.fullSentence)}>
+                      <span className="sent-text-en">{pair.fullSentence}</span>
+                      <span className="speaker-icon">🔊</span>
+                      <span className="sent-text-cn">{pair.fullSentenceCn}</span>
+                    </div>
+                    {pair.image && (
+                      <div className="snake-pair-thumb-wrap" onClick={() => speakEnglish(pair.leftSnake.text)}>
+                        <img src={pair.image} alt={pair.fullSentence} className="snake-pair-thumb" />
+                      </div>
+                    )}
+                  </div>
+
+                  {/* 核心互相对视的小蛇对 */}
+                  <div className="snakes-interactive-row">
+                    {/* 左边小蛇：Naming Part (主语) */}
+                    <div
+                      className={`snake-entity left-snake ${isLeftColored ? 'snake-colored-active' : 'snake-uncolored'}`}
+                      onClick={() => handleNamingSnakeClick(pair)}
+                      title="点击给命名部分小蛇涂色"
+                    >
+                      <div className="snake-head-tag">
+                        <span className="snake-face-emoji">🐍</span>
+                        <span className="snake-label-tag">Naming part</span>
+                      </div>
+                      <div className="snake-body-text">
+                        {pair.leftSnake.text}
+                      </div>
+                      <div className="snake-badge-foot">
+                        {isLeftColored ? (
+                          <span className="colored-success-tag">✅ 已涂色 (Tell {pair.leftSnake.type})</span>
+                        ) : (
+                          <span className="uncolored-hint-tag">👈 点击小蛇涂色 ({pair.leftSnake.type})</span>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* 中间连接号 */}
+                    <div className="snakes-connector-symbol">
+                      <span className="connector-plus">➕</span>
+                    </div>
+
+                    {/* 右边小蛇：Action Part (谓语动作) */}
+                    <div
+                      className="snake-entity right-snake"
+                      onClick={() => handleActionSnakeClick(pair)}
+                      title="这是动作部分，点击听发音并查看解析"
+                    >
+                      <div className="snake-head-tag right-head-tag">
+                        <span className="snake-label-tag action-tag">Action part</span>
+                        <span className="snake-action-emoji">⚡</span>
+                      </div>
+                      <div className="snake-body-text action-text">
+                        {pair.rightSnake.text}
+                      </div>
+                      <div className="snake-badge-foot">
+                        <span className="action-type-tag">动词动作部分 ({pair.rightSnake.type})</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* 错误点击动作小蛇时的提示 */}
+                  {hasHint && (
+                    <div className="snake-action-alert animate-bounce">
+                      {actionHint.msg}
+                    </div>
+                  )}
+
+                  {/* 涂色正确时的解析 */}
+                  {isLeftColored && (
+                    <div className="snake-correct-explanation animate-fade-in">
+                      🎉 <strong>知识点解析：</strong>{pair.explanation}
+                    </div>
+                  )}
+                </div>
+              )
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* ================= 子选项卡 2：灯泡挑战造新句 (Lightbulb Challenge) ================= */}
+      {activeSubTab === 'lightbulb' && (
+        <div className="snakes-tab-pane animate-fade-in">
+          <div className="lightbulb-banner-card">
+            <div className="bulb-header-row">
+              <span className="bulb-big-icon">💡</span>
+              <div>
+                <h3>{lightbulbTask.title || 'Lightbulb Challenge: Write with a Different Naming Part'}</h3>
+                <p className="bulb-prompt-en">"{lightbulbTask.promptEn || 'On another piece of paper, write one of the sentences using a different naming part.'}"</p>
+                <p className="bulb-prompt-cn">{lightbulbTask.promptCn || '在另一张纸上，挑选其中一句，换上全新的命名部分（主语），造出一个全新的句子！'}</p>
+              </div>
+            </div>
+
+            {/* 操作步骤指南 */}
+            <div className="bulb-steps-row">
+              {(lightbulbTask.instructions || [
+                '第一步：选择你想改写的原句',
+                '第二步：保留后半截动作部分不动',
+                '第三步：发挥想象力，给它换一个新的主角！',
+                '第四步：在四线三格作业纸上工整抄写，首字母大写，末尾加句号！'
+              ]).map((step, sIdx) => (
+                <div key={sIdx} className="bulb-step-chip">
+                  <span className="step-num">{sIdx + 1}</span>
+                  <span className="step-text">{step}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* 句子选择切换器 (从 6 句中选一句来改写) */}
+          <div className="sentence-picker-section">
+            <h4 className="picker-title">👇 第一步：点击选择你想改写的一句话：</h4>
+            <div className="sentence-picker-buttons">
+              {snakePairs.map((pair, pIdx) => (
+                <button
+                  key={pair.id}
+                  className={`picker-btn ${selectedPairIndex === pIdx ? 'active' : ''}`}
+                  onClick={() => {
+                    playPop()
+                    setSelectedPairIndex(pIdx)
+                    setActivePresetIndex(0)
+                    setCustomSubjectInput('')
+                    speakEnglish(pair.fullSentence)
+                  }}
+                >
+                  <span className="p-num">#{pair.num}</span>
+                  <span className="p-text">{pair.leftSnake.text} {pair.rightSnake.text}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* 改写工坊卡片 */}
+          <div className="sentence-transformer-card">
+            <div className="transformer-header">
+              <span className="badge-original">原句分析</span>
+              <span className="orig-sentence" onClick={() => speakEnglish(currentPair.fullSentence)}>
+                {currentPair.fullSentence} 🔊
+              </span>
+              <span className="orig-cn">（{currentPair.fullSentenceCn}）</span>
+            </div>
+
+            <div className="orig-parts-split">
+              <div className="part-box naming-box">
+                <span className="part-label">原主语 (Naming Part):</span>
+                <span className="part-val strike-through">{currentPair.leftSnake.text}</span>
+              </div>
+              <span className="part-arrow">➔ 替换为新主语 ➔</span>
+              <div className="part-box action-box">
+                <span className="part-label">动作部分 (Action Part，保持不变):</span>
+                <span className="part-val keep-val">{currentPair.rightSnake.text}</span>
+              </div>
+            </div>
+
+            {/* 灵感选项 (3 个预设选项) */}
+            <div className="creative-presets-section">
+              <h5>💡 灵感小启发（点击直接换成全新主语）：</h5>
+              <div className="preset-options-grid">
+                {(currentPair.differentNamingOptions || []).map((opt, oIdx) => (
+                  <button
+                    key={oIdx}
+                    className={`preset-opt-btn ${activePresetIndex === oIdx && !customSubjectInput.trim() ? 'active' : ''}`}
+                    onClick={() => {
+                      playMagic()
+                      setActivePresetIndex(oIdx)
+                      setCustomSubjectInput('')
+                      speakEnglish(opt.revised)
+                    }}
+                  >
+                    <span className="preset-revised">{opt.revised}</span>
+                    <span className="preset-change">{opt.change}</span>
+                    <span className="preset-tip">✨ {opt.tip}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* 自己手写输入新主语 */}
+            <div className="custom-input-box">
+              <label htmlFor="custom-subject-input">
+                ✍️ 或者输入你自己想到的新主语 (Naming Part)：
+              </label>
+              <div className="input-with-action">
+                <input
+                  id="custom-subject-input"
+                  type="text"
+                  placeholder="例如: The doorbell / My little sister / The teacher"
+                  value={customSubjectInput}
+                  onChange={(e) => setCustomSubjectInput(e.target.value)}
+                  className="subject-text-input"
+                />
+                {customSubjectInput && (
+                  <button
+                    className="clear-input-btn"
+                    onClick={() => { playPop(); setCustomSubjectInput(''); }}
+                  >
+                    清空
+                  </button>
+                )}
+              </div>
+            </div>
+
+            {/* 核心呈现：四线三格仿真作业本 (English 4-line Notebook Ruled Paper) */}
+            <div className="notebook-paper-container">
+              <div className="notebook-header-line">
+                <span className="nb-title">📝 英文四线三格书写规范示范 (Copy onto your paper)</span>
+                <div className="nb-actions">
+                  <button
+                    className="nb-speak-btn"
+                    onClick={() => speakEnglish(generatedSentence)}
+                  >
+                    🔊 听新句子朗读
+                  </button>
+                  <button
+                    className="nb-copy-btn"
+                    onClick={() => handleCopySentence(generatedSentence)}
+                  >
+                    {copiedNotification ? '✅ 已复制句子！' : '📋 复制句子文本'}
+                  </button>
+                </div>
+              </div>
+
+              {/* 四线三格模拟 */}
+              <div className="four-lines-ruled-paper">
+                <div className="ruled-line red-top-line" />
+                <div className="ruled-line blue-mid-dashed" />
+                <div className="ruled-line blue-baseline" />
+                <div className="ruled-line red-bottom-line" />
+                <div className="handwriting-sentence-overlay">
+                  {generatedSentence}
+                </div>
+              </div>
+
+              {/* 书写规范自查清单 */}
+              <div className="writing-checklist-row">
+                <span className="checklist-item">✅ 1. 首字母大写 (Capital Letter)</span>
+                <span className="checklist-item">✅ 2. 单词之间留一指空隙 (Finger Space)</span>
+                <span className="checklist-item">✅ 3. 句末加上句号 (Period .)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ================= 子选项卡 3：复合词大温故 (Reviewed Compound Words) ================= */}
+      {activeSubTab === 'compound' && (
+        <div className="snakes-tab-pane animate-fade-in">
+          <div className="compound-review-banner">
+            <div className="cr-header-row">
+              <span className="cr-icon">🧩</span>
+              <div>
+                <h3>{compoundReview.title || '课堂复习巩固：昨天学过的 8 个神奇复合词 (Reviewed Compound Words)'}</h3>
+                <p>{compoundReview.note || '老师课堂带领大家深入复习了复合词（两个小词合并成一个大词），快来看看你都记住了吗：'}</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="compound-words-grid">
+            {(compoundReview.words || []).map((cw, idx) => (
+              <div
+                key={idx}
+                className="compound-review-card"
+                onClick={() => {
+                  playPop()
+                  speakEnglish(cw.word)
+                }}
+              >
+                <div className="cw-card-top">
+                  <span className="cw-index">#{idx + 1}</span>
+                  <span className="cw-speaker">🔊 点击朗读</span>
+                </div>
+                <div className="cw-word-main">
+                  {cw.word}
+                </div>
+                <div className="cw-formula-badge">
+                  {cw.formula}
+                </div>
+                <div className="cw-chinese-tag">
+                  {cw.cn}
+                </div>
+                <button
+                  className="cw-dict-btn"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    handleWordClick(cw.word)
+                  }}
+                >
+                  📖 查词典详情
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* ================= 子选项卡 4：核心实景图卡 (Flashcards) ================= */}
+      {activeSubTab === 'cards' && (
+        <div className="snakes-tab-pane animate-fade-in">
+          <div className="cards-intro-banner">
+            <h3>🗂️ 核心实景高清图卡 (Core Flashcards with Real Photography)</h3>
+            <p>100% 真实生活与自然摄影，点击卡片听标准美音，点击右下角查看完整词典音标与释义！</p>
+          </div>
+
+          <div className="flashcards-grid">
+            {words.map((item) => (
+              <div
+                key={item.id}
+                className="snakes-flashcard"
+                onClick={() => {
+                  playPop()
+                  speakEnglish(item.word)
+                }}
+              >
+                <div className="card-image-wrap">
+                  <ActionImage
+                    src={item.image}
+                    alt={item.word}
+                    emoji={item.emoji}
+                    className="flashcard-real-img"
+                  />
+                  <span className="card-emoji-bubble">{item.emoji}</span>
+                </div>
+
+                <div className="card-content-area">
+                  <div className="card-word-title">
+                    <span className="word-text">{item.word}</span>
+                    <span className="word-phonetic">{item.phonetic}</span>
+                  </div>
+                  <div className="card-translation-text">
+                    {item.translation}
+                  </div>
+
+                  {item.sentence && (
+                    <div
+                      className="card-example-sentence"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        speakEnglish(item.sentence)
+                      }}
+                    >
+                      <div className="sentence-en">"{item.sentence}" 🔊</div>
+                      <div className="sentence-cn">{item.sentenceCn}</div>
+                    </div>
+                  )}
+
+                  <button
+                    className="detail-lookup-btn"
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      handleWordClick(item.word)
+                    }}
+                  >
+                    📖 音标与词典详解
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* ================= 子选项卡 5：字母规范笔画书写 (Alphabet Writing Strokes) ================= */}
+      {activeSubTab === 'strokes' && (
+        <div className="snakes-tab-pane animate-fade-in">
+          <div className="strokes-header-bar">
+            <h3>✍️ 规范字母笔画书写 (Alphabet Writing Strokes)</h3>
+            <p>掌握大写与小写字母在四线三格里的笔顺规则，写出工整漂亮的英文字母！</p>
+          </div>
+
+          {/* 字母切换选择器 */}
+          <div className="letter-selector-row">
+            {alphabetStrokes.map(item => (
+              <button
+                key={item.letter}
+                className={`letter-choice-btn ${selectedLetterChar === item.letter ? 'active' : ''}`}
+                onClick={() => {
+                  playPop()
+                  speakEnglish(item.letter)
+                  setSelectedLetterChar(item.letter)
+                }}
+              >
+                {item.letter} {item.lower}
+              </button>
+            ))}
+          </div>
+
+          {/* 选中字母的书写详解 */}
+          {(() => {
+            const currentItem = alphabetStrokes.find(i => i.letter === selectedLetterChar) || alphabetStrokes[0]
+            if (!currentItem) return null
+
+            return (
+              <div className="stroke-detail-card">
+                <div className="stroke-card-header">
+                  <div className="big-letters-display">
+                    <span className="letter-upper">{currentItem.letter}</span>
+                    <span className="letter-lower">{currentItem.lower}</span>
+                  </div>
+                  <div className="letter-meta-info">
+                    <div className="letter-sound-tag" onClick={() => speakEnglish(currentItem.letter)}>
+                      发音：<strong>{currentItem.sound}</strong> 🔊
+                    </div>
+                    <div className="letter-tip-tag">💡 {currentItem.tip}</div>
+                  </div>
+                </div>
+
+                <div className="stroke-rules-grid">
+                  <div className="stroke-box upper-box">
+                    <h5>🔠 大写字母 {currentItem.letter} 笔画步骤：</h5>
+                    <p className="stroke-steps">{currentItem.strokeUpper}</p>
+                  </div>
+
+                  <div className="stroke-box lower-box">
+                    <h5>🔡 小写字母 {currentItem.lower} 笔画步骤：</h5>
+                    <p className="stroke-steps">{currentItem.strokeLower}</p>
+                  </div>
+                </div>
+              </div>
+            )
+          })()}
+        </div>
+      )}
+
+      {/* 底部打卡大按钮 */}
+      <div className="homework-bottom-bar">
+        <button
+          className={`finish-homework-btn ${isCompleted ? 'already-done' : ''}`}
+          onClick={() => {
+            playCheer()
+            onCompleteTask('english')
+          }}
+        >
+          {isCompleted
+            ? '✅ Snakes Alive 作业已通关打卡（再次庆祝）'
+            : '🎉 我会给主语小蛇涂色和写新句子了！打卡领贴纸'}
         </button>
       </div>
 
