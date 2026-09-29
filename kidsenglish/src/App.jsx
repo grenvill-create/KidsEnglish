@@ -64,7 +64,13 @@ function sanitizeHomeworkList(list) {
     'bus': REAL_IMAGES.schoolBus,
     'teacher': REAL_IMAGES.teacherHome,
     'visit': REAL_IMAGES.twoBoysVisit,
-    'snakes': REAL_IMAGES.snakesCover
+    'snakes': REAL_IMAGES.snakesCover,
+    'rules': REAL_IMAGES.rulesCover,
+    'hall': REAL_IMAGES.walkHallway,
+    'gum': REAL_IMAGES.gumFloor,
+    'alarm': REAL_IMAGES.fireAlarm,
+    'listen': REAL_IMAGES.listenTeacher,
+    'desk': REAL_IMAGES.messyDesk
   }
 
   const REAL_SENTENCE_MAP = {

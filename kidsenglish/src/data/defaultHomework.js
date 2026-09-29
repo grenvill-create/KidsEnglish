@@ -42,6 +42,14 @@ import realSchoolBusImg from '../assets/real_school_bus.jpg'
 import realTeacherHomeImg from '../assets/real_teacher_home.jpg'
 import realTwoBoysVisitImg from '../assets/real_two_boys_visit.jpg'
 
+import realRulesCoverImg from '../assets/real_rules_cover.jpg'
+import realWalkHallwayImg from '../assets/real_walk_hallway.jpg'
+import realGumFloorImg from '../assets/real_gum_floor.jpg'
+import realMissedBusImg from '../assets/real_missed_bus.jpg'
+import realFireAlarmImg from '../assets/real_fire_alarm.jpg'
+import realListenTeacherImg from '../assets/real_listen_teacher.jpg'
+import realMessyDeskImg from '../assets/real_messy_desk.jpg'
+
 export const REAL_IMAGES = {
   tadpole: realTadpoleImg,
   frog: realFrogImg,
@@ -79,7 +87,14 @@ export const REAL_IMAGES = {
   cuteHamster: realCuteHamsterImg,
   schoolBus: realSchoolBusImg,
   teacherHome: realTeacherHomeImg,
-  twoBoysVisit: realTwoBoysVisitImg
+  twoBoysVisit: realTwoBoysVisitImg,
+  rulesCover: realRulesCoverImg,
+  walkHallway: realWalkHallwayImg,
+  gumFloor: realGumFloorImg,
+  missedBus: realMissedBusImg,
+  fireAlarm: realFireAlarmImg,
+  listenTeacher: realListenTeacherImg,
+  messyDesk: realMessyDeskImg
 }
 
 export const CUTE_FROG_IMAGE = cuteFrogImg
@@ -88,6 +103,271 @@ export const SWEET_SENTENCES_COVER = sweetSentencesCover
 export const TINY_TOWN_COVER = tinyTownCoverImg
 export const GRAMMYS_COVER = realGrammysCoverImg
 export const SNAKES_ALIVE_COVER = realSnakesCoverImg
+export const SCHOOL_RULES_COVER = realRulesCoverImg
+
+// 星期二今日最新作业：School Rules: Identifying cause and effect 🏫 (校规守则与因果关系后果配对)
+export const HOMEWORK_SCHOOL_RULES = {
+  id: 'homework-school-rules',
+  date: '2026年9月29日 星期二',
+  childName: '',
+  theme: 'school-rules',
+
+  // 1. 英语作业：School Rules: Identifying cause and effect
+  english: {
+    theme: 'school-rules',
+    title: 'School Rules: Identifying cause and effect 🏫',
+    topic: 'School Rules & Cause and Effect (校规守则与因果关系后果配对)',
+    teacherNote: 'SEPTEMBER 29th TUESDAY: * Checked homework & Reading - Some students shared and read one of their favorite books from Oxford Reading Tree. * Oxford Reading Tree Story Books: - We identified and read the titles of each storybook, then read together page by page. * Reading Together HOMEWORK: School Rules',
+    instruction: '仔细阅读 6 条校规守则（Rule），思考如果学生不遵守该规则会发生什么后果（Cause & Effect / Consequence）。在下方 6 张实景后果照片中找出正确对应的一项，写下或点击配对对应字母！在底部挑战中，写下一条你必须遵守的校规，并描绘不遵守时可能发生的后果！',
+
+    // 核心认知规则与因果定义卡片
+    ruleDefinition: {
+      title: 'Identifying Cause and Effect: School Rules',
+      definition: 'It is important to follow the rules at school. A cause is why something happens, and an effect is what happens if a rule is broken!',
+      definitionCn: '在学校遵守规则非常重要！原因（Cause）是起因，而结果/后果（Effect / Consequence）则是不遵守规则时所带来的后果。',
+      formula: '【Break a School Rule (违反校规 / 起因)】 ➔ 【Consequence / Effect (不良后果 / 结果)】',
+      whyRulesMatter: '校规不是为了限制我们，而是为了守护校园里的每一个小伙伴平平安安、快快乐乐、高效学习！'
+    },
+
+    // 6 条校规与对应字母、后果解析及实景照片
+    rulesList: [
+      {
+        id: 'rule-1',
+        num: 1,
+        ruleText: 'You must walk, not run, in the halls.',
+        ruleTextCn: '你在走廊里必须慢步行走，不能奔跑。',
+        targetLetter: 'E',
+        consequenceTitle: 'Students trip, bump into others, and get hurt!',
+        consequenceCn: '在走廊奔跑容易撞倒开门出来的同学或自己滑倒摔伤！',
+        image: realWalkHallwayImg,
+        tip: '走廊是公共通道，慢步行走才能保护自己和他人的安全。'
+      },
+      {
+        id: 'rule-2',
+        num: 2,
+        ruleText: 'Do not chew gum at school.',
+        ruleTextCn: '在学校不要嚼口香糖。',
+        targetLetter: 'B',
+        consequenceTitle: 'Sticky gum gets stuck onto shoes and classroom floors!',
+        consequenceCn: '乱吐口香糖会黏在鞋底、地板和课桌底下，又脏又黏难以清理！',
+        image: realGumFloorImg,
+        tip: '学校禁止嚼口香糖，保持校园环境卫生整洁。'
+      },
+      {
+        id: 'rule-3',
+        num: 3,
+        ruleText: 'Come to school on time.',
+        ruleTextCn: '准时到达学校，不迟到。',
+        targetLetter: 'D',
+        consequenceTitle: 'You miss the bus and miss the exciting field trip!',
+        consequenceCn: '迟到了校车就开走了，错过了集体秋游/研学外出活动，只能留下难过！',
+        image: realMissedBusImg,
+        tip: '按时到校养成自律守时好习惯，不耽误精彩的课程与集体活动。'
+      },
+      {
+        id: 'rule-4',
+        num: 4,
+        ruleText: 'When the fire alarm rings, follow the leader outside.',
+        ruleTextCn: '当火警警报响起时，跟随排头老师迅速撤离到室外。',
+        targetLetter: 'F',
+        consequenceTitle: 'Students could be trapped in smoke and fire danger!',
+        consequenceCn: '警报响时不听指挥乱跑，可能会被浓烟大火困在危险中，需要消防员救援！',
+        image: realFireAlarmImg,
+        tip: '火警就是命令：听指挥、排好队、捂口鼻、快速有序撤离到室外开阔地。'
+      },
+      {
+        id: 'rule-5',
+        num: 5,
+        ruleText: 'Listen when the teacher is talking.',
+        ruleTextCn: '老师在讲话讲课时要专心倾听。',
+        targetLetter: 'A',
+        consequenceTitle: 'You miss the lesson and get reminded to put toys away!',
+        consequenceCn: '上课开小差玩玩具，就会听不懂知识，还会被老师点名要求把玩具收起来！',
+        image: realListenTeacherImg,
+        tip: '上课专注听讲、眼神看老师、发言先举手，收获满满好成绩！'
+      },
+      {
+        id: 'rule-6',
+        num: 6,
+        ruleText: 'Keep your desk clean.',
+        ruleTextCn: '保持你的课桌干净整洁。',
+        targetLetter: 'C',
+        consequenceTitle: 'Your desk becomes a messy cluttered disaster!',
+        consequenceCn: '课桌堆满废纸杂物乱七八糟，找不到铅笔课本，影响学习心情！',
+        image: realMessyDeskImg,
+        tip: '每天整理桌斗和桌面，废纸扔纸篓，保持桌面清爽整洁。'
+      }
+    ],
+
+    // 6 幅字母图片卡片数据 (A - F)
+    pictureOptions: [
+      {
+        letter: 'A',
+        speechQuote: '“John, I said put the toy away.”',
+        speechQuoteCn: '“约翰，我说过把玩具收起来。”',
+        description: '老师正在提醒一位玩小汽车玩具的男孩专心听讲，把玩具收好。',
+        matchRuleNum: 5,
+        image: realListenTeacherImg
+      },
+      {
+        letter: 'B',
+        speechQuote: 'Sticky Gum on Shoe!',
+        speechQuoteCn: '鞋底踩到黏糊糊的口香糖！',
+        description: '运动鞋鞋底踩到了地上一大块粉色口香糖，拉出长长的黏丝，非常难弄干净。',
+        matchRuleNum: 2,
+        image: realGumFloorImg
+      },
+      {
+        letter: 'C',
+        speechQuote: 'Messy Overcrowded Desk',
+        speechQuoteCn: '塞满杂乱废纸的课桌',
+        description: '木制课桌里塞满了揉成一团的废纸、乱糟糟的书本和铅笔，快要漫出来了。',
+        matchRuleNum: 6,
+        image: realMessyDeskImg
+      },
+      {
+        letter: 'D',
+        speechQuote: 'Missed the Field Trip Bus!',
+        speechQuoteCn: '错过了去秋游的校车！',
+        description: '背着书包的小男孩迟到了，只能难过地看着去秋游的黄色校车载着同学们开走。',
+        matchRuleNum: 3,
+        image: realMissedBusImg
+      },
+      {
+        letter: 'E',
+        speechQuote: 'Tripped and Fell in the Hallway!',
+        speechQuoteCn: '在走廊奔跑撞倒同学摔跤！',
+        description: '在教室门外的走廊里狂奔，不小心撞到了同学，两人重重摔在地上。',
+        matchRuleNum: 1,
+        image: realWalkHallwayImg
+      },
+      {
+        letter: 'F',
+        speechQuote: 'Fire Rescue Emergency!',
+        speechQuoteCn: '火灾紧急救援！',
+        description: '学校窗户冒出熊熊烈火，消防员不得不冲进火场把被困的孩子抱出来。',
+        matchRuleNum: 4,
+        image: realFireAlarmImg
+      }
+    ],
+
+    // 灯泡挑战：在纸上写一条你必须遵守的校规，画出/预测如果不遵守可能发生的事
+    lightbulbChallenge: {
+      title: 'Lightbulb Challenge 💡: Write a School Rule You Must Obey',
+      promptEn: 'Write a school rule that you must obey. Draw a picture of what might happen if you do not.',
+      promptCn: '写下一条你必须遵守的校规，并思考或画出如果不遵守时可能发生的事情！',
+      presetRules: [
+        {
+          ruleEn: 'Raise your hand before speaking.',
+          ruleCn: '发言之前先举手。',
+          consequenceEn: 'If not, everyone talks at once and nobody can hear anything!',
+          consequenceCn: '如果不遵守，大家同时大声喧哗，谁也听不清老师和同学在讲什么！',
+          tip: '课堂发言秩序'
+        },
+        {
+          ruleEn: 'Put away scissors safely with blades closed.',
+          ruleCn: '用完剪刀刀口合拢、安全收纳。',
+          consequenceEn: 'If not, someone might get poked or cut their fingers accidentally!',
+          consequenceCn: '如果不遵守，尖锐的剪刀可能会划伤手指或刺破衣物！',
+          tip: '手工课工具安全'
+        },
+        {
+          ruleEn: 'Line up quietly and do not push on stairs.',
+          ruleCn: '在楼梯上下安静排队，绝不推搡。',
+          consequenceEn: 'If not, a chain reaction of slips and falls could cause serious injury!',
+          consequenceCn: '如果不遵守，台阶推搡会导致前后同学连锁摔倒，非常危险！',
+          tip: '楼梯上下安全'
+        },
+        {
+          ruleEn: 'Wash hands with soap before eating lunch.',
+          ruleCn: '午餐进食前用肥皂认真洗手。',
+          consequenceEn: 'If not, germs on your hands will enter your tummy and make you sick!',
+          consequenceCn: '如果不遵守，手上的细菌随食物吃进肚子里，会引起肚子痛生病！',
+          tip: '餐前卫生好习惯'
+        }
+      ]
+    },
+
+    // 牛津阅读树共读工坊 (Oxford Reading Tree page-by-page read together)
+    ortStoryReview: {
+      title: 'Oxford Reading Tree: Story Titles & Page-by-Page Reading 🌳',
+      note: '老师课堂记录：Students shared and read their favorite books from Oxford Reading Tree. We identified and read the titles of each storybook, then read together page by page.',
+      books: [
+        {
+          title: 'The School Trip',
+          stage: 'Stage 3 / Oxford Reading Tree',
+          desc: 'Kipper and his friends get on the school bus for a wonderful field trip to the museum.',
+          descCn: '基珀和朋友们登上校车前往博物馆秋游，大家遵守校规，玩得特别开心！',
+          keyRule: 'Come on time & follow the group!'
+        },
+        {
+          title: 'In the Hallway',
+          stage: 'Stage 2 / Oxford Reading Tree',
+          desc: 'Biff reminds Chip to walk quietly and safely in the hallway during school recess.',
+          descCn: '课间休息时，碧芙提醒奇普在走廊里要放慢脚步，保护每位同学的安全。',
+          keyRule: 'Walk, do not run, in the halls!'
+        },
+        {
+          title: 'The Fire Alarm',
+          stage: 'Stage 4 / Oxford Reading Tree',
+          desc: 'When the fire bell rings, Mrs. May leads the whole class in a safe and quiet fire drill.',
+          descCn: '当火警铃声响起时，梅老师带领全班同学安静有序地撤离到了操场上。',
+          keyRule: 'Follow the leader outside immediately!'
+        },
+        {
+          title: 'Clean Up Time',
+          stage: 'Stage 2 / Oxford Reading Tree',
+          desc: 'Floppy watches the children tidy their desks, putting all pencils and notebooks in order.',
+          descCn: '小狗弗洛皮看着孩子们认真收拾课桌，把所有铅笔和本子整理得井井有条。',
+          keyRule: 'Keep your desk clean and tidy!'
+        }
+      ]
+    },
+
+    // 核心词汇实景闪卡 (6 Flashcards)
+    words: [
+      { id: 'w-sr-1', word: 'rules', phonetic: '/ruːlz/', translation: '校规 / 规则', emoji: '📜', image: realRulesCoverImg, sentence: 'It is important to follow the rules at school.', sentenceCn: '在学校遵守规则非常重要。' },
+      { id: 'w-sr-2', word: 'hall', phonetic: '/hɔːl/', translation: '走廊 / 过道', emoji: '🏢', image: realWalkHallwayImg, sentence: 'You must walk, not run, in the halls.', sentenceCn: '你在走廊里必须慢步行走，不能奔跑。' },
+      { id: 'w-sr-3', word: 'gum', phonetic: '/ɡʌm/', translation: '口香糖', emoji: '🍬', image: realGumFloorImg, sentence: 'Do not chew gum at school.', sentenceCn: '在学校不要嚼口香糖。' },
+      { id: 'w-sr-4', word: 'bus', phonetic: '/bʌs/', translation: '校车', emoji: '🚌', image: realMissedBusImg, sentence: 'Come to school on time or you will miss the bus.', sentenceCn: '按时到校，否则你会错过校车。' },
+      { id: 'w-sr-5', word: 'alarm', phonetic: '/əˈlɑːm/', translation: '火灾警报', emoji: '🚨', image: realFireAlarmImg, sentence: 'When the fire alarm rings, follow the leader outside.', sentenceCn: '当火警警报响起时，跟随老师走到室外。' },
+      { id: 'w-sr-6', word: 'desk', phonetic: '/desk/', translation: '课桌 / 书桌', emoji: '🪑', image: realMessyDeskImg, sentence: 'Keep your school desk clean and tidy.', sentenceCn: '保持你的学校课桌干净整洁。' }
+    ]
+  },
+
+  // 2. 拼音作业：复习声母与拼读
+  pinyin: {
+    teacherNote: '练习声母 zh, ch, sh, r 与整体认读音节，结合校园安全词汇顺畅拼读！',
+    letters: [
+      { id: 'p-zh', char: 'zh', type: '声母', mnemonic: '织毛衣 zh zh zh，zhī dào 知道校规', soundTip: '舌尖翘起，抵住硬腭前部' },
+      { id: 'p-ch', char: 'ch', type: '声母', mnemonic: '吃苹果 ch ch ch，chī fàn 吃饭排队', soundTip: '发音部位同 zh，送出强气流' },
+      { id: 'p-sh', char: 'sh', type: '声母', mnemonic: '小狮子 sh sh sh，shàng xué 上学准时', soundTip: '舌尖翘起接近硬腭，形成摩擦' },
+      { id: 'p-r', char: 'r', type: '声母', mnemonic: '一轮红日 r r r，rèn zhēn 认真听讲', soundTip: '发音同 sh，声带颤动' }
+    ],
+    blends: [
+      { id: 'bl-gu-i', initial: 'g', final: 'uī', result: 'guī', word: '校规 📜', example: '遵守学校校规' },
+      { id: 'bl-zh-un', initial: 'zh', final: 'ǔn', result: 'zhǔn', word: '准时 ⏰', example: '准时到校不迟到' },
+      { id: 'bl-sh-i', initial: 'sh', final: 'ì', result: 'shì', word: '室外 🌳', example: '警报响撤到室外' },
+      { id: 'bl-t-ing', initial: 't', final: 'īng', result: 'tīng', word: '倾听 👂', example: '专心听老师讲课' }
+    ]
+  },
+
+  // 3. 伴读绘本：牛津阅读树韵律节奏儿歌《校园安全守则歌》
+  reading: {
+    title: '英语韵律节奏伴读《校园安全守则歌》',
+    author: '牛津双语阅读绘本',
+    teacherNote: 'Oxford Reading Tree: 跟着朗朗上口的节拍朗读，把 6 条校规牢记心中！',
+    image: realRulesCoverImg,
+    lines: [
+      [{ char: '走', pinyin: 'zǒu' }, { char: '廊', pinyin: 'láng' }, { char: '慢', pinyin: 'màn' }, { char: '步', pinyin: 'bù' }, { char: '，', pinyin: '' }, { char: '不', pinyin: 'bù' }, { char: '奔', pinyin: 'bēn' }, { char: '跑', pinyin: 'pǎo' }, { char: '。', pinyin: '' }],
+      [{ char: '口', pinyin: 'kǒu' }, { char: '香', pinyin: 'xiāng' }, { char: '糖', pinyin: 'táng' }, { char: '果', pinyin: 'guǒ' }, { char: '，', pinyin: '' }, { char: '不', pinyin: 'bù' }, { char: '乱', pinyin: 'luàn' }, { char: '嚼', pinyin: 'jiáo' }, { char: '。', pinyin: '' }],
+      [{ char: '按', pinyin: 'àn' }, { char: '时', pinyin: 'shí' }, { char: '到', pinyin: 'dào' }, { char: '校', pinyin: 'xiào' }, { char: '，', pinyin: '' }, { char: '清', pinyin: 'qīng' }, { char: '晨', pinyin: 'chén' }, { char: '早', pinyin: 'zǎo' }, { char: '。', pinyin: '' }],
+      [{ char: '警', pinyin: 'jǐng' }, { char: '报', pinyin: 'bào' }, { char: '响', pinyin: 'xiǎng' }, { char: '起', pinyin: 'qǐ' }, { char: '，', pinyin: '' }, { char: '跟', pinyin: 'gēn' }, { char: '老', pinyin: 'lǎo' }, { char: '师', pinyin: 'shī' }, { char: '！', pinyin: '' }],
+      [{ char: '老', pinyin: 'lǎo' }, { char: '师', pinyin: 'shī' }, { char: '讲', pinyin: 'jiǎng' }, { char: '课', pinyin: 'kè' }, { char: '，', pinyin: '' }, { char: '专', pinyin: 'zhuān' }, { char: '心', pinyin: 'xīn' }, { char: '听', pinyin: 'tīng' }, { char: '。', pinyin: '' }],
+      [{ char: '课', pinyin: 'kè' }, { char: '桌', pinyin: 'zhuō' }, { char: '干', pinyin: 'gān' }, { char: '净', pinyin: 'jìng' }, { char: '，', pinyin: '' }, { char: '爱', pinyin: 'ài' }, { char: '学', pinyin: 'xué' }, { char: '习', pinyin: 'xí' }, { char: '！', pinyin: '' }]
+    ]
+  }
+}
 
 // 星期三今日最新作业：Snakes Alive! 🐍 (句子构成：命名部分与动作部分，改写主语创新句)
 export const HOMEWORK_SNAKES_ALIVE = {
@@ -2321,11 +2601,12 @@ export const HOMEWORK_2026_09_15 = {
   }
 }
 
-// 今日最新默认作业为星期三：Snakes Alive! 🐍 (句子组成部分：主语/命名部分与换主语造句大挑战)
-export const DEFAULT_HOMEWORK = HOMEWORK_SNAKES_ALIVE
+// 今日最新默认作业为星期二：School Rules: Identifying cause and effect 🏫 (校规守则与因果关系后果配对)
+export const DEFAULT_HOMEWORK = HOMEWORK_SCHOOL_RULES
 
 // 历史作业归档列表库（支持按日期翻阅与周末复习）
 export const DEFAULT_HOMEWORK_LIST = [
+  HOMEWORK_SCHOOL_RULES,
   HOMEWORK_SNAKES_ALIVE,
   HOMEWORK_GOING_TO_GRAMMYS,
   HOMEWORK_TINY_TOWN,

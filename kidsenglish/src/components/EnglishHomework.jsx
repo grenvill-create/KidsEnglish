@@ -43,6 +43,11 @@ export function ActionImage({ src, alt, emoji, className = '' }) {
 }
 
 export function EnglishHomework({ data, isCompleted, onCompleteTask }) {
+  // 判断当前作业类型：若为 School Rules 校园规则与因果后果配对作业
+  if (data?.theme === 'school-rules' || (data?.rulesList && data.rulesList.length > 0)) {
+    return <SchoolRulesHomeworkView data={data} isCompleted={isCompleted} onCompleteTask={onCompleteTask} />
+  }
+
   // 判断当前作业类型：若为 Snakes Alive 句子主语命名部分与换主语造句作业
   if (data?.theme === 'snakes-alive' || (data?.snakePairs && data.snakePairs.length > 0)) {
     return <SnakesAliveHomeworkView data={data} isCompleted={isCompleted} onCompleteTask={onCompleteTask} />
@@ -3876,5 +3881,608 @@ function SnakesAliveHomeworkView({ data, isCompleted, onCompleteTask }) {
     </div>
   )
 }
+
+/**
+ * 星期二今日最新作业组件：School Rules: Identifying cause and effect 🏫
+ * 6 条校规与不遵守校规的后果（Cause and Effect）实景照片配对
+ * 💡 自写校规与后果预测灯泡挑战 + 📚 牛津阅读树共读工坊 + 🗂️ 核心实景图卡
+ */
+function SchoolRulesHomeworkView({ data, isCompleted, onCompleteTask }) {
+  const [activeSubTab, setActiveSubTab] = useState('rules') // 'rules' | 'lightbulb' | 'ort' | 'cards'
+
+  // 用户答题状态：{ [ruleId]: 'A' | 'B' | 'C' | 'D' | 'E' | 'F' }
+  const [userAnswers, setUserAnswers] = useState({})
+  const [activeRuleId, setActiveRuleId] = useState('rule-1')
+
+  // 灯泡挑战自写校规状态
+  const [selectedPresetIndex, setSelectedPresetIndex] = useState(0)
+  const [customRuleInput, setCustomRuleInput] = useState('')
+  const [customConsequenceInput, setCustomConsequenceInput] = useState('')
+  const [copiedNotification, setCopiedNotification] = useState(false)
+
+  // 牛津阅读树激活绘本索引
+  const [ortActiveBookIdx, setOrtActiveBookIdx] = useState(0)
+
+  // 词典弹窗
+  const [selectedWordData, setSelectedWordData] = useState(null)
+
+  // 数据解构
+  const rulesList = data.rulesList || []
+  const pictureOptions = data.pictureOptions || []
+  const ruleDefinition = data.ruleDefinition || {}
+  const lightbulbChallenge = data.lightbulbChallenge || {}
+  const ortStoryReview = data.ortStoryReview || {}
+  const words = data.words || []
+  const teacherNote = data.teacherNote || ''
+
+  // 计算正确配对数量
+  const correctCount = rulesList.filter(r => userAnswers[r.id] === r.targetLetter).length
+  const allCompleted = rulesList.length > 0 && correctCount === rulesList.length
+
+  // 点击单词查词典
+  const handleWordClick = (rawWord) => {
+    playPop()
+    const wordInfo = lookupWord(rawWord)
+    if (wordInfo) {
+      setSelectedWordData(wordInfo)
+    }
+  }
+
+  // 为某条规则选择字母答案
+  const handleSelectAnswer = (rule, letter) => {
+    const isCorrect = letter === rule.targetLetter
+    setUserAnswers(prev => ({ ...prev, [rule.id]: letter }))
+    setActiveRuleId(rule.id)
+
+    if (isCorrect) {
+      playCorrect()
+      speakEnglish(rule.ruleText)
+      setTimeout(() => {
+        speakEnglish(rule.consequenceTitle)
+      }, 1000)
+    } else {
+      playTryAgain()
+      speakEnglish(`Letter ${letter}`)
+    }
+  }
+
+  // 一键魔法全配对
+  const handleMagicMatchAll = () => {
+    playMagic()
+    const all = {}
+    rulesList.forEach(r => {
+      all[r.id] = r.targetLetter
+    })
+    setUserAnswers(all)
+    setTimeout(() => {
+      playCheer()
+      speakEnglish('Great job! You matched all the school rules and consequences!')
+    }, 400)
+  }
+
+  // 重置配对
+  const handleResetMatches = () => {
+    playPop()
+    setUserAnswers({})
+  }
+
+  // 复制改写的校规文本
+  const handleCopyText = (textToCopy) => {
+    playPop()
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(textToCopy).then(() => {
+        setCopiedNotification(true)
+        setTimeout(() => setCopiedNotification(false), 2500)
+      })
+    }
+  }
+
+  // 当前选中的灯泡预设规则
+  const currentPreset = lightbulbChallenge.presetRules?.[selectedPresetIndex] || lightbulbChallenge.presetRules?.[0]
+  const displayRuleEn = customRuleInput.trim() || currentPreset?.ruleEn || ''
+  const displayConsequenceEn = customConsequenceInput.trim() || currentPreset?.consequenceEn || ''
+
+  return (
+    <div className="school-rules-container">
+      {/* 顶部作业标题与说明 */}
+      <div className="homework-header-card rules-header-glow">
+        <div className="rules-header-badge">
+          <span>🏫 9月29日 星期二 · 核心认知与阅读理解</span>
+          <span className="badge-tag">Identifying cause and effect</span>
+        </div>
+        <h2 className="homework-main-title">{data.title || 'School Rules: Identifying cause and effect 🏫'}</h2>
+        <p className="homework-subtitle-text">{data.topic || 'School Rules & Cause and Effect (校规守则与因果后果配对)'}</p>
+
+        {/* 老师当日备忘与课堂记录 */}
+        {teacherNote && (
+          <div className="teacher-note-banner">
+            <span className="teacher-icon">👩‍🏫</span>
+            <div className="teacher-note-content">
+              <strong>老师课堂记录与今日作业：</strong>
+              <p>{teacherNote}</p>
+            </div>
+          </div>
+        )}
+
+        {/* 核心认知法则：因果关系与校规 */}
+        {ruleDefinition.definition && (
+          <div className="rules-definition-card">
+            <div className="rule-def-header">
+              <span className="def-icon">💡</span>
+              <h4>{ruleDefinition.title || 'Identifying Cause and Effect: School Rules'}</h4>
+            </div>
+            <div className="rule-def-en" onClick={() => speakEnglish(ruleDefinition.definition)}>
+              "{ruleDefinition.definition}" 🔊
+            </div>
+            <div className="rule-def-cn">
+              {ruleDefinition.definitionCn}
+            </div>
+            <div className="rule-formula-chip">
+              {ruleDefinition.formula}
+            </div>
+            {ruleDefinition.whyRulesMatter && (
+              <div className="why-rules-matter">
+                🌟 {ruleDefinition.whyRulesMatter}
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+
+      {/* 选项卡导航栏 */}
+      <div className="rules-subtabs-nav">
+        <button
+          className={`subtab-btn ${activeSubTab === 'rules' ? 'active' : ''}`}
+          onClick={() => { playPop(); setActiveSubTab('rules'); }}
+        >
+          🏫 校规与因果配对 ({correctCount}/{rulesList.length})
+        </button>
+        <button
+          className={`subtab-btn ${activeSubTab === 'lightbulb' ? 'active' : ''}`}
+          onClick={() => { playPop(); setActiveSubTab('lightbulb'); }}
+        >
+          💡 自写校规与后果预测
+        </button>
+        <button
+          className={`subtab-btn ${activeSubTab === 'ort' ? 'active' : ''}`}
+          onClick={() => { playPop(); setActiveSubTab('ort'); }}
+        >
+          📚 牛津阅读树共读工坊
+        </button>
+        <button
+          className={`subtab-btn ${activeSubTab === 'cards' ? 'active' : ''}`}
+          onClick={() => { playPop(); setActiveSubTab('cards'); }}
+        >
+          🗂️ 核心实景图卡 ({words.length})
+        </button>
+      </div>
+
+      {/* ================= 子选项卡 1：校规与因果配对大挑战 ================= */}
+      {activeSubTab === 'rules' && (
+        <div className="rules-tab-pane animate-fade-in">
+          {/* 指引横幅与操作按钮 */}
+          <div className="rules-task-banner">
+            <div className="banner-text-area">
+              <h3>🎯 Read each rule below. Find the picture that shows what would happen if students DID NOT follow that rule!</h3>
+              <p>仔细阅读每一条校规，点击匹配右侧对应的后果实景照片字母 (A - F)，探寻前因后果！</p>
+            </div>
+            <div className="banner-actions">
+              <button className="magic-match-btn" onClick={handleMagicMatchAll}>
+                ✨ 一键魔法全配对
+              </button>
+              <button className="reset-match-btn" onClick={handleResetMatches}>
+                🔄 重置答题
+              </button>
+            </div>
+          </div>
+
+          {/* 配对进度条 */}
+          <div className="rules-progress-box">
+            <div className="progress-header-row">
+              <span className="p-title">
+                {allCompleted
+                  ? '🎉 太棒了！全部 6 条校规与后果因果对应完全正确！'
+                  : `🌟 配对进度：已正确匹配 ${correctCount} / ${rulesList.length} 条校规`}
+              </span>
+              <span className="p-pct">{Math.round((correctCount / (rulesList.length || 1)) * 100)}%</span>
+            </div>
+            <div className="p-track">
+              <div
+                className="p-fill rules-fill-glow"
+                style={{ width: `${(correctCount / (rulesList.length || 1)) * 100}%` }}
+              />
+            </div>
+          </div>
+
+          {/* 6 幅字母后果图参考展示区 (A - F Pictures Reference Board) */}
+          <div className="pictures-reference-section">
+            <h4 className="ref-section-title">
+              🖼️ 观察 6 幅不遵守校规的后果实景照片 (Pictures A to F)：
+            </h4>
+            <div className="picture-options-grid">
+              {pictureOptions.map((pic) => (
+                <div
+                  key={pic.letter}
+                  className="picture-option-card"
+                  onClick={() => {
+                    playPop()
+                    speakEnglish(`Picture ${pic.letter}. ${pic.speechQuote}`)
+                  }}
+                >
+                  <div className="pic-card-header">
+                    <span className="pic-letter-badge">{pic.letter}</span>
+                    <span className="pic-speaker">🔊 点击听描述</span>
+                  </div>
+                  <div className="pic-image-wrap">
+                    <img src={pic.image} alt={pic.description} className="pic-real-photo" />
+                  </div>
+                  <div className="pic-quote-title">
+                    {pic.speechQuote}
+                  </div>
+                  <div className="pic-quote-cn">
+                    {pic.speechQuoteCn}
+                  </div>
+                  <div className="pic-desc-text">
+                    💡 {pic.description}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* 6 条校规互动配对卡片列表 */}
+          <div className="rules-matching-list">
+            <h4 className="matching-list-title">
+              📝 逐条完成配对：为 6 条校规选出正确的后果字母！
+            </h4>
+            {rulesList.map((rule) => {
+              const currentChoice = userAnswers[rule.id]
+              const isAnswered = Boolean(currentChoice)
+              const isCorrect = currentChoice === rule.targetLetter
+
+              return (
+                <div
+                  key={rule.id}
+                  className={`rule-match-card ${isAnswered ? (isCorrect ? 'rule-correct-glow' : 'rule-wrong-glow') : ''} ${activeRuleId === rule.id ? 'active-rule-card' : ''}`}
+                  onClick={() => setActiveRuleId(rule.id)}
+                >
+                  <div className="rule-card-top-row">
+                    <div className="rule-num-tag">Rule #{rule.num}</div>
+                    <div className="rule-statement-text" onClick={() => speakEnglish(rule.ruleText)}>
+                      <span className="rule-en">{rule.ruleText}</span>
+                      <span className="rule-speaker">🔊</span>
+                      <div className="rule-cn">{rule.ruleTextCn}</div>
+                    </div>
+
+                    {/* 方框字母填写区 */}
+                    <div className="target-letter-box-area">
+                      <span className="box-label">后果图片字母:</span>
+                      <div className={`square-letter-box ${isAnswered ? (isCorrect ? 'box-correct' : 'box-wrong') : ''}`}>
+                        {currentChoice || '?'}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* 字母选择按钮行 (A - F) */}
+                  <div className="letter-selection-bar">
+                    <span className="choice-hint">点击选择匹配的图片字母：</span>
+                    <div className="letter-buttons-row">
+                      {['A', 'B', 'C', 'D', 'E', 'F'].map((letter) => {
+                        const isThisChosen = currentChoice === letter
+                        return (
+                          <button
+                            key={letter}
+                            className={`letter-pick-btn ${isThisChosen ? (isCorrect ? 'btn-active-correct' : 'btn-active-wrong') : ''}`}
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              handleSelectAnswer(rule, letter)
+                            }}
+                          >
+                            {letter}
+                          </button>
+                        )
+                      })}
+                    </div>
+                  </div>
+
+                  {/* 配对结果即时反馈与解析 */}
+                  {isAnswered && (
+                    <div className={`rule-feedback-panel animate-fade-in ${isCorrect ? 'feedback-correct' : 'feedback-try'}`}>
+                      {isCorrect ? (
+                        <div className="feedback-content">
+                          <div className="feedback-headline">
+                            🎉 <strong>配对正确！</strong> 对应图片 <strong>{rule.targetLetter}</strong>：
+                          </div>
+                          <div className="consequence-display">
+                            ⚠️ <strong>后果 (Consequence)：</strong>
+                            <span className="c-en" onClick={() => speakEnglish(rule.consequenceTitle)}>
+                              "{rule.consequenceTitle}" 🔊
+                            </span>
+                            <div className="c-cn">{rule.consequenceCn}</div>
+                          </div>
+                          <div className="safety-tip">
+                            🌟 <strong>安全守则小贴士：</strong>{rule.tip}
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="feedback-try-text">
+                          💡 <strong>再想一想：</strong> 图片 {currentChoice} 看起来和这条规则不太吻合哦，仔细观察上面参考图里的情形！
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+              )
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* ================= 子选项卡 2：自写校规与后果预测 (Lightbulb Challenge) ================= */}
+      {activeSubTab === 'lightbulb' && (
+        <div className="rules-tab-pane animate-fade-in">
+          <div className="lightbulb-rules-banner">
+            <div className="bulb-banner-top">
+              <span className="bulb-giant-icon">💡</span>
+              <div>
+                <h3>{lightbulbChallenge.title || 'Lightbulb Challenge: Write a School Rule You Must Obey'}</h3>
+                <p className="bulb-en">"{lightbulbChallenge.promptEn || 'Write a school rule that you must obey. Draw a picture of what might happen if you do not.'}"</p>
+                <p className="bulb-cn">{lightbulbChallenge.promptCn || '写下一条你必须遵守的校规，并思考或画出如果不遵守时可能发生的事情！'}</p>
+              </div>
+            </div>
+          </div>
+
+          {/* 预设优秀范例灵感卡片 */}
+          <div className="preset-rules-section">
+            <h4 className="section-title">🌟 灵感示范（点击直接应用，或激发自己的创意）：</h4>
+            <div className="preset-rules-grid">
+              {(lightbulbChallenge.presetRules || []).map((preset, idx) => (
+                <div
+                  key={idx}
+                  className={`preset-rule-card ${selectedPresetIndex === idx && !customRuleInput.trim() ? 'active' : ''}`}
+                  onClick={() => {
+                    playMagic()
+                    setSelectedPresetIndex(idx)
+                    setCustomRuleInput('')
+                    setCustomConsequenceInput('')
+                    speakEnglish(preset.ruleEn)
+                  }}
+                >
+                  <div className="p-card-badge">范例 #{idx + 1} · {preset.tip}</div>
+                  <div className="p-card-rule">
+                    📜 <strong>校规：</strong>{preset.ruleEn}
+                  </div>
+                  <div className="p-card-rule-cn">{preset.ruleCn}</div>
+                  <div className="p-card-consequence">
+                    ⚠️ <strong>违背后果：</strong>{preset.consequenceEn}
+                  </div>
+                  <div className="p-card-consequence-cn">{preset.consequenceCn}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* 自主写校规输入工坊 */}
+          <div className="custom-rule-workshop">
+            <h4 className="section-title">✍️ 写下你自己的校园安全守则：</h4>
+            <div className="input-group-row">
+              <div className="input-field-wrap">
+                <label>1. 你必须遵守的校规 (A school rule you must obey)：</label>
+                <input
+                  type="text"
+                  placeholder="例如: Never push others on the playground. / Raise your hand to speak."
+                  value={customRuleInput}
+                  onChange={(e) => setCustomRuleInput(e.target.value)}
+                  className="rule-custom-input"
+                />
+              </div>
+
+              <div className="input-field-wrap">
+                <label>2. 如果不遵守会发生什么后果 (What happens if you do not)：</label>
+                <input
+                  type="text"
+                  placeholder="例如: Someone could fall down and get hurt."
+                  value={customConsequenceInput}
+                  onChange={(e) => setCustomConsequenceInput(e.target.value)}
+                  className="rule-custom-input"
+                />
+              </div>
+            </div>
+
+            {(customRuleInput || customConsequenceInput) && (
+              <button
+                className="clear-custom-btn"
+                onClick={() => {
+                  playPop()
+                  setCustomRuleInput('')
+                  setCustomConsequenceInput('')
+                }}
+              >
+                清空重写
+              </button>
+            )}
+
+            {/* 核心呈现：四线三格仿真作业纸 */}
+            <div className="notebook-paper-container">
+              <div className="notebook-header-line">
+                <span className="nb-title">📝 英文规范四线三格书写展示 (Ready to copy onto paper)</span>
+                <div className="nb-actions">
+                  <button
+                    className="nb-speak-btn"
+                    onClick={() => speakEnglish(`${displayRuleEn}. ${displayConsequenceEn}`)}
+                  >
+                    🔊 听整句朗读
+                  </button>
+                  <button
+                    className="nb-copy-btn"
+                    onClick={() => handleCopyText(`Rule: ${displayRuleEn}\nConsequence: ${displayConsequenceEn}`)}
+                  >
+                    {copiedNotification ? '✅ 已复制！' : '📋 复制文本'}
+                  </button>
+                </div>
+              </div>
+
+              <div className="four-lines-ruled-paper">
+                <div className="ruled-line red-top-line" />
+                <div className="ruled-line blue-mid-dashed" />
+                <div className="ruled-line blue-baseline" />
+                <div className="ruled-line red-bottom-line" />
+                <div className="handwriting-sentence-overlay">
+                  Rule: {displayRuleEn}
+                </div>
+              </div>
+
+              <div className="four-lines-ruled-paper" style={{ marginTop: '12px' }}>
+                <div className="ruled-line red-top-line" />
+                <div className="ruled-line blue-mid-dashed" />
+                <div className="ruled-line blue-baseline" />
+                <div className="ruled-line red-bottom-line" />
+                <div className="handwriting-sentence-overlay">
+                  {displayConsequenceEn}
+                </div>
+              </div>
+
+              <div className="writing-checklist-row">
+                <span className="checklist-item">✅ 首字母大写 (Capital letter)</span>
+                <span className="checklist-item">✅ 单词间留一指空隙 (Finger space)</span>
+                <span className="checklist-item">✅ 句末添加句号 (Period .)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ================= 子选项卡 3：牛津阅读树共读工坊 (Oxford Reading Tree) ================= */}
+      {activeSubTab === 'ort' && (
+        <div className="rules-tab-pane animate-fade-in">
+          <div className="ort-workshop-banner">
+            <div className="ort-banner-top">
+              <span className="ort-tree-icon">🌳</span>
+              <div>
+                <h3>{ortStoryReview.title || 'Oxford Reading Tree: Story Titles & Page-by-Page Reading'}</h3>
+                <p>{ortStoryReview.note || '老师课堂记录：We identified and read the titles of each storybook, then read together page by page.'}</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="ort-books-grid">
+            {(ortStoryReview.books || []).map((book, bIdx) => (
+              <div
+                key={bIdx}
+                className={`ort-book-card ${ortActiveBookIdx === bIdx ? 'active' : ''}`}
+                onClick={() => {
+                  playPop()
+                  setOrtActiveBookIdx(bIdx)
+                  speakEnglish(book.title)
+                }}
+              >
+                <div className="ort-card-header">
+                  <span className="ort-stage-badge">{book.stage}</span>
+                  <span className="ort-speaker-tag">🔊 读绘本标题</span>
+                </div>
+                <h4 className="ort-book-title">{book.title}</h4>
+                <p className="ort-book-desc">{book.desc}</p>
+                <p className="ort-book-cn">{book.descCn}</p>
+                <div className="ort-rule-connection">
+                  🏷️ <strong>对应今日校规：</strong>{book.keyRule}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* ================= 子选项卡 4：核心实景图卡 (Flashcards) ================= */}
+      {activeSubTab === 'cards' && (
+        <div className="rules-tab-pane animate-fade-in">
+          <div className="cards-intro-banner">
+            <h3>🗂️ 核心实景高清图卡 (School Rules Flashcards with Real Photography)</h3>
+            <p>100% 真实生活与校园摄影，点击卡片听标准美音，点击右下角查看完整词典音标与释义！</p>
+          </div>
+
+          <div className="flashcards-grid">
+            {words.map((item) => (
+              <div
+                key={item.id}
+                className="rules-flashcard"
+                onClick={() => {
+                  playPop()
+                  speakEnglish(item.word)
+                }}
+              >
+                <div className="card-image-wrap">
+                  <ActionImage
+                    src={item.image}
+                    alt={item.word}
+                    emoji={item.emoji}
+                    className="flashcard-real-img"
+                  />
+                  <span className="card-emoji-bubble">{item.emoji}</span>
+                </div>
+
+                <div className="card-content-area">
+                  <div className="card-word-title">
+                    <span className="word-text">{item.word}</span>
+                    <span className="word-phonetic">{item.phonetic}</span>
+                  </div>
+                  <div className="card-translation-text">
+                    {item.translation}
+                  </div>
+
+                  {item.sentence && (
+                    <div
+                      className="card-example-sentence"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        speakEnglish(item.sentence)
+                      }}
+                    >
+                      <div className="sentence-en">"{item.sentence}" 🔊</div>
+                      <div className="sentence-cn">{item.sentenceCn}</div>
+                    </div>
+                  )}
+
+                  <button
+                    className="detail-lookup-btn"
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      handleWordClick(item.word)
+                    }}
+                  >
+                    📖 音标与词典详解
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* 底部打卡大按钮 */}
+      <div className="homework-bottom-bar">
+        <button
+          className={`finish-homework-btn ${isCompleted ? 'already-done' : ''}`}
+          onClick={() => {
+            playCheer()
+            onCompleteTask('english')
+          }}
+        >
+          {isCompleted
+            ? '✅ School Rules 校规因果作业已通关打卡（再次庆祝）'
+            : '🎉 我会遵守校规与理解因果关系了！打卡领贴纸'}
+        </button>
+      </div>
+
+      {/* 点击单词弹出发音、音标与释义卡片 */}
+      {selectedWordData && (
+        <WordDetailModal
+          wordData={selectedWordData}
+          onClose={() => setSelectedWordData(null)}
+        />
+      )}
+    </div>
+  )
+}
+
 
 
