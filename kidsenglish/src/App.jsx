@@ -5,6 +5,7 @@ import { TodayOverview } from './components/TodayOverview'
 import { EnglishHomework } from './components/EnglishHomework'
 import { PinyinHomework } from './components/PinyinHomework'
 import { ReadingHomework } from './components/ReadingHomework'
+import { SentenceReader } from './components/SentenceReader'
 import { HomeworkHistory } from './components/HomeworkHistory'
 import { StickerBook } from './components/StickerBook'
 import { ParentModal } from './components/ParentModal'
@@ -354,7 +355,12 @@ function App() {
           />
         )}
 
-        {/* 5. 往期作业清单与归档 */}
+        {/* 5. 句子朗读工坊 */}
+        {activeTab === 'reader' && (
+          <SentenceReader />
+        )}
+
+        {/* 6. 往期作业清单与归档 */}
         {activeTab === 'history' && (
           <HomeworkHistory 
             homeworkList={homeworkList}

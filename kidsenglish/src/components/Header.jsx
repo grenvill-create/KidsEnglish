@@ -89,7 +89,7 @@ export function Header({
       </div>
 
       {/* 主导航栏 */}
-      <nav className="main-nav five-tabs">
+      <nav className="main-nav six-tabs">
         <button 
           className={`nav-tab ${activeTab === 'overview' ? 'active' : ''}`}
           onClick={() => { playPop(); setActiveTab('overview'); }}
@@ -131,6 +131,17 @@ export function Header({
           <span className="nav-label">
             <span className="nav-label-full">儿歌绘本指读</span>
             <span className="nav-label-short">儿歌指读</span>
+          </span>
+        </button>
+
+        <button 
+          className={`nav-tab ${activeTab === 'reader' ? 'active' : ''}`}
+          onClick={() => { playPop(); setActiveTab('reader'); }}
+        >
+          <span className="nav-icon">🗣️</span>
+          <span className="nav-label">
+            <span className="nav-label-full">句子朗读工坊</span>
+            <span className="nav-label-short">句子朗读</span>
           </span>
         </button>
 

@@ -1,6 +1,7 @@
-// 语音引擎：支持英语自然语音、中文语音以及百度真人发音（拼音发声）
+// 语音引擎：支持英语自然语音、中文语音以及百度真人发音（拼音发声与整句播音）
 let voices = []
 let currentPinyinAudio = null
+let currentSentenceAudio = null
 
 function initVoices() {
   if (typeof window === 'undefined' || !('speechSynthesis' in window)) return
@@ -14,7 +15,7 @@ function initVoices() {
 
 initVoices()
 
-// 停止所有正在发声的语音（包括百度真人音频和系统TTS）
+// 停止所有正在发声的语音（包括百度真人音频、整句音频和系统TTS）
 export function stopSpeech() {
   if (currentPinyinAudio) {
     try {
@@ -24,6 +25,16 @@ export function stopSpeech() {
       // 忽略已卸载异常
     }
     currentPinyinAudio = null
+  }
+
+  if (currentSentenceAudio) {
+    try {
+      currentSentenceAudio.pause()
+      currentSentenceAudio.currentTime = 0
+    } catch (e) {
+      // 忽略已卸载异常
+    }
+    currentSentenceAudio = null
   }
 
   if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
@@ -379,3 +390,217 @@ export function speakChinese(text, isSlow = false, onEnd = null) {
 
   window.speechSynthesis.speak(utterance)
 }
+
+/**
+ * 百度在线真人播音朗读（高清晰度真人播音语音模型）
+ * 通过百度翻译云端真人播音模型直接流式发音，声音字正腔圆，情感自然
+ * @param {Object} options
+ * @param {string} options.text 朗读文本
+ * @param {'zh'|'en'} options.lang 语言（zh=中文真人播音员，en=标准美语真人）
+ * @param {number} options.speed 语速 (3/4=慢速, 5=标准, 6/7=快速)
+ * @param {Function|null} options.onEnd 播放完成回调
+ * @param {Function|null} options.onError 播放异常回调（用于平滑降级）
+ */
+export function speakBaiduTTS({ text, lang = 'zh', speed = 5, onEnd = null, onError = null }) {
+  stopSpeech()
+  if (!text || !text.trim()) {
+    if (onEnd) onEnd()
+    return
+  }
+
+  const cleanText = text.trim()
+  const encodedText = encodeURIComponent(cleanText)
+  const lanParam = lang === 'en' ? 'en' : 'zh'
+  const url = `https://fanyi.baidu.com/gettts?lan=${lanParam}&text=${encodedText}&spd=${speed}&source=web`
+
+  try {
+    const audio = new Audio(url)
+    // 禁用跨域 Referer 携带以确保百度音频流稳定加载
+    audio.referrerPolicy = 'no-referrer'
+    currentSentenceAudio = audio
+
+    let hasEnded = false
+    const handleFinish = () => {
+      if (hasEnded) return
+      hasEnded = true
+      if (currentSentenceAudio === audio) {
+        currentSentenceAudio = null
+      }
+      if (onEnd) onEnd()
+    }
+
+    audio.onended = handleFinish
+    audio.onerror = (err) => {
+      console.warn('百度真人语音流请求受限或网络波动，正在切换至备用引擎：', err)
+      if (currentSentenceAudio === audio) {
+        currentSentenceAudio = null
+      }
+      if (onError) onError(err)
+      else handleFinish()
+    }
+
+    const playPromise = audio.play()
+    if (playPromise !== undefined) {
+      playPromise.catch((err) => {
+        console.warn('Audio 自动播放受阻或被中断：', err)
+        if (currentSentenceAudio === audio) {
+          currentSentenceAudio = null
+        }
+        if (onError) onError(err)
+        else handleFinish()
+      })
+    }
+  } catch (err) {
+    console.warn('创建 Audio 失败：', err)
+    if (onError) onError(err)
+    else if (onEnd) onEnd()
+  }
+}
+
+/**
+ * 微软/系统超拟人大模型自然语音（如 Edge Xiaoxiao/Jenny Natural, Google US/普通话, Siri 等）
+ * @param {Object} options
+ * @param {string} options.text 朗读文本
+ * @param {'zh'|'en'} options.lang 语言
+ * @param {number} options.rate 语速 (0.8, 1.0, 1.2)
+ * @param {Function|null} options.onEnd 播放完成回调
+ */
+export function speakNeuralTTS({ text, lang = 'zh', rate = 1.0, onEnd = null }) {
+  if (typeof window === 'undefined' || !('speechSynthesis' in window)) {
+    if (onEnd) onEnd()
+    return
+  }
+  stopSpeech()
+
+  if (!text || !text.trim()) {
+    if (onEnd) onEnd()
+    return
+  }
+
+  if (voices.length === 0) {
+    voices = window.speechSynthesis.getVoices()
+  }
+
+  const utterance = new SpeechSynthesisUtterance(text.trim())
+  utterance.rate = rate
+  utterance.pitch = 1.05
+
+  if (lang === 'en') {
+    utterance.lang = 'en-US'
+    const bestEnVoice = voices.find(v => 
+      v.lang.startsWith('en') && (
+        v.name.includes('Natural') || 
+        v.name.includes('Jenny') || 
+        v.name.includes('Guy') || 
+        v.name.includes('Aria') ||
+        v.name.includes('Samantha') || 
+        v.name.includes('Google US')
+      )
+    ) || voices.find(v => v.lang.startsWith('en'))
+    if (bestEnVoice) utterance.voice = bestEnVoice
+  } else {
+    utterance.lang = 'zh-CN'
+    const bestZhVoice = voices.find(v => 
+      v.lang.startsWith('zh') && (
+        v.name.includes('Natural') || 
+        v.name.includes('Xiaoxiao') || 
+        v.name.includes('Yunxi') || 
+        v.name.includes('Tingting') || 
+        v.name.includes('Google 普通话')
+      )
+    ) || voices.find(v => v.lang.startsWith('zh'))
+    if (bestZhVoice) utterance.voice = bestZhVoice
+  }
+
+  let finished = false
+  const finish = () => {
+    if (finished) return
+    finished = true
+    if (onEnd) onEnd()
+  }
+
+  utterance.onend = finish
+  utterance.onerror = finish
+
+  window.speechSynthesis.speak(utterance)
+}
+
+/**
+ * 统一多引擎句子朗读调度器
+ * @param {Object} options
+ * @param {string} options.text 朗读文本
+ * @param {'zh'|'en'} options.lang 语种
+ * @param {'auto'|'baidu'|'neural'} options.engine 语音引擎 (auto=优先百度真人，失败自动无缝切神经网络)
+ * @param {'slow'|'normal'|'fast'|number} options.speed 语速
+ * @param {Function|null} options.onEnd 结束回调
+ */
+export function speakSentence({ text, lang = 'zh', engine = 'auto', speed = 'normal', onEnd = null }) {
+  if (!text || !text.trim()) {
+    if (onEnd) onEnd()
+    return
+  }
+
+  let baiduSpeed = 5
+  let neuralRate = 1.0
+
+  if (speed === 'slow' || speed === 0.8) {
+    baiduSpeed = 4
+    neuralRate = 0.8
+  } else if (speed === 'fast' || speed === 1.2) {
+    baiduSpeed = 6
+    neuralRate = 1.2
+  } else {
+    baiduSpeed = 5
+    neuralRate = 1.0
+  }
+
+  if (engine === 'neural') {
+    speakNeuralTTS({ text, lang, rate: neuralRate, onEnd })
+    return
+  }
+
+  if (engine === 'baidu') {
+    speakBaiduTTS({ text, lang, speed: baiduSpeed, onEnd, onError: onEnd })
+    return
+  }
+
+  // 默认 auto: 优先百度真人播音，如果网络不通或跨域受阻，自动无缝切换到浏览器超拟人神经网络语音
+  speakBaiduTTS({
+    text,
+    lang,
+    speed: baiduSpeed,
+    onEnd,
+    onError: () => {
+      console.log('自动平滑启用微软/系统神经网络大模型自然语音...')
+      speakNeuralTTS({ text, lang, rate: neuralRate, onEnd })
+    }
+  })
+}
+
+/**
+ * 智能分句工具：将长段落或换行文本智能切分为独立的朗读句子
+ * @param {string} text 待切分文本
+ * @param {'zh'|'en'|'auto'} lang 语种
+ * @returns {string[]} 切分后的句子数组
+ */
+export function splitSentences(text, lang = 'auto') {
+  if (!text) return []
+  const trimmed = text.trim()
+  if (!trimmed) return []
+
+  // 按换行或典型中英文句子标点切分
+  // 中文标点：。！？；
+  // 英文标点：. ! ? ;
+  const rawParts = trimmed.split(/(?<=[。！？；\n])|(?<=[.!?;\n])\s+/)
+  const result = []
+
+  for (const part of rawParts) {
+    const s = part.trim()
+    if (s.length > 0) {
+      result.push(s)
+    }
+  }
+
+  return result.length > 0 ? result : [trimmed]
+}
+
