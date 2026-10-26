@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react'
-import { speakSentence, stopSpeech, splitSentences } from '../utils/speech'
+import { speakSentence, speakContinuous, stopSpeech, splitSentences } from '../utils/speech'
 import { playPop, playCorrect } from '../utils/sound'
 
 // 预设经典语料（包含用户指定阿宝无人机例句）
@@ -7,7 +7,7 @@ const PRESET_SENTENCES = [
   {
     id: 'abao-drone',
     tag: '🚁 示例1：阿宝与无人机',
-    title: '阿宝与无人机（用户提问专属示例）',
+    title: '阿宝与无人机（用户提问专属例句）',
     zh: '阿宝又听到了一阵“嗡嗡”声，它抬头一看，原来是无人机的螺旋桨发出的声音。',
     en: 'Abao heard another “buzzing” sound. Looking up, he saw that it was made by the spinning propellers of a drone.'
   },
@@ -34,14 +34,15 @@ export function SentenceReader() {
   const [mixedInput, setMixedInput] = useState(`${PRESET_SENTENCES[0].zh}\n${PRESET_SENTENCES[0].en}`)
   const [inputMode, setInputMode] = useState('split') // 'split' | 'mixed'
 
-  // 2. 播放参数
+  // 2. 朗读核心模式：连续流利朗读 (continuous) vs 逐句停顿精读 (stepByStep)
+  const [readingFlow, setReadingFlow] = useState('continuous') // 'continuous' | 'stepByStep'
   const [engine, setEngine] = useState('auto') // 'auto' | 'baidu' | 'neural'
   const [speed, setSpeed] = useState('normal') // 'slow' | 'normal' | 'fast'
   const [readOrder, setReadOrder] = useState('alternate') // 'alternate' (中英逐句轮读) | 'sequential' (整篇中文后整篇英文)
 
   // 3. 实时播放状态跟踪
   const [isPlaying, setIsPlaying] = useState(false)
-  const [activeItem, setActiveItem] = useState(null) // { index: number, lang: 'zh' | 'en' }
+  const [activeItem, setActiveItem] = useState(null) // { mode: 'continuous'|'step', lang: 'zh'|'en'|'mixed', index?: number, chunkInfo?: string }
   const [copiedId, setCopiedId] = useState(null)
   const [showTechGuide, setShowTechGuide] = useState(false)
 
@@ -73,7 +74,7 @@ export function SentenceReader() {
     }
   }, [])
 
-  // 智能分句对齐处理
+  // 智能分句对齐处理（卡片点读视图使用）
   const sentencePairs = useMemo(() => {
     const zhList = splitSentences(chineseText, 'zh')
     const enList = splitSentences(englishText, 'en')
@@ -101,7 +102,6 @@ export function SentenceReader() {
     const enParts = []
 
     lines.forEach(line => {
-      // 包含中文字符的划入中文，否则划入英文
       if (/[\u4e00-\u9fa5]/.test(line)) {
         zhParts.push(line)
       } else if (/[a-zA-Z]/.test(line)) {
@@ -109,7 +109,6 @@ export function SentenceReader() {
       }
     })
 
-    // 如果没有换行分行，则通过连续中英文正则切割
     if (zhParts.length === 0 || enParts.length === 0) {
       const matchZh = mixedInput.match(/[\u4e00-\u9fa5\uff00-\uffef“”，。！？；：、\s]+/g)
       const matchEn = mixedInput.match(/[a-zA-Z0-9\s.,!?'"“”—\-]+/g)
@@ -152,19 +151,18 @@ export function SentenceReader() {
     }
   }
 
-  // 队列步进播放器
+  // ===================== A. 逐句停顿播放队列 (Step-by-Step) =====================
   const stepPlayQueue = () => {
     if (!isPlayingRef.current) return
 
     if (queueIndexRef.current >= playQueueRef.current.length) {
-      // 全部播放完毕
       handleStop()
-      playSuccess()
+      playCorrect()
       return
     }
 
     const item = playQueueRef.current[queueIndexRef.current]
-    setActiveItem({ index: item.pairIndex, lang: item.lang })
+    setActiveItem({ mode: 'step', index: item.pairIndex, lang: item.lang })
     scrollToActiveCard(item.pairIndex)
 
     speakSentence({
@@ -175,16 +173,14 @@ export function SentenceReader() {
       onEnd: () => {
         if (!isPlayingRef.current) return
         queueIndexRef.current += 1
-        // 句与句之间给予 380ms 自然换气停顿
         timeoutRef.current = setTimeout(() => {
           stepPlayQueue()
-        }, 380)
+        }, 360)
       }
     })
   }
 
-  // 启动队列播放
-  const startQueuePlay = (queue) => {
+  const startStepQueuePlay = (queue) => {
     handleStop()
     if (!queue || queue.length === 0) return
 
@@ -195,63 +191,183 @@ export function SentenceReader() {
     stepPlayQueue()
   }
 
-  // 1. 仅朗读中文
-  const handleReadChineseAll = () => {
+  // ===================== B. 连续流利长文本播放 (Continuous Stream) =====================
+  // 1. 连续朗读全部中文句子（一口气流利播音，不卡顿）
+  const handleReadChineseContinuous = () => {
     playPop()
-    const queue = []
-    sentencePairs.forEach(p => {
-      if (p.zh && p.zh.trim()) {
-        queue.push({ pairIndex: p.id, lang: 'zh', text: p.zh })
+    handleStop()
+    if (!chineseText || !chineseText.trim()) return
+
+    isPlayingRef.current = true
+    setIsPlaying(true)
+    setActiveItem({ mode: 'continuous', lang: 'zh' })
+
+    speakContinuous({
+      text: chineseText,
+      lang: 'zh',
+      engine,
+      speed,
+      onProgress: (prog) => {
+        if (prog.totalChunks > 1) {
+          setActiveItem(prev => ({ ...prev, chunkInfo: `第 ${prog.currentChunk}/${prog.totalChunks} 段` }))
+        }
+      },
+      onEnd: () => {
+        handleStop()
+        playCorrect()
       }
     })
-    startQueuePlay(queue)
   }
 
-  // 2. 仅朗读英文
-  const handleReadEnglishAll = () => {
+  // 2. 连续朗读全部英文句子（一口气流利播音，不卡顿）
+  const handleReadEnglishContinuous = () => {
     playPop()
-    const queue = []
-    sentencePairs.forEach(p => {
-      if (p.en && p.en.trim()) {
-        queue.push({ pairIndex: p.id, lang: 'en', text: p.en })
+    handleStop()
+    if (!englishText || !englishText.trim()) return
+
+    isPlayingRef.current = true
+    setIsPlaying(true)
+    setActiveItem({ mode: 'continuous', lang: 'en' })
+
+    speakContinuous({
+      text: englishText,
+      lang: 'en',
+      engine,
+      speed,
+      onProgress: (prog) => {
+        if (prog.totalChunks > 1) {
+          setActiveItem(prev => ({ ...prev, chunkInfo: `Part ${prog.currentChunk}/${prog.totalChunks}` }))
+        }
+      },
+      onEnd: () => {
+        handleStop()
+        playCorrect()
       }
     })
-    startQueuePlay(queue)
   }
 
-  // 3. 中英双语整篇连读
-  const handleReadBilingualAll = () => {
+  // 3. 中英整篇连续朗读（流畅读完全部中文后，零停顿紧接着流畅读完全部英文）
+  const handleReadBilingualContinuous = () => {
     playPop()
-    const queue = []
+    handleStop()
+    if (!chineseText.trim() && !englishText.trim()) return
 
-    if (readOrder === 'alternate') {
-      // 逐句对照轮读：中文1 -> 英文1 -> 中文2 -> 英文2...
-      sentencePairs.forEach(p => {
-        if (p.zh && p.zh.trim()) {
-          queue.push({ pairIndex: p.id, lang: 'zh', text: p.zh })
-        }
-        if (p.en && p.en.trim()) {
-          queue.push({ pairIndex: p.id, lang: 'en', text: p.en })
-        }
-      })
-    } else {
-      // 顺序朗读：全部中文 -> 全部英文
-      sentencePairs.forEach(p => {
-        if (p.zh && p.zh.trim()) {
-          queue.push({ pairIndex: p.id, lang: 'zh', text: p.zh })
-        }
-      })
-      sentencePairs.forEach(p => {
-        if (p.en && p.en.trim()) {
-          queue.push({ pairIndex: p.id, lang: 'en', text: p.en })
-        }
-      })
+    isPlayingRef.current = true
+    setIsPlaying(true)
+
+    // 如果只有英文
+    if (!chineseText.trim()) {
+      handleReadEnglishContinuous()
+      return
     }
 
-    startQueuePlay(queue)
+    // 先连续朗读全部中文
+    setActiveItem({ mode: 'continuous', lang: 'zh', chunkInfo: '中文连贯朗读' })
+    speakContinuous({
+      text: chineseText,
+      lang: 'zh',
+      engine,
+      speed,
+      onEnd: () => {
+        if (!isPlayingRef.current) return
+        // 中文结束，立即无缝无卡顿切换到连续英文朗读
+        if (englishText && englishText.trim()) {
+          setActiveItem({ mode: 'continuous', lang: 'en', chunkInfo: '英文连贯朗读' })
+          speakContinuous({
+            text: englishText,
+            lang: 'en',
+            engine,
+            speed,
+            onEnd: () => {
+              handleStop()
+              playCorrect()
+            }
+          })
+        } else {
+          handleStop()
+          playCorrect()
+        }
+      }
+    })
   }
 
-  // 4. 单独朗读单句卡片
+  // 4. 一键中英混读（直接将中文和英文融为一体，整篇一口气播完）
+  const handleReadMixedSeamless = () => {
+    playPop()
+    handleStop()
+    const combined = `${chineseText.trim()}\n${englishText.trim()}`
+    if (!combined.trim()) return
+
+    isPlayingRef.current = true
+    setIsPlaying(true)
+    setActiveItem({ mode: 'continuous', lang: 'mixed', chunkInfo: '中英一口气混读' })
+
+    speakContinuous({
+      text: combined,
+      lang: 'zh', // 百度中文播音引擎原生支持流畅穿插英文单词与整句朗读
+      engine,
+      speed,
+      onEnd: () => {
+        handleStop()
+        playCorrect()
+      }
+    })
+  }
+
+  // ===================== 统一调度分发 =====================
+  // 点击“朗读中文”按钮
+  const handleChineseClick = () => {
+    if (readingFlow === 'continuous') {
+      handleReadChineseContinuous()
+    } else {
+      playPop()
+      const queue = []
+      sentencePairs.forEach(p => {
+        if (p.zh && p.zh.trim()) queue.push({ pairIndex: p.id, lang: 'zh', text: p.zh })
+      })
+      startStepQueuePlay(queue)
+    }
+  }
+
+  // 点击“朗读英文”按钮
+  const handleEnglishClick = () => {
+    if (readingFlow === 'continuous') {
+      handleReadEnglishContinuous()
+    } else {
+      playPop()
+      const queue = []
+      sentencePairs.forEach(p => {
+        if (p.en && p.en.trim()) queue.push({ pairIndex: p.id, lang: 'en', text: p.en })
+      })
+      startStepQueuePlay(queue)
+    }
+  }
+
+  // 点击“中英整篇朗读”按钮
+  const handleBilingualClick = () => {
+    if (readingFlow === 'continuous') {
+      handleReadBilingualContinuous()
+    } else {
+      playPop()
+      const queue = []
+      if (readOrder === 'alternate') {
+        sentencePairs.forEach(p => {
+          if (p.zh && p.zh.trim()) queue.push({ pairIndex: p.id, lang: 'zh', text: p.zh })
+          if (p.en && p.en.trim()) queue.push({ pairIndex: p.id, lang: 'en', text: p.en })
+        })
+      } else {
+        sentencePairs.forEach(p => {
+          if (p.zh && p.zh.trim()) queue.push({ pairIndex: p.id, lang: 'zh', text: p.zh })
+        })
+        sentencePairs.forEach(p => {
+          if (p.en && p.en.trim()) queue.push({ pairIndex: p.id, lang: 'en', text: p.en })
+        })
+      }
+      startStepQueuePlay(queue)
+    }
+  }
+
+  // 单独朗读单句卡片
   const handlePlaySingle = (pairIndex, lang) => {
     playPop()
     handleStop()
@@ -262,7 +378,7 @@ export function SentenceReader() {
 
     isPlayingRef.current = true
     setIsPlaying(true)
-    setActiveItem({ index: pairIndex, lang })
+    setActiveItem({ mode: 'step', index: pairIndex, lang })
 
     speakSentence({
       text,
@@ -275,7 +391,7 @@ export function SentenceReader() {
     })
   }
 
-  // 5. 单组中英对照朗读 (单张卡片的中文+英文)
+  // 单组中英对照朗读 (单张卡片的中文+英文)
   const handlePlayPair = (pairIndex) => {
     playPop()
     const pair = sentencePairs.find(p => p.id === pairIndex)
@@ -285,7 +401,7 @@ export function SentenceReader() {
     if (pair.zh && pair.zh.trim()) queue.push({ pairIndex, lang: 'zh', text: pair.zh })
     if (pair.en && pair.en.trim()) queue.push({ pairIndex, lang: 'en', text: pair.en })
 
-    startQueuePlay(queue)
+    startStepQueuePlay(queue)
   }
 
   // 复制文本到剪贴板
@@ -299,6 +415,10 @@ export function SentenceReader() {
     }
   }
 
+  // 当前是否处于全文连续朗读态
+  const isContinuousZh = isPlaying && activeItem?.mode === 'continuous' && (activeItem?.lang === 'zh' || activeItem?.lang === 'mixed')
+  const isContinuousEn = isPlaying && activeItem?.mode === 'continuous' && (activeItem?.lang === 'en' || activeItem?.lang === 'mixed')
+
   return (
     <div className="sentence-reader-view animate-fade-in">
       {/* 1. 顶部标题栏 */}
@@ -307,11 +427,11 @@ export function SentenceReader() {
           <span className="hero-emoji">🗣️</span>
           <div className="hero-titles">
             <h2>双语真人生动朗读工坊</h2>
-            <p>输入任意中英文句子 · 百度真人播音级模型 · 支持单独朗读中文、英文或中英整篇对照跟读</p>
+            <p>支持连续流畅连读与逐句精读跟读 · 百度真人播音级模型 · 清晰准确自然一气呵成</p>
           </div>
         </div>
 
-        {/* 快捷示例切换 */}
+        {/* 预设例句快捷切换栏 */}
         <div className="preset-examples-bar">
           <span className="preset-label">💡 经典例句推荐：</span>
           <div className="preset-buttons">
@@ -332,7 +452,34 @@ export function SentenceReader() {
         </div>
       </div>
 
-      {/* 2. 文本输入区域 */}
+      {/* 2. 连续朗读 vs 逐句跟读 核心体验选择器 */}
+      <div className="flow-mode-switch-card">
+        <div className="flow-mode-title">
+          <span className="flow-icon">⚡</span>
+          <strong>朗读连贯体验模式：</strong>
+        </div>
+        <div className="flow-mode-options">
+          <button
+            className={`flow-mode-btn ${readingFlow === 'continuous' ? 'active' : ''}`}
+            onClick={() => { playPop(); setReadingFlow('continuous'); }}
+            title="连续流畅朗读全文，自然停顿，不卡断，一气呵成"
+          >
+            <span className="btn-title">🌊 连续流畅连读（推荐）</span>
+            <span className="btn-desc">一口气流利读完全文，语流自然生动，不一句一句停顿</span>
+          </button>
+
+          <button
+            className={`flow-mode-btn ${readingFlow === 'stepByStep' ? 'active' : ''}`}
+            onClick={() => { playPop(); setReadingFlow('stepByStep'); }}
+            title="每读完一句自动停顿，适合儿童跟读与模仿"
+          >
+            <span className="btn-title">🔀 逐句停顿精读</span>
+            <span className="btn-desc">一句一句停顿跟读，配合卡拉OK高亮卡片模仿发音</span>
+          </button>
+        </div>
+      </div>
+
+      {/* 3. 文本输入区域 */}
       <div className="reader-input-panel">
         <div className="input-panel-header">
           <div className="mode-toggle-group">
@@ -351,17 +498,23 @@ export function SentenceReader() {
           </div>
 
           <div className="input-stats-badge">
-            <span>已解析：<strong>{sentencePairs.length}</strong> 组句子</span>
+            <span>共包含：<strong>{sentencePairs.length}</strong> 组句子</span>
           </div>
         </div>
 
         {/* 模式 A：中英分栏输入 */}
         {inputMode === 'split' ? (
           <div className="split-inputs-grid">
-            <div className="split-input-box zh-box">
+            <div className={`split-input-box zh-box ${isContinuousZh ? 'reading-continuous-glow-zh' : ''}`}>
               <div className="box-header">
                 <span className="box-title">🇨🇳 中文句子输入区</span>
-                <span className="box-tip">支持换行或用句号标点分句</span>
+                {isContinuousZh ? (
+                  <span className="continuous-live-badge zh animate-pulse">
+                    🔊 正在连续真人朗读中文全文...
+                  </span>
+                ) : (
+                  <span className="box-tip">支持换行或用句号标点分句</span>
+                )}
               </div>
               <textarea
                 className="sentence-textarea"
@@ -382,10 +535,16 @@ export function SentenceReader() {
               </div>
             </div>
 
-            <div className="split-input-box en-box">
+            <div className={`split-input-box en-box ${isContinuousEn ? 'reading-continuous-glow-en' : ''}`}>
               <div className="box-header">
                 <span className="box-title">🇺🇸 英文句子输入区</span>
-                <span className="box-tip">支持换行或用句号（.）分句</span>
+                {isContinuousEn ? (
+                  <span className="continuous-live-badge en animate-pulse">
+                    🔊 正在连续真人朗读英文全文...
+                  </span>
+                ) : (
+                  <span className="box-tip">支持换行或用句号（.）分句</span>
+                )}
               </div>
               <textarea
                 className="sentence-textarea en-font"
@@ -430,36 +589,54 @@ export function SentenceReader() {
         )}
       </div>
 
-      {/* 3. 核心朗读操作控制台 */}
+      {/* 4. 核心朗读操作控制台 */}
       <div className="reader-controls-card">
         {/* 主要播放动作按钮组 */}
         <div className="primary-action-buttons">
           <button
-            className={`action-pill-btn zh-btn ${isPlaying && activeItem?.lang === 'zh' ? 'active-playing' : ''}`}
-            onClick={handleReadChineseAll}
-            title="朗读全部中文句子"
+            className={`action-pill-btn zh-btn ${isPlaying && (activeItem?.lang === 'zh' || isContinuousZh) ? 'active-playing' : ''}`}
+            onClick={handleChineseClick}
+            title={readingFlow === 'continuous' ? '连续流利朗读中文整段' : '逐句停顿朗读中文'}
           >
             <span className="pill-icon">🇨🇳</span>
-            <span className="pill-text">朗读中文句子</span>
+            <span className="pill-text">
+              {readingFlow === 'continuous' ? '连续流利朗读中文' : '逐句朗读中文'}
+            </span>
           </button>
 
           <button
-            className={`action-pill-btn en-btn ${isPlaying && activeItem?.lang === 'en' ? 'active-playing' : ''}`}
-            onClick={handleReadEnglishAll}
-            title="朗读全部英文句子"
+            className={`action-pill-btn en-btn ${isPlaying && (activeItem?.lang === 'en' || isContinuousEn) ? 'active-playing' : ''}`}
+            onClick={handleEnglishClick}
+            title={readingFlow === 'continuous' ? '连续流利朗读英文整段' : '逐句停顿朗读英文'}
           >
             <span className="pill-icon">🇺🇸</span>
-            <span className="pill-text">朗读英语句子</span>
+            <span className="pill-text">
+              {readingFlow === 'continuous' ? '连续流利朗读英语' : '逐句朗读英语'}
+            </span>
           </button>
 
           <button
             className={`action-pill-btn bilingual-btn ${isPlaying ? 'glow-reading' : ''}`}
-            onClick={handleReadBilingualAll}
-            title="中英文整篇对照朗读"
+            onClick={handleBilingualClick}
+            title={readingFlow === 'continuous' ? '连续流利连读中文与英文（整篇连贯）' : '逐句中英对照停顿轮读'}
           >
             <span className="pill-icon">🔄</span>
-            <span className="pill-text">中英整篇一起朗读</span>
+            <span className="pill-text">
+              {readingFlow === 'continuous' ? '中英整篇连续朗读' : '中英逐句对照朗读'}
+            </span>
           </button>
+
+          {/* 连续一口气中英合读按钮 */}
+          {readingFlow === 'continuous' && (
+            <button
+              className="action-pill-btn seamless-btn"
+              onClick={handleReadMixedSeamless}
+              title="将中英文直接合为一段完整的连贯语流一口气播完"
+            >
+              <span className="pill-icon">⚡</span>
+              <span className="pill-text">中英一气呵成连读</span>
+            </button>
+          )}
 
           {isPlaying && (
             <button className="action-pill-btn stop-btn animate-pop" onClick={handleStop} title="停止当前朗读">
@@ -527,35 +704,41 @@ export function SentenceReader() {
             </div>
           </div>
 
-          {/* 连读模式 */}
-          <div className="setting-group">
-            <span className="group-label">🔁 连读方式：</span>
-            <div className="radio-pills">
-              <button
-                className={`radio-pill ${readOrder === 'alternate' ? 'active' : ''}`}
-                onClick={() => setReadOrder('alternate')}
-                title="读完一句中文，立刻读对应的英文句子"
-              >
-                🔀 逐句中英交替
-              </button>
-              <button
-                className={`radio-pill ${readOrder === 'sequential' ? 'active' : ''}`}
-                onClick={() => setReadOrder('sequential')}
-                title="整篇中文读完后，再读整篇英文"
-              >
-                📜 先中文后英文
-              </button>
+          {/* 逐句模式下的轮读顺序 */}
+          {readingFlow === 'stepByStep' && (
+            <div className="setting-group">
+              <span className="group-label">🔁 逐句轮读：</span>
+              <div className="radio-pills">
+                <button
+                  className={`radio-pill ${readOrder === 'alternate' ? 'active' : ''}`}
+                  onClick={() => setReadOrder('alternate')}
+                  title="读完一句中文，立刻读对应的英文句子"
+                >
+                  🔀 逐句中英交替
+                </button>
+                <button
+                  className={`radio-pill ${readOrder === 'sequential' ? 'active' : ''}`}
+                  onClick={() => setReadOrder('sequential')}
+                  title="整篇中文读完后，再读整篇英文"
+                >
+                  📜 先中文后英文
+                </button>
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
 
-      {/* 4. 句子对齐卡片展示区 */}
+      {/* 5. 句子对齐卡片展示区 */}
       <div className="reader-cards-section">
         <div className="section-header-row">
           <div className="section-header-title">
             <h3>📑 句子点读与逐句跟读区</h3>
-            <span className="section-header-sub">点击卡片中的单独按钮，即可单独朗读任意单句</span>
+            <span className="section-header-sub">
+              {readingFlow === 'continuous'
+                ? '已开启【连续流畅连读】：顶部按钮一口气播音；下方单句仍支持单点播放'
+                : '已开启【逐句停顿精读】：系统将逐句朗读并自动高亮卡片'}
+            </span>
           </div>
 
           <button
@@ -569,23 +752,19 @@ export function SentenceReader() {
         {/* 技术原理解释面板 */}
         {showTechGuide && (
           <div className="tech-guide-panel animate-pop">
-            <h4>💡 真人播音模型实现技术揭秘</h4>
+            <h4>💡 真人连续播音实现原理</h4>
             <ul>
               <li>
-                <strong>1. 百度在线真人播音模型：</strong> 
-                系统采用百度翻译云端真人播音模型接口，直接流式请求音频并注入到浏览器多媒体管道中。中文发音字正腔圆，情感停顿自然；英文由地道母语者播音。
+                <strong>1. 连续长音频流调度：</strong> 
+                系统通过 <code>speakContinuous</code> 机制，直接将多句连贯段落作为完整语流传给百度真人发音模型，在保证不超过 HTTP GET 限制的前提下，通过句法边界算法自动做 200 字自然切分并零延迟衔接，实现真正一气呵成的连贯播报！
               </li>
               <li>
-                <strong>2. 微软 Edge / Azure 神经网络自然大模型：</strong> 
-                系统优选了浏览器深度学习语音引擎（如 <em>Microsoft Xiaoxiao Natural</em> 与 <em>Jenny Natural</em>），具备真实换气声、语气起伏与高保真语音特征。
+                <strong>2. 纯正真人声音：</strong> 
+                百度播音级模型具备真人播音员的重音、轻声与连读连贯性，无论中长段落都能自然播读。
               </li>
               <li>
-                <strong>3. 智能容错双引擎：</strong> 
-                在“智能优选”模式下，系统会优先请求百度真人广播音频流；若遇离线或设备拦截，毫秒级无缝切换为神经网络自然语音，确保无论在任何网络环境下都清晰流畅。
-              </li>
-              <li>
-                <strong>4. 句子边界切分与卡拉OK高亮：</strong> 
-                前端通过高阶正向预查正则匹配标点符号（。！？；与 . ! ? ;），并维持播放状态队列，让孩子在听的同时眼睛紧跟高亮句子，达成视听同步！
+                <strong>3. 两种模式自由选择：</strong> 
+                喜欢自然流畅听全文的可以选择“连续流畅连读”；希望孩子一句一句跟读模仿的可以选择“逐句停顿精读”。
               </li>
             </ul>
           </div>
@@ -594,8 +773,8 @@ export function SentenceReader() {
         {/* 句子卡片列表 */}
         <div className="sentence-cards-list">
           {sentencePairs.map((pair) => {
-            const isZhActive = isPlaying && activeItem?.index === pair.id && activeItem?.lang === 'zh'
-            const isEnActive = isPlaying && activeItem?.index === pair.id && activeItem?.lang === 'en'
+            const isZhActive = isPlaying && activeItem?.mode === 'step' && activeItem?.index === pair.id && activeItem?.lang === 'zh'
+            const isEnActive = isPlaying && activeItem?.mode === 'step' && activeItem?.index === pair.id && activeItem?.lang === 'en'
             const isPairActive = isZhActive || isEnActive
 
             return (
@@ -611,7 +790,7 @@ export function SentenceReader() {
                     {isPairActive && (
                       <span className="reading-indicator-tag animate-pulse">
                         <span className="sound-wave-icon">🔊</span>
-                        正在真人朗读中...
+                        正在逐句跟读中...
                       </span>
                     )}
                   </div>

@@ -2,6 +2,11 @@
 let voices = []
 let currentPinyinAudio = null
 let currentSentenceAudio = null
+let continuousState = {
+  isCancelled: false,
+  currentIndex: 0,
+  chunks: []
+}
 
 function initVoices() {
   if (typeof window === 'undefined' || !('speechSynthesis' in window)) return
@@ -17,6 +22,10 @@ initVoices()
 
 // 停止所有正在发声的语音（包括百度真人音频、整句音频和系统TTS）
 export function stopSpeech() {
+  if (continuousState) {
+    continuousState.isCancelled = true
+  }
+
   if (currentPinyinAudio) {
     try {
       currentPinyinAudio.pause()
@@ -603,4 +612,112 @@ export function splitSentences(text, lang = 'auto') {
 
   return result.length > 0 ? result : [trimmed]
 }
+
+/**
+ * 智能长文本分块工具（避免单个 HTTP GET 请求超出服务端 URL 长度限制）
+ * 优先在句末标点、逗号或分号处断开，保证语音停顿自然
+ * @param {string} text 待切分文本
+ * @param {number} maxLen 单块最大字符数（百度 TTS 建议 <= 220 字符）
+ * @returns {string[]} 分块数组
+ */
+export function chunkText(text, maxLen = 220) {
+  if (!text) return []
+  const clean = text.trim()
+  if (clean.length <= maxLen) return [clean]
+
+  const chunks = []
+  let remaining = clean
+
+  while (remaining.length > maxLen) {
+    let splitIdx = -1
+    // 优先在句末标点断开，次之在逗号或分号断开
+    for (const p of ['\n', '。', '！', '？', '.', '!', '?', '；', ';', '，', ',']) {
+      const idx = remaining.lastIndexOf(p, maxLen)
+      if (idx > maxLen * 0.35 && idx > splitIdx) {
+        splitIdx = idx + 1
+        break
+      }
+    }
+    if (splitIdx === -1) {
+      splitIdx = maxLen
+    }
+    const chunk = remaining.slice(0, splitIdx).trim()
+    if (chunk) chunks.push(chunk)
+    remaining = remaining.slice(splitIdx).trim()
+  }
+
+  if (remaining.length > 0) {
+    chunks.push(remaining)
+  }
+
+  return chunks
+}
+
+// 连续播音控制器重置
+
+
+/**
+ * 连续流利长文本播报调度器（流畅连贯不卡顿）
+ * 支持任意长度中文或英文段落连续流利播音，内部自动分块并零延迟无缝衔接
+ * @param {Object} options
+ * @param {string} options.text 待朗读全文
+ * @param {'zh'|'en'} options.lang 语言
+ * @param {'auto'|'baidu'|'neural'} options.engine 语音引擎
+ * @param {'slow'|'normal'|'fast'|number} options.speed 语速
+ * @param {Function|null} options.onEnd 全部播放结束回调
+ * @param {Function|null} options.onProgress 播放进度回调 ({ currentChunk, totalChunks, chunkText })
+ */
+export function speakContinuous({ text, lang = 'zh', engine = 'auto', speed = 'normal', onEnd = null, onProgress = null }) {
+  stopSpeech()
+  if (!text || !text.trim()) {
+    if (onEnd) onEnd()
+    return
+  }
+
+  const chunks = chunkText(text, 220)
+  if (chunks.length === 0) {
+    if (onEnd) onEnd()
+    return
+  }
+
+  continuousState = {
+    isCancelled: false,
+    currentIndex: 0,
+    chunks
+  }
+
+  const playNext = () => {
+    if (continuousState.isCancelled || continuousState.currentIndex >= continuousState.chunks.length) {
+      if (!continuousState.isCancelled && onEnd) {
+        onEnd()
+      }
+      return
+    }
+
+    const currentText = continuousState.chunks[continuousState.currentIndex]
+    if (onProgress) {
+      onProgress({
+        currentChunk: continuousState.currentIndex + 1,
+        totalChunks: continuousState.chunks.length,
+        chunkText: currentText
+      })
+    }
+
+    speakSentence({
+      text: currentText,
+      lang,
+      engine,
+      speed,
+      onEnd: () => {
+        if (continuousState.isCancelled) return
+        continuousState.currentIndex++
+        // 零延迟紧凑播放下一块，达成自然流利的连续语流
+        playNext()
+      }
+    })
+  }
+
+  playNext()
+}
+
 
