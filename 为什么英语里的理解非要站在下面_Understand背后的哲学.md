@@ -1,11 +1,12 @@
 # 为什么英语里的“理解”，非要“站在下面”？
 **Why Does "Understanding" Require You to "Stand Under"? The Hidden Wisdom of Language**
 
-> **【公众号封面图说明】**
-> * 配图文件：`./images/wechat_cover_understand_empathy.jpg`
-> * 构图规格：标准 16:9 横版宽屏，中心主体聚焦，四周预留充足安全呼吸边距，完美兼容微信公众号封面 **2.35:1（900×383）** 自动裁切。
+> **【公众号封面图说明（已精准匹配 2.35:1 官方比例）】**
+> * **标准官方封面（900×383）**：`./images/wechat_cover_understand_900x383.jpg`（严格按微信公众号首条封面 2.35:1 比例生成，直接上传，无需手动裁切）
+> * **超清高清封面（1800×766）**：`./images/wechat_cover_understand_empathy.jpg`（2倍超清 2.35:1 画质，视觉效果更细腻）
+> * **封面设计意境**：重构意象——不再是普通的“雨天撑伞”，而是具象化诠释“Under + Stand”的真谛：在困顿与沉重面前，同理者主动俯身、站在承托者的下方，用双手与肩膀托举起对方沉重的星河负荷，温暖而坚定。
 > 
-> ![公众号封面图](./images/wechat_cover_understand_empathy.jpg)
+> ![公众号封面图](./images/wechat_cover_understand_900x383.jpg)
 
 ---
 
@@ -118,3 +119,4 @@
 
 > 💡 **今日互动话题 / Readers' Corner**  
 > 在你的生命中，有没有那么一个时刻，某人没有对你大讲道理，只是默默理解了你的脆弱，给了你莫大的力量？欢迎在评论区分享那个曾温暖过你的瞬间。
+
