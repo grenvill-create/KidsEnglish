@@ -1,5 +1,5 @@
-# 点“巧克力甜点”说成“吃沙漠”，说“我好无聊”变成“我很无趣”！这7组双胞胎英语单词，一错就当场社死
-# Ordered a "Chocolate Desert" and Called Yourself "Boring"? 7 Twin English Words That Cause Instant Embarrassment
+# 为什么学了十年英语，还是分不清 Dessert 和 Desert？7个画面联想，3分钟彻底治好易混词！
+# Why Can't We Tell "Dessert" and "Desert" Apart After 10 Years of English? 7 Visual Hooks to Master Confusing Words in 3 Minutes
 
 ---
 
