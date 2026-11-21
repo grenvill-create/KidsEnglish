@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>微信公众号排版专用 - 为什么学了十年英语，还是分不清 Dessert 和 Desert？</title>
+  <style>
+    body {
+      background-color: #f7f9fa;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .toolbar {
+      position: sticky;
+      top: 10px;
+      z-index: 1000;
+      background: #ffffff;
+      padding: 12px 24px;
+      border-radius: 30px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .copy-btn {
+      background: linear-gradient(135deg, #07c160, #06ad56);
+      color: white;
+      border: none;
+      padding: 10px 22px;
+      font-size: 15px;
+      font-weight: 600;
+      border-radius: 20px;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(7, 193, 96, 0.35);
+      transition: all 0.2s ease;
+    }
+    .copy-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(7, 193, 96, 0.45);
+    }
+    .tip-text {
+      color: #666;
+      font-size: 13px;
+    }
+
+    /* 微信公众号核心渲染容器 (直接复制此区域的内容) */
+    #wechat-article {
+      max-width: 677px;
+      width: 100%;
+      background: #ffffff;
+      padding: 30px 24px;
+      box-sizing: border-box;
+      border-radius: 8px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+      color: #333333;
+      font-size: 16px;
+      line-height: 1.8;
+      letter-spacing: 0.5px;
+      word-break: break-word;
+    }
+
+    /* 标题样式 */
+    .wx-h1-cn {
+      font-size: 22px;
+      font-weight: bold;
+      color: #1a1a1a;
+      line-height: 1.45;
+      margin-bottom: 8px;
+      letter-spacing: 0.5px;
+    }
+    .wx-h1-en {
+      font-size: 15px;
+      font-weight: 600;
+      color: #4a5568;
+      line-height: 1.4;
+      margin-bottom: 24px;
+      font-style: italic;
+    }
+
+    /* 引言卡片 */
+    .wx-intro-card {
+      background: #fdfaf6;
+      border-left: 4px solid #f6ad55;
+      padding: 16px 18px;
+      border-radius: 4px;
+      margin: 20px 0 25px 0;
+      color: #744210;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    /* 分组模块卡片 */
+    .wx-section-box {
+      margin: 28px 0;
+      background: #ffffff;
+      border: 1px solid #edf2f7;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+      overflow: hidden;
+    }
+    .wx-section-header {
+      background: linear-gradient(135deg, #2b6cb0, #3182ce);
+      color: #ffffff;
+      padding: 10px 18px;
+      font-size: 17px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .wx-section-body {
+      padding: 18px;
+    }
+
+    /* 翻车/社死现场卡片 */
+    .wx-trap-box {
+      background: #fff5f5;
+      border-left: 3px solid #fc8181;
+      padding: 10px 14px;
+      border-radius: 4px;
+      margin-bottom: 15px;
+      font-size: 14.5px;
+    }
+    .wx-trap-title {
+      font-weight: bold;
+      color: #c53030;
+      margin-bottom: 4px;
+    }
+
+    /* 记忆法卡片 */
+    .wx-memory-box {
+      background: #f0fff4;
+      border-left: 3px solid #68d391;
+      padding: 12px 14px;
+      border-radius: 4px;
+      font-size: 14.5px;
+    }
+    .wx-memory-title {
+      font-weight: bold;
+      color: #276749;
+      margin-bottom: 6px;
+    }
+
+    /* 重点单词高亮 */
+    .wx-badge {
+      display: inline-block;
+      padding: 1px 7px;
+      border-radius: 4px;
+      font-weight: bold;
+      font-size: 14px;
+      margin: 0 2px;
+    }
+    .wx-badge-red { background: #fed7d7; color: #9b2c2c; }
+    .wx-badge-green { background: #c6f6d5; color: #22543d; }
+    .wx-badge-blue { background: #bee3f8; color: #2a4365; }
+
+    /* 英文对照段落 */
+    .wx-en-text {
+      color: #555555;
+      font-size: 14px;
+      margin-top: 4px;
+      margin-bottom: 10px;
+      line-height: 1.6;
+    }
+    .wx-cn-text {
+      color: #1a202c;
+      font-size: 15px;
+      margin-bottom: 3px;
+      line-height: 1.7;
+    }
+
+    /* 插画容器 */
+    .wx-img-container {
+      margin: 25px 0;
+      text-align: center;
+    }
+    .wx-img-container img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      display: block;
+      margin: 0 auto;
+    }
+    .wx-img-caption {
+      font-size: 13px;
+      color: #718096;
+      margin-top: 8px;
+      line-height: 1.5;
+    }
+
+    /* 速查卡 */
+    .wx-summary-card {
+      background: #ebf8ff;
+      border: 1px dashed #3182ce;
+      border-radius: 8px;
+      padding: 18px;
+      margin-top: 30px;
+    }
+    .wx-summary-title {
+      font-size: 16px;
+      font-weight: bold;
+      color: #2b6cb0;
+      margin-bottom: 12px;
+      text-align: center;
+    }
+    .wx-summary-item {
+      font-size: 14px;
+      color: #2d3748;
+      padding: 5px 0;
+      border-bottom: 1px dashed #e2e8f0;
+      line-height: 1.6;
+    }
+    .wx-summary-item:last-child {
+      border-bottom: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="toolbar">
+    <button class="copy-btn" onclick="copyWechatContent()">📋 一键复制到微信公众号编辑器</button>
+    <span class="tip-text">点击后直接到微信公众号后台 <strong>Ctrl+V</strong> 粘贴，格式与排版完美保留！</span>
+  </div>
+
+  <div id="wechat-article">
+
+    <!-- 文章标题 -->
+    <div class="wx-h1-cn">为什么学了十年英语，还是分不清 Dessert 和 Desert？7个画面联想，3分钟彻底治好易混词！</div>
+    <div class="wx-h1-en">Why Can't We Tell "Dessert" and "Desert" Apart After 10 Years of English? 7 Visual Hooks to Master Confusing Words in 3 Minutes</div>
+
+    <!-- 序言导读 -->
+    <div class="wx-intro-card">
+      <div class="wx-cn-text"><strong>【序言导读】</strong> 英语里有一批最让人头疼的“双胞胎单词”：它们拼写几乎一模一样，读音极其相似，只差那么一个字母。可一旦在聊天、写邮件或考场上把它们用混了，轻则丢掉关键分数，重则当场闹出让人笑到拍桌子的乌龙！</div>
+      <div class="wx-en-text">English is packed with notorious "twin" words—pairs with nearly identical spelling and pronunciation, separated by just a single sneaky letter. Yet mix them up in a chat, email, or exam, and you risk losing easy points—or triggering a hilarious misunderstanding on the spot.</div>
+      <div class="wx-cn-text">今天，我们一次性盘点 <strong>7 组 90% 的英语学习者都踩过坑的易混词</strong>，每组都配上一个<strong>“看一眼就一辈子忘不掉”的神级记忆法</strong>！</div>
+      <div class="wx-en-text">Today, let us conquer 7 notoriously confusing English word pairs that trip up 90% of learners—each armed with a one-glance memory trick you will never forget.</div>
+    </div>
+
+    <!-- 第 1 组 -->
+    <div class="wx-section-box">
+      <div class="wx-section-header">1. Dessert（甜点）vs. Desert（沙漠）</div>
+      <div class="wx-section-body">
+        <div class="wx-trap-box">
+          <div class="wx-trap-title">💥 翻车现场 / The Blunder</div>
+          <div class="wx-cn-text">在西餐厅吃完主菜，优雅地对服务员说 <em>"I'd like a chocolate desert, please."</em>（“请给我来一份巧克力沙漠。”）</div>
+        </div>
+        <div class="wx-memory-box">
+          <div class="wx-memory-title">💡 一眼记牢法 / Memory Trick</div>
+          <div class="wx-cn-text"><strong>甜点（De<span class="wx-badge wx-badge-green">ss</span>ert）</strong> 太好吃了，所以人人都想要<strong>两份</strong>（<strong>两个 s</strong>，就像 two scoops of ice cream）；</div>
+          <div class="wx-en-text">Dessert is so delicious that everyone wants two helpings (two s's—like two scoops of ice cream).</div>
+          <div class="wx-cn-text">而<strong>沙漠（De<span class="wx-badge wx-badge-red">s</span>ert）</strong> 荒凉又干燥，孤零零的只有<strong>一个 s</strong>。</div>
+          <div class="wx-en-text">Desert, by contrast, is dry and lonely—so it only has one s.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 配图一 -->
+    <div class="wx-img-container">
+      <img src="images/02_易混英语单词_配图一.jpg" alt="甜点还是沙漠的爆笑瞬间">
+      <div class="wx-img-caption">少写一个“s”，美味的巧克力甜点瞬间变成烈日炎炎的撒哈拉沙漠<br><em>Drop a single "s," and a decadent chocolate dessert turns straight into a scorching desert.</em></div>
+    </div>
+
+    <!-- 第 2 组 -->
+    <div class="wx-section-box">
+      <div class="wx-section-header">2. Bored（感到无聊）vs. Boring（令人无聊）</div>
+      <div class="wx-section-body">
+        <div class="wx-trap-box">
+          <div class="wx-trap-title">💥 社死现场 / The Blunder</div>
+          <div class="wx-cn-text">周末在家没事干，发微信跟外国朋友吐槽 <em>"I am so boring!"</em>——对方听到的其实是：“我这个人超级无趣、特别无聊，别跟我玩！”</div>
+        </div>
+        <div class="wx-memory-box">
+          <div class="wx-memory-title">💡 一眼记牢法 / Memory Trick</div>
+          <div class="wx-cn-text"><span class="wx-badge wx-badge-blue">-ed 结尾</span> 描述的是<strong>人的内心感受</strong>（<em>I am bor<strong>ed</strong>.</em> 我感到无聊）；</div>
+          <div class="wx-en-text">Words ending in -ed describe how a person feels (I am bored).</div>
+          <div class="wx-cn-text"><span class="wx-badge wx-badge-blue">-ing 结尾</span> 描述的是<strong>事物或人本身令人产生的特质</strong>（<em>This movie is bor<strong>ing</strong>.</em> 这部电影真无聊）。</div>
+          <div class="wx-en-text">Words ending in -ing describe the quality of something or someone (This movie is boring).</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 第 3 组 -->
+    <div class="wx-section-box">
+      <div class="wx-section-header">3. Loose（松垮的）vs. Lose（丢失 / 输掉）</div>
+      <div class="wx-section-body">
+        <div class="wx-trap-box">
+          <div class="wx-trap-title">💥 翻车现场 / The Blunder</div>
+          <div class="wx-cn-text">发朋友圈立减脂 Flag，激情打下 <em>"I'm going to loose weight this month!"</em>（字面意思变成了：“我这个月要把体重变松！”）</div>
+        </div>
+        <div class="wx-memory-box">
+          <div class="wx-memory-title">💡 一眼记牢法 / Memory Trick</div>
+          <div class="wx-cn-text"><strong>Lo<span class="wx-badge wx-badge-red">s</span>e</strong> 既然是“丢失”，它自己就<strong>丢掉了一个 o</strong>；</div>
+          <div class="wx-en-text">Lose literally lost an "o", which is why it means to misplace or fail to win.</div>
+          <div class="wx-cn-text"><strong>L<span class="wx-badge wx-badge-green">oo</span>se</strong> 里面塞了<strong>两个 o</strong>，撑得空间太大，所以是“松垮的”（比如 <em>loose jeans</em> 宽松牛仔裤）。</div>
+          <div class="wx-en-text">Loose has two "o"s, giving it extra room to hang loosely.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 第 4 组 -->
+    <div class="wx-section-box">
+      <div class="wx-section-header">4. Affect（动词：影响）vs. Effect（名词：效果 / 影响）</div>
+      <div class="wx-section-body">
+        <div class="wx-trap-box">
+          <div class="wx-trap-title">💥 考场重灾区 / Exam Trap</div>
+          <div class="wx-cn-text">中高考、四六级、雅思托福年年必考的头号易错组合！</div>
+        </div>
+        <div class="wx-memory-box">
+          <div class="wx-memory-title">💡 一眼记牢法 / Memory Trick（记住 RAVEN 法则）</div>
+          <div class="wx-cn-text"><strong><span class="wx-badge wx-badge-blue">A</span>ffect = Action</strong>（<strong>动词</strong>，表示施加影响的动作，如 <em>The weather <strong>affected</strong> our plans.</em> 天气影响了我们的计划）。</div>
+          <div class="wx-en-text">Affect stands for Action (a verb, as in The weather affected our plans).</div>
+          <div class="wx-cn-text"><strong><span class="wx-badge wx-badge-green">E</span>ffect = End result</strong>（<strong>名词</strong>，表示最终的结果或效果，如 <em>The medicine had a great <strong>effect</strong>.</em> 这药效果很好）。</div>
+          <div class="wx-en-text">Effect stands for End result (a noun, as in The medicine had a great effect).</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 第 5 组 -->
+    <div class="wx-section-box">
+      <div class="wx-section-header">5. Quiet（安静的）vs. Quite（相当 / 非常）</div>
+      <div class="wx-section-body">
+        <div class="wx-trap-box">
+          <div class="wx-trap-title">💥 翻车现场 / The Blunder</div>
+          <div class="wx-cn-text">写评语想夸同事“非常专业” <em>quite professional</em>，手滑敲成 <em>quiet professional</em>（沉默寡言的专业人士？）。</div>
+        </div>
+        <div class="wx-memory-box">
+          <div class="wx-memory-title">💡 一眼记牢法 / Memory Trick</div>
+          <div class="wx-cn-text"><strong>Qui<span class="wx-badge wx-badge-blue">et</span></strong> 结尾是 <strong>et</strong>，读起来有两个音节（kwai-ət），像是在图书馆里轻声说“安静”；</div>
+          <div class="wx-en-text">Quiet ends in -et and has two soft syllables, like a hush in a library.</div>
+          <div class="wx-cn-text"><strong>Qui<span class="wx-badge wx-badge-green">te</span></strong> 结尾是 <strong>te</strong>，单音节干脆利落（kwait），表示“相当、十分”（如 <em>quite good</em> 相当不错）。</div>
+          <div class="wx-en-text">Quite ends in -te—one crisp syllable meaning "very" or "fairly."</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 第 6 组 -->
+    <div class="wx-section-box">
+      <div class="wx-section-header">6. Compliment（赞美）vs. Complement（补充 / 相得益彰）</div>
+      <div class="wx-section-body">
+        <div class="wx-trap-box">
+          <div class="wx-trap-title">💥 微妙陷阱 / Subtle Trap</div>
+          <div class="wx-cn-text">两个词读音几乎完全相同，拼写也只差中间的 <strong>i</strong> 和 <strong>e</strong>。</div>
+        </div>
+        <div class="wx-memory-box">
+          <div class="wx-memory-title">💡 一眼记牢法 / Memory Trick</div>
+          <div class="wx-cn-text"><strong><span class="wx-badge wx-badge-blue">I</span></strong> love receiving a compl<strong>i</strong>ment——带 <strong>i</strong> 的是<strong>赞美</strong>（每个“我 I”都爱听夸奖）；</div>
+          <div class="wx-en-text">I love getting a compliment—the "i" reminds you of praise.</div>
+          <div class="wx-cn-text">Compl<strong>e</strong>ment 就像 compl<strong>e</strong>te（使完整）——带 <strong>e</strong> 的是<strong>互补、相得益彰</strong>（如 <em>Red wine <strong>complements</strong> steak.</em> 红酒配牛排相得益彰）。</div>
+          <div class="wx-en-text">Complement shares the "e" with complete—meaning two things complete each other beautifully.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 第 7 组 -->
+    <div class="wx-section-box">
+      <div class="wx-section-header">7. Stationary（静止不动的）vs. Stationery（文具）</div>
+      <div class="wx-section-body">
+        <div class="wx-trap-box">
+          <div class="wx-trap-title">💥 职场乌龙 / Office Blunder</div>
+          <div class="wx-cn-text">行政采买发邮件写 <em>"We need to order more stationary."</em>（“我们需要多订购一些静止不动。”）</div>
+        </div>
+        <div class="wx-memory-box">
+          <div class="wx-memory-title">💡 一眼记牢法 / Memory Trick</div>
+          <div class="wx-cn-text">Station<strong><span class="wx-badge wx-badge-green">e</span></strong>ry 里的 <strong>e</strong> = <strong>e</strong>nvelope（信封）和 p<strong>e</strong>n（钢笔）——统统都是<strong>文具</strong>；</div>
+          <div class="wx-en-text">The "e" in stationery stands for envelope and pen.</div>
+          <div class="wx-cn-text">Station<strong><span class="wx-badge wx-badge-red">a</span></strong>ry 里的 <strong>a</strong> = st<strong>a</strong>nding still（原地站着不动）——表示<strong>静止的</strong>。</div>
+          <div class="wx-en-text">The "a" in stationary stands for standing still.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 配图二 -->
+    <div class="wx-img-container">
+      <img src="images/03_易混英语单词_配图二.jpg" alt="轻松记牢易混词的秘诀">
+      <div class="wx-img-caption">用画面感和联想代替死记硬背，再像的双胞胎单词也能一眼分清<br><em>Replace rote memorization with vivid imagery, and even the trickiest twin words become crystal clear.</em></div>
+    </div>
+
+    <!-- 结语 -->
+    <div class="wx-intro-card" style="border-left-color: #4299e1; background: #ebf8ff;">
+      <div class="wx-cn-text"><strong>【结语：记单词别靠死背，靠“画面联想”】</strong></div>
+      <div class="wx-cn-text">英语里这些长得像双胞胎的单词，靠机械抄写十遍往往还是会忘；但只要你给它们装上一个有趣的“画面钩子”——比如<strong>甜点想要两份 s</strong>、<strong>lose 丢掉了一个 o</strong>、<strong>文具里有 e（envelope）</strong>——你的大脑就会一秒锁死它们的区别。</div>
+      <div class="wx-en-text">Trying to conquer these twin words by copying them ten times rarely sticks. Yet the moment you attach a playful visual hook—two scoops of dessert, lose losing an "o," or envelopes in stationery—your brain locks in the difference for good.</div>
+      <div class="wx-cn-text">快把这份速查清单转发给正在背单词的孩子或朋友，以后再也别把“甜点”点成“沙漠”啦！</div>
+      <div class="wx-en-text">Share this cheat sheet with a friend or student—and never accidentally order a chocolate desert again!</div>
+    </div>
+
+    <!-- 速查卡 -->
+    <div class="wx-summary-card">
+      <div class="wx-summary-title">📌 7 组易混词一秒记忆速查卡</div>
+      <div class="wx-summary-item">1. <strong>Dessert</strong>（甜点，两份 s） vs. <strong>Desert</strong>（沙漠，一个 s）</div>
+      <div class="wx-summary-item">2. <strong>Bored</strong>（人感到无聊 -ed） vs. <strong>Boring</strong>（事物令人无聊 -ing）</div>
+      <div class="wx-summary-item">3. <strong>Lose</strong>（丢失，丢了一个 o） vs. <strong>Loose</strong>（松垮，两个 o）</div>
+      <div class="wx-summary-item">4. <strong>Affect</strong>（动词 Action） vs. <strong>Effect</strong>（名词 End result）</div>
+      <div class="wx-summary-item">5. <strong>Quiet</strong>（安静 -et） vs. <strong>Quite</strong>（相当 -te）</div>
+      <div class="wx-summary-item">6. <strong>Compliment</strong>（赞美，我 I 爱听） vs. <strong>Complement</strong>（互补，像 complete）</div>
+      <div class="wx-summary-item">7. <strong>Stationery</strong>（文具，envelope） vs. <strong>Stationary</strong>（静止，standing）</div>
+    </div>
+
+  </div>
+
+  <script>
+    function copyWechatContent() {
+      const container = document.getElementById('wechat-article');
+      
+      // 创建一个临时选区用于完整复制富文本（HTML格式）
+      const range = document.createRange();
+      range.selectNodeContents(container);
+      const selection = window.getSelection();
+      selection.removeAllRanges();
+      selection.addRange(range);
+
+      try {
+        const successful = document.execCommand('copy');
+        if (successful) {
+          alert('✅ 已成功复制富文本排版！\n现在打开微信公众号后台编辑器，直接 Ctrl+V 粘贴即可！');
+        } else {
+          alert('复制失败，请手动在页面上按 Ctrl+A 全选，然后 Ctrl+C 复制。');
+        }
+      } catch (err) {
+        alert('浏览器不支持自动复制，请手动按 Ctrl+A 全选并复制。');
+      }
+      selection.removeAllRanges();
+    }
+  </script>
+</body>
+</html>
